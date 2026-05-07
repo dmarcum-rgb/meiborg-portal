@@ -301,14 +301,24 @@ function api(path){
   return fetch(BASE+'/'+p+qs,{headers:{'Authorization':_token,'CompanyID':'TMS'}});
 }
 
+// XML parser helper
+function parseXmlCustomers(text){
+  var parser=new DOMParser();
+  var xml=parser.parseFromString(text,'text/xml');
+  var nodes=xml.querySelectorAll('customer');
+  var arr=[];
+  nodes.forEach(function(n){arr.push({id:n.getAttribute('id'),name:n.getAttribute('name'),city:n.getAttribute('city'),state:n.getAttribute('state')});});
+  return arr;
+}
+
 // Customer ID discovery
 function getAllIds(){
   var ch='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'.split('');
   var ids=new Set();var caps=[];
-  var p1=ch.map(function(c){return api('/ws/customers/search?name='+encodeURIComponent(c+'*')).then(function(r){return r.ok?r.json():[];}).then(function(a){if(!Array.isArray(a))return;a.forEach(function(x){if(x.id)ids.add(x.id);});if(a.length>=100)caps.push(c);}).catch(function(){});});
+  var p1=ch.map(function(c){return api('/ws/customers/search?name='+encodeURIComponent(c+'*')).then(function(r){return r.ok?r.text().then(parseXmlCustomers):[];}).then(function(a){if(!Array.isArray(a))return;a.forEach(function(x){if(x.id)ids.add(x.id);});if(a.length>=100)caps.push(c);}).catch(function(){});});
   return Promise.all(p1).then(function(){
     var p2=[];
-    caps.forEach(function(c){ch.forEach(function(c2){p2.push(api('/ws/customers/search?name='+encodeURIComponent(c+c2+'*')).then(function(r){return r.ok?r.json():[];}).then(function(a){if(Array.isArray(a))a.forEach(function(x){if(x.id)ids.add(x.id);});}).catch(function(){}));});});
+    caps.forEach(function(c){ch.forEach(function(c2){p2.push(api('/ws/customers/search?name='+encodeURIComponent(c+c2+'*')).then(function(r){return r.ok?r.text().then(parseXmlCustomers):[];}).then(function(a){if(Array.isArray(a))a.forEach(function(x){if(x.id)ids.add(x.id);});}).catch(function(){}));});});
     return Promise.all(p2);
   }).then(function(){return Array.from(ids);});
 }
@@ -366,7 +376,7 @@ function runAR(){
   }).then(function(){
     setSt('Loading names\u2026',96);
     return batch(_ar,10,function(r){
-      return api('/ws/customers/search?id='+r.id).then(function(resp){return resp.ok?resp.json():[];}).then(function(arr){
+      return api('/ws/customers/search?id='+r.id).then(function(resp){return resp.ok?resp.text().then(parseXmlCustomers):[];}).then(function(arr){
         if(Array.isArray(arr)&&arr.length>0){r.name=arr[0].name||r.id;r.city=arr[0].city||'';r.state=arr[0].state||'';}
         else{r.name=r.id;r.city='';r.state='';}
       }).catch(function(){r.name=r.id;r.city='';r.state='';});
