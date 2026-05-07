@@ -226,7 +226,7 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="panel" id="panel-ai-frc"><div class="cs"><div class="cse">🔮</div><div class="cst">Forecasting</div><div class="csd">Revenue forecasting and collections predictions.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-ai-auto"><div class="cs"><div class="cse">⚡</div><div class="cst">Automation</div><div class="csd">Automated reports, alerts and workflow triggers.</div><span class="csp">Coming Soon</span></div></div>
 </div></div><script>
-var BASE='/api/mcleod';
+var BASE='https://tms.meiborginc.com/ws';
 var _token='';var _user='';
 var _ar=[];var _run=false;
 
@@ -275,7 +275,7 @@ function doLogin(){
   document.getElementById('login-err').textContent='';
   var tok='Basic '+btoa(u+':'+p);
   // Verify credentials by making a quick test call
-  fetch(BASE+'?path=customers%2Fsearch&name=A*',{headers:{'x-mcleod-token':tok,'x-mcleod-company':'TMS'}})
+  fetch(BASE+'/customers/search?name=A*',{headers:{'Authorization':tok,'CompanyID':'TMS'}})
     .then(function(r){
       if(r.status===401||r.status===403){throw new Error('Invalid username or password.');}
       if(!r.ok&&r.status!==404&&r.status!==200){throw new Error('Server error ('+r.status+'). Try again.');}
@@ -296,9 +296,9 @@ document.getElementById('lu').addEventListener('keydown',function(e){if(e.key===
 // API proxy helper
 function api(path){
   var pts=path.split('?');
-  var p=pts[0].replace(/^\/ws\//,'');
-  var qs=pts[1]?('&'+pts[1]):'';
-  return fetch(BASE+'?path='+encodeURIComponent(p)+qs,{headers:{'x-mcleod-token':_token,'x-mcleod-company':'TMS'}});
+  var p=pts[0].replace(/^\/ws\//,'').replace(/^\//,'');
+  var qs=pts[1]?('?'+pts[1]):'';
+  return fetch(BASE+'/'+p+qs,{headers:{'Authorization':_token,'CompanyID':'TMS'}});
 }
 
 // Customer ID discovery
