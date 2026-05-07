@@ -200,7 +200,18 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div id="alist"></div>
 </div>
 
-<div class="panel" id="panel-ap"><div class="cs"><div class="cse">📤</div><div class="cst">Accounts Payable</div><div class="csd">Pull what Meiborg Bros owes carriers and vendors, sorted by amount and due date.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-ap">
+<div class="stat-row"><div class="sc"><div class="sc-lbl">Carriers Scanned</div><div class="sc-val" id="ap-ss">—</div></div><div class="sc"><div class="sc-lbl">With Open AP</div><div class="sc-val vg" id="ap-ow">—</div></div><div class="sc"><div class="sc-lbl">Net AP Balance</div><div class="sc-val vy" id="ap-nb">—</div></div><div class="sc"><div class="sc-lbl">Overdue (30+ Days)</div><div class="sc-val vr" id="ap-sl">—</div></div></div>
+<div class="toolbar">
+<button class="btn b-gold" id="ap-rbtn" onclick="runAP()">&#9654; Pull Aged AP</button>
+<button class="btn b-out" id="ap-ebtn" onclick="exportAP()" disabled>&#8595; Export CSV</button>
+<button class="btn b-out" id="ap-rrpt" onclick="rawReportAP()" disabled>&#128196; Raw Report</button>
+<label class="chk">Report by: <select class="fsel" id="ap-rb" style="margin-left:6px"><option value="gl_date">GL Date</option><option value="bill_date">Bill Date</option><option value="ship_date">Ship Date</option></select></label>
+<div class="spc"></div>
+<div><div class="smsg" id="ap-smsg"><div class="pbar"><div class="pfill" id="ap-pfill" style="width:0%"></div></div></div></div>
+</div>
+<div id="ap-list"></div>
+</div>
 <div class="panel" id="panel-billing"><div class="cs"><div class="cse">🧾</div><div class="cst">Billing</div><div class="csd">View billing history and linehaul breakdown by customer or date range.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-reports"><div class="cs"><div class="cse">📊</div><div class="cst">Custom Reports</div><div class="csd">Filter by date range, salesperson and customer category.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-hr-emp"><div class="cs"><div class="cse">👤</div><div class="cst">Employees</div><div class="csd">Employee directory, roles and department assignments.</div><span class="csp">Coming Soon</span></div></div>
@@ -467,4 +478,225 @@ function rawReport(){
   a.click();
   setTimeout(function(){URL.revokeObjectURL(url);},5000);
 }
+
+// ===== ACCOUNTS PAYABLE =====
+var _ap = [], _apRun = false;
+
+function parseXmlCarriers(text) {
+  var parser = new DOMParser();
+  var xml = parser.parseFromString(text, 'application/xml');
+  var items = xml.querySelectorAll('payee');
+  var result = [];
+  items.forEach(function(el) {
+    var id = el.getAttribute('id');
+    if (id) result.push({
+      id: id,
+      name: el.getAttribute('name') || el.getAttribute('check_name') || '',
+      city: el.getAttribute('city') || el.getAttribute('check_city') || '',
+      state: el.getAttribute('state') || el.getAttribute('check_st') || '',
+      lastCheck: el.getAttribute('check_date') || '',
+      payMethod: el.getAttribute('payment_method') || ''
+    });
+  });
+  // Deduplicate by id
+  var seen = {};
+  return result.filter(function(c) { if(seen[c.id]) return false; seen[c.id]=true; return true; });
+}
+
+function parseApPdf(text) {
+  // Parse the aged AR report PDF text for AP balance data
+  // Same structure as AR: look for balance amounts in columns
+  var items = [];
+  var lines = text.split('\n');
+  var balance = 0;
+  var current = '--', t30 = '--', t45 = '--', t60 = '--', t90 = '--';
+  var orderNo = '', shipDate = '', billDate = '', glDate = '', days = '';
+  var amt = '';
+  
+  for (var i = 0; i < lines.length; i++) {
+    var l = lines[i].trim();
+    // Look for dollar amounts — invoice lines have them
+    var m = l.match(/^(\d{1,3}(?:,\d{3})*\.\d{2})$/);
+    if (m) { balance += parseFloat(m[1].replace(/,/g,'')); }
+  }
+  return { bal: balance };
+}
+
+function getAllApIds() {
+  var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
+  var fetches = letters.map(function(l) {
+    return fetch(BASE + '/carriers/search?name=' + encodeURIComponent(l + '*'), {
+      headers: { 'Authorization': _token, 'CompanyID': 'TMS', 'Accept': 'application/xml' }
+    }).then(function(r) { return r.text(); }).then(parseXmlCarriers).catch(function() { return []; });
+  });
+  return Promise.all(fetches).then(function(results) {
+    var all = [];
+    results.forEach(function(r) { all = all.concat(r); });
+    // Deduplicate
+    var seen = {};
+    return all.filter(function(c) { if(seen[c.id]) return false; seen[c.id]=true; return true; });
+  });
+}
+
+function setApSt(msg, pct) {
+  var el = document.getElementById('ap-smsg');
+  if (el) { el.innerHTML = msg + '<div class="pbar"><div class="pfill" style="width:' + (pct||0) + '%"></div></div>'; }
+}
+
+function runAP() {
+  if (_apRun) return;
+  _apRun = true;
+  _ap = [];
+  var btn = document.getElementById('ap-rbtn');
+  if (btn) { btn.textContent = 'Running...'; btn.disabled = true; }
+  document.getElementById('ap-ebtn').disabled = true;
+  document.getElementById('ap-rrpt').disabled = true;
+  document.getElementById('ap-list').innerHTML = '';
+  document.getElementById('ap-ss').textContent = '—';
+  document.getElementById('ap-ow').textContent = '—';
+  document.getElementById('ap-nb').textContent = '—';
+  document.getElementById('ap-sl').textContent = '—';
+  setApSt('Loading carrier list…', 2);
+  
+  var rb2 = document.getElementById('ap-rb').value;
+  
+  getAllApIds().then(function(ids) {
+    setApSt('Scanning ' + ids.length + ' carriers…', 5);
+    document.getElementById('ap-ss').textContent = '0';
+    var scanned = 0, withAP = 0, total = 0, overdue = 0;
+    var BATCH = 10;
+    var idx = 0;
+    
+    function next() {
+      if (idx >= ids.length) {
+        // Done
+        _ap.sort(function(a,b){return b.bal-a.bal;});
+        renderAP();
+        if(btn){btn.textContent='\u25ba Pull Aged AP';btn.disabled=false;}
+        document.getElementById('ap-ebtn').disabled = false;
+        document.getElementById('ap-rrpt').disabled = false;
+        _apRun = false;
+        var elapsed = Math.round((Date.now()-window._apStart)/1000);
+        setApSt('Complete \u00b7 ' + _ap.length + ' carriers \u00b7 $' + total.toFixed(2), 100);
+        document.getElementById('ap-nb').textContent = '$' + total.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+        document.getElementById('ap-ow').textContent = withAP;
+        document.getElementById('ap-sl').textContent = overdue;
+        return;
+      }
+      var batch = ids.slice(idx, idx + BATCH);
+      idx += BATCH;
+      
+      Promise.all(batch.map(function(carrier) {
+        return fetch(BASE + '/customers/' + encodeURIComponent(carrier.id) + '/agedARReport?reportType=detailed&reportBy=' + rb2 + '&pastDueOnly=false&includeOpenCredits=false&invoiceCutoffDate=t&ageDate=t', {
+          headers: { 'Authorization': _token, 'CompanyID': 'TMS' }
+        }).then(function(r) {
+          if (!r.ok) return null;
+          return r.arrayBuffer();
+        }).then(function(buf) {
+          if (!buf) return null;
+          var pdfjsLib = window['pdfjs-dist/build/pdf'];
+          if (!pdfjsLib) return null;
+          return pdfjsLib.getDocument({data: new Uint8Array(buf)}).promise.then(function(pdf) {
+            var pagePromises = [];
+            for (var p = 1; p <= pdf.numPages; p++) {
+              pagePromises.push(pdf.getPage(p).then(function(page) { return page.getTextContent(); }));
+            }
+            return Promise.all(pagePromises).then(function(pages) {
+              var allItems = [];
+              pages.forEach(function(tc) { allItems = allItems.concat(tc.items); });
+              return parsePDF(allItems, carrier.id);
+            });
+          });
+        }).then(function(parsed) {
+          scanned++;
+          document.getElementById('ap-ss').textContent = scanned;
+          if (parsed && parsed.bal > 0) {
+            withAP++;
+            total += parsed.bal;
+            overdue += parsed.slowPay || 0;
+            _ap.push({ id: carrier.id, name: carrier.name, city: carrier.city, state: carrier.state, lastCheck: carrier.lastCheck, bal: parsed.bal, avg: parsed.avg, lp: parsed.lp, invs: parsed.invs });
+            document.getElementById('ap-nb').textContent = '$' + total.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+            document.getElementById('ap-ow').textContent = withAP;
+          }
+          var pct = Math.round(scanned / ids.length * 100);
+          setApSt('Scanning ' + scanned + '/' + ids.length + ' carriers…', pct);
+        }).catch(function(){scanned++;});
+      })).then(next);
+    }
+    
+    window._apStart = Date.now();
+    next();
+  });
+}
+
+function renderAP() {
+  var el = document.getElementById('ap-list');
+  if (!el) return;
+  if (!_ap.length) { el.innerHTML = '<div style="padding:20px;color:var(--dim)">No open AP balances found.</div>'; return; }
+  var html = '<div class="ar-meta"><span>' + _ap.length + ' carriers</span><span>Sorted by balance</span><span>' + new Date().toLocaleString() + '</span></div>';
+  _ap.forEach(function(r, i) {
+    var color = r.bal > 50000 ? 'vr' : r.bal > 10000 ? 'vy' : 'vg';
+    html += '<div class="ar-row" id="ap-row-' + i + '">';
+    html += '<div class="ar-hdr" onclick="toggleApRow(' + i + ')">';
+    html += '<span class="ar-tog">&#9658;</span>';
+    html += '<span class="ar-name">' + (r.name||r.id) + ' <span class="ar-id">(' + r.id + ')</span></span>';
+    html += '<span class="ar-city">' + (r.city||'') + (r.state ? ', '+r.state : '') + '</span>';
+    var lp = r.lp || (r.lastCheck ? r.lastCheck.substring(4,6)+'/'+r.lastCheck.substring(6,8)+'/'+r.lastCheck.substring(0,4) : '—');
+    html += '<span class="ar-avg">' + (r.avg ? 'Avg: ' + parseFloat(r.avg).toFixed(1) + 'd' : '') + '</span>';
+    html += '<span class="ar-lp">Pmt: ' + lp + '</span>';
+    html += '<span class="ar-bal ' + color + '">$' + r.bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</span>';
+    html += '</div>';
+    // Invoice rows
+    if (r.invs && r.invs.length) {
+      html += '<div class="ar-detail" id="ap-detail-' + i + '" style="display:none">';
+      html += '<table class="ar-tbl"><thead><tr><th>Order#</th><th>Ship</th><th>Bill</th><th>GL</th><th>Days</th><th>Amount</th><th>Balance</th><th>Current</th><th>1-30</th><th>31-45</th><th>46-60</th><th>61-90</th></tr></thead><tbody>';
+      r.invs.forEach(function(inv) {
+        html += '<tr><td>' + (inv.o||'') + '</td><td>' + (inv.s||'') + '</td><td>' + (inv.b||'') + '</td><td>' + (inv.g||'') + '</td><td>' + (inv.a||'') + '</td><td>' + (inv.am||'') + '</td><td>' + (inv.bl||'') + '</td><td>' + (inv.cu||'') + '</td><td>' + (inv.t30||'') + '</td><td>' + (inv.t45||'') + '</td><td>' + (inv.t60||'') + '</td><td>' + (inv.t90||'') + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+    }
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function toggleApRow(i) {
+  var det = document.getElementById('ap-detail-' + i);
+  var tog = document.querySelector('#ap-row-' + i + ' .ar-tog');
+  if (!det) return;
+  var open = det.style.display !== 'none';
+  det.style.display = open ? 'none' : 'block';
+  if (tog) tog.innerHTML = open ? '&#9658;' : '&#9660;';
+}
+
+function exportAP() {
+  if (!_ap.length) return;
+  var rows = [['ID','Name','City','State','Balance','Avg Pay Days','Last Payment','Invoice Count']];
+  _ap.forEach(function(r) {
+    rows.push([r.id, r.name||'', r.city||'', r.state||'', r.bal.toFixed(2), r.avg||'', r.lp||'', r.invs ? r.invs.length : 0]);
+  });
+  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'Meiborg_AP_' + new Date().toISOString().slice(0,10) + '.csv'; a.click();
+}
+
+function rawReportAP() {
+  if (!_ap.length) return;
+  var now = new Date();
+  var rows = [['Carrier ID','Carrier Name','City','State','Balance','Avg Pay Days','Last Payment','Order#','Ship Date','Bill Date','GL Date','Days Old','Amount','Balance','Current','1-30','31-45','46-60','61-90','90+']];
+  _ap.forEach(function(r) {
+    if (r.invs && r.invs.length) {
+      r.invs.forEach(function(inv) {
+        rows.push([r.id,r.name||'',r.city||'',r.state||'',r.bal.toFixed(2),r.avg||'',r.lp||'',inv.o||'',inv.s||'',inv.b||'',inv.g||'',inv.a||'',inv.am||'',inv.bl||'',inv.cu||'',inv.t30||'',inv.t45||'',inv.t60||'',inv.t90||'',inv.t91||'']);
+      });
+    } else {
+      rows.push([r.id,r.name||'',r.city||'',r.state||'',r.bal.toFixed(2),r.avg||'',r.lp||'','','','','','','','','','','','','','']);
+    }
+  });
+  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'Meiborg_AP_Raw_' + now.toISOString().slice(0,10) + '.csv'; a.click();
+  setTimeout(function(){},5000);
+}
+
 </script></body></html>
