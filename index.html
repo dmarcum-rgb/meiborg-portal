@@ -37,21 +37,27 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 #content::-webkit-scrollbar{width:6px}#content::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 .panel{display:none}.panel.active{display:block}
 .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
 .sc{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden}
 .sc::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--navy),var(--navy-mid))}
-.sc.gold::before{background:linear-gradient(90deg,var(--gold-dark),var(--gold-light))}.sc.grn::before{background:linear-gradient(90deg,#16A34A,var(--green))}.sc.red::before{background:linear-gradient(90deg,#B91C1C,var(--red))}
+.sc.gold::before{background:linear-gradient(90deg,var(--gold-dark),var(--gold-light))}.sc.grn::before{background:linear-gradient(90deg,#16A34A,var(--green))}.sc.red::before{background:linear-gradient(90deg,#B91C1C,var(--red))}.sc.blue::before{background:linear-gradient(90deg,#1D4ED8,#60A5FA)}
 .sc-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:8px}
 .sc-val{font-size:30px;font-weight:800;line-height:1}
+.sc-sub{font-size:11px;color:var(--dim);margin-top:5px}
 .vg{color:var(--gold)}.vgr{color:var(--green)}.vr{color:var(--red)}.vw{color:var(--text)}.vb{color:#60A5FA}
 .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
 .btn{border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .15s;font-family:"Inter",sans-serif}
 .b-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;box-shadow:0 2px 12px rgba(245,184,0,.3)}
 .b-gold:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(245,184,0,.4)}.b-gold:disabled{background:var(--bg3);color:var(--dim);box-shadow:none;transform:none;cursor:not-allowed}
 .b-out{background:transparent;color:var(--dim);border:1px solid var(--border)}.b-out:hover{background:var(--bg3);color:var(--text)}.b-out:disabled{opacity:.35;cursor:not-allowed}
+.b-red{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}.b-red:hover{background:rgba(239,68,68,.25)}
+.b-grn{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}.b-grn:hover{background:rgba(34,197,94,.25)}
 .chk{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);cursor:pointer}
 .chk input{accent-color:var(--gold);width:14px;height:14px}
 .fsel{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:"Inter",sans-serif}
 .fsel:focus{outline:none;border-color:var(--gold)}
+.finp{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:7px;font-size:12px;font-family:"Inter",sans-serif;width:200px}
+.finp:focus{outline:none;border-color:var(--gold)}
 .spc{flex:1}.smsg{font-size:12px;color:var(--dim)}
 .pbar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:5px;width:100%;max-width:280px}
 .pfill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));transition:width .4s;border-radius:2px}
@@ -65,11 +71,12 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 .crloc{font-size:12px;color:var(--dim);min-width:120px}
 .crbad{display:flex;align-items:center;gap:7px;flex-shrink:0}
 .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
-.bg{background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,.3)}.by{background:var(--yellow-bg);color:var(--yellow);border:1px solid rgba(234,179,8,.3)}.br{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.bg{background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,.3)}.by{background:var(--yellow-bg);color:var(--yellow);border:1px solid rgba(234,179,8,.3)}.br{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.3)}.bn{background:var(--bg3);color:var(--dim);border:1px solid var(--border)}
 .crbal{font-size:15px;font-weight:800;padding:5px 14px;border-radius:8px;min-width:120px;text-align:right}
 .bok{color:var(--green);background:var(--green-bg)}.bwn{color:var(--yellow);background:var(--yellow-bg)}.blt{color:var(--red);background:var(--red-bg)}
 .crd{display:none;border-top:1px solid var(--border);padding:18px 20px;background:var(--bg)}.crd.open{display:block}
 .dcards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.dcards-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
 .dc{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:14px 16px}
 .dclbl{font-size:10px;text-transform:uppercase;color:var(--dim);letter-spacing:.8px;font-weight:600;margin-bottom:5px}
 .dcval{font-size:22px;font-weight:800}
@@ -81,9 +88,93 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 .itable td{padding:7px 10px;border-bottom:1px solid rgba(30,42,80,.6);color:var(--text)}.itable tr:hover td{background:var(--bg2)}
 .ar{color:var(--red);font-weight:700}.ay{color:var(--yellow);font-weight:600}.ag{color:var(--green)}
 .darow{display:flex;gap:8px;margin-top:14px}
-.cs{display:flex;flex-direction:column;align-items:center;justify-content:center;height:420px;text-align:center;color:var(--dim)}
-.cse{font-size:56px;margin-bottom:18px;opacity:.5}.cst{font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px}.csd{font-size:14px;max-width:420px;line-height:1.7;margin-bottom:16px}
-.csp{background:rgba(245,184,0,.12);color:var(--gold);font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:1px solid rgba(245,184,0,.3);display:inline-block}
+.pg-section{margin-bottom:28px}
+.pg-hd{font-size:15px;font-weight:800;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.pg-hd span{font-size:11px;font-weight:600;color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:2px 9px;border-radius:10px}
+.emp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.emp-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;transition:border-color .15s;cursor:pointer}
+.emp-card:hover{border-color:var(--gold)}
+.emp-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--navy-mid),var(--navy));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--gold);margin-bottom:12px;flex-shrink:0}
+.emp-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.emp-info{flex:1}.emp-name{font-weight:700;font-size:14px}.emp-role{font-size:11px;color:var(--dim);margin-top:2px}
+.emp-details{display:flex;flex-direction:column;gap:5px}
+.emp-det-row{display:flex;justify-content:space-between;font-size:11px}
+.emp-det-lbl{color:var(--dim)}.emp-det-val{color:var(--text);font-weight:500}
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;min-height:500px}
+.kancol{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;min-height:400px}
+.kancol-hd{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.kancol-cnt{font-size:10px;background:var(--bg3);border:1px solid var(--border);padding:2px 7px;border-radius:10px;color:var(--dim)}
+.kcard{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:10px;cursor:pointer;transition:border-color .15s}
+.kcard:hover{border-color:var(--gold)}.kcard-title{font-size:12px;font-weight:700;margin-bottom:6px}.kcard-co{font-size:11px;color:var(--dim);margin-bottom:8px}.kcard-meta{display:flex;justify-content:space-between;align-items:center}
+.fleet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.fleet-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;transition:border-color .15s}
+.fleet-card:hover{border-color:var(--gold)}
+.fleet-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.fleet-icon{font-size:28px}.fleet-info{flex:1}.fleet-num{font-size:16px;font-weight:800}.fleet-make{font-size:12px;color:var(--dim);margin-top:2px}
+.fleet-details{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fleet-det{display:flex;flex-direction:column}.fdet-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}.fdet-val{font-size:13px;font-weight:600;margin-top:2px}
+.ticket-row{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr auto auto auto;align-items:center;gap:14px;cursor:pointer;transition:border-color .15s}
+.ticket-row:hover{border-color:var(--gold)}
+.tick-id{font-size:11px;color:var(--dim);font-weight:600;font-family:monospace;min-width:60px}
+.tick-subj{font-weight:600;font-size:13px}.tick-co{font-size:11px;color:var(--dim);margin-top:2px}
+.tick-assign{font-size:11px;color:var(--dim);text-align:right}
+.inv-row{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:8px;display:grid;grid-template-columns:1fr auto auto auto auto;align-items:center;gap:14px}
+.inv-name{font-weight:600;font-size:13px}.inv-loc{font-size:11px;color:var(--dim);margin-top:2px}
+.progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px;width:100%}
+.progress-fill{height:100%;border-radius:3px;transition:width .3s}
+.pf-grn{background:var(--green)}.pf-yel{background:var(--yellow)}.pf-red{background:var(--red)}
+.log-row{display:flex;align-items:flex-start;gap:14px;padding:10px 0;border-bottom:1px solid rgba(30,42,80,.4)}
+.log-time{font-size:11px;color:var(--dim);font-family:monospace;flex-shrink:0;min-width:80px;padding-top:1px}
+.log-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.log-txt{font-size:12px;flex:1}.log-src{font-size:10px;color:var(--dim);background:var(--bg3);padding:1px 7px;border-radius:8px;flex-shrink:0}
+.campaign-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px}
+.camp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.camp-name{font-weight:700;font-size:14px}.camp-type{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim)}
+.camp-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.cmet{text-align:center}.cmet-val{font-size:18px;font-weight:800}.cmet-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;margin-top:2px}
+.ai-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px}
+.ai-card.risk{border-left:3px solid var(--red)}.ai-card.warn{border-left:3px solid var(--yellow)}.ai-card.ok{border-left:3px solid var(--green)}
+.ai-card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ai-card-title{font-weight:700;font-size:14px}.ai-card-body{font-size:13px;color:var(--dim);line-height:1.7}
+.ai-card-action{margin-top:12px;display:flex;gap:8px}
+.forecast-chart{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:160px;padding-top:10px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bar{width:100%;background:linear-gradient(180deg,var(--gold-light),var(--gold-dark));border-radius:4px 4px 0 0;transition:height .4s;min-height:4px}
+.bar.proj{background:linear-gradient(180deg,rgba(245,184,0,.4),rgba(245,184,0,.15));border:1px dashed rgba(245,184,0,.4)}
+.bar-lbl{font-size:10px;color:var(--dim);text-align:center}.bar-val{font-size:10px;font-weight:700;text-align:center;color:var(--text)}
+.auto-rule{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:16px}
+.auto-icon{font-size:24px;flex-shrink:0}
+.auto-info{flex:1}.auto-name{font-weight:700;font-size:14px}.auto-desc{font-size:12px;color:var(--dim);margin-top:4px}
+.auto-meta{font-size:11px;color:var(--dim);margin-top:6px;display:flex;gap:12px}
+.toggle{position:relative;width:40px;height:22px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:11px;cursor:pointer;transition:.2s}
+.toggle-slider:before{content:"";position:absolute;height:16px;width:16px;left:3px;top:3px;background:var(--dim);border-radius:50%;transition:.2s}
+.toggle input:checked+.toggle-slider{background:var(--gold)}
+.toggle input:checked+.toggle-slider:before{transform:translateX(18px);background:#000}
+.safety-row{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:8px;display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px}
+.csa-meter{display:flex;align-items:center;gap:10px}
+.csa-score{font-size:28px;font-weight:800}.csa-bar-wrap{flex:1}
+.train-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(30,42,80,.4)}
+.train-icon{font-size:20px;flex-shrink:0;width:30px;text-align:center}
+.train-info{flex:1}.train-name{font-weight:600;font-size:13px}.train-meta{font-size:11px;color:var(--dim);margin-top:2px}
+.onb-step{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid rgba(30,42,80,.4)}
+.onb-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;margin-top:1px}
+.onb-check.done{background:var(--green);border-color:var(--green)}.onb-check.done::after{content:"✓";color:#000;font-size:12px;font-weight:800}
+.onb-check.pend{border-color:var(--yellow)}.onb-check.pend::after{content:"⋯";color:var(--yellow);font-size:14px}
+.onb-info{flex:1}.onb-name{font-weight:600;font-size:13px}.onb-meta{font-size:11px;color:var(--dim);margin-top:3px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.recep-visitor{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:14px}
+.vis-avatar{width:38px;height:38px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.vis-info{flex:1}.vis-name{font-weight:600;font-size:13px}.vis-meta{font-size:11px;color:var(--dim);margin-top:2px}
+.vis-time{font-size:12px;color:var(--dim);text-align:right;flex-shrink:0}
+.contacts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.contact-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px}
+.contact-card:hover{border-color:var(--gold);cursor:pointer}
+.cont-name{font-weight:700;font-size:14px;margin-bottom:4px}.cont-co{font-size:12px;color:var(--dim);margin-bottom:10px}
+.cont-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim);margin-bottom:5px}
+.cont-row span{color:var(--text)}
 </style></head><body>
 <div id="sb">
 <div id="logo"><div id="logo-text">MEIBORG</div><div id="logo-sub">Internal Portal</div></div>
@@ -149,6 +240,8 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div id="topbar"><div><div class="tb-br" id="tbr">Accounting</div><div class="tb-ti" id="tbt">Accounts Receivable</div></div>
 <div class="tb-rt"><div id="tbclock" style="font-size:12px"></div><div class="tb-st"><span class="dot"></span>Connected &middot; TMS</div></div></div>
 <div id="content">
+
+<!-- ===== AR PANEL ===== -->
 <div class="panel active" id="panel-ar">
 <div class="stat-row"><div class="sc"><div class="sc-lbl">Customers Scanned</div><div class="sc-val vb" id="ss">&mdash;</div></div>
 <div class="sc grn"><div class="sc-lbl">With Open AR</div><div class="sc-val vgr" id="so">&mdash;</div></div>
@@ -166,32 +259,763 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="rmeta" id="rmeta"></div>
 <div id="alist"></div>
 </div>
-<div class="panel" id="panel-ap"><div class="cs"><div class="cse">📤</div><div class="cst">Accounts Payable</div><div class="csd">Pull what Meiborg Bros owes carriers and vendors, sorted by amount and due date.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-billing"><div class="cs"><div class="cse">🧾</div><div class="cst">Billing</div><div class="csd">View billing history and linehaul breakdown by customer or date range.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-reports"><div class="cs"><div class="cse">📊</div><div class="cst">Custom Reports</div><div class="csd">Filter by date range, salesperson and customer category.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-hr-emp"><div class="cs"><div class="cse">👤</div><div class="cst">Employees</div><div class="csd">Employee directory, roles and department assignments.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-hr-pay"><div class="cs"><div class="cse">💵</div><div class="cst">Payroll</div><div class="csd">Payroll records and compensation details.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-hr-ob"><div class="cs"><div class="cse">📋</div><div class="cst">Onboarding</div><div class="csd">New hire checklists and document tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-sales-pipe"><div class="cs"><div class="cse">🔄</div><div class="cst">Sales Pipeline</div><div class="csd">Track active deals from prospect to close.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-sales-cust"><div class="cs"><div class="cse">🏢</div><div class="cst">Customers</div><div class="csd">Full customer list with contact info and account status.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-sales-rpt"><div class="cs"><div class="cse">📊</div><div class="cst">Sales Reports</div><div class="csd">Revenue by salesperson and time period.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-fleet-tr"><div class="cs"><div class="cse">🚚</div><div class="cst">Trucks</div><div class="csd">Fleet inventory, status and location tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-fleet-dr"><div class="cs"><div class="cse">🧑‍✈️</div><div class="cst">Drivers</div><div class="csd">Driver roster, licenses and HOS compliance.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-fleet-mx"><div class="cs"><div class="cse">🔧</div><div class="cst">Maintenance</div><div class="csd">Service schedules and repair history.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-safety-inc"><div class="cs"><div class="cse">⚠️</div><div class="cst">Incidents</div><div class="csd">Incident reports and resolution tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-safety-cmp"><div class="cs"><div class="cse">✅</div><div class="cst">Compliance</div><div class="csd">DOT compliance and CSA scores.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-safety-tr"><div class="cs"><div class="cse">📚</div><div class="cst">Training</div><div class="csd">Safety certifications and training records.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-logs"><div class="cs"><div class="cse">📝</div><div class="cst">Logs</div><div class="csd">System activity and API call history.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-cs-tix"><div class="cs"><div class="cse">🎫</div><div class="cst">Tickets</div><div class="csd">Customer service tickets and resolution tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-cs-con"><div class="cs"><div class="cse">📞</div><div class="cst">Contacts</div><div class="csd">Customer contact directory.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-wh-inv"><div class="cs"><div class="cse">📦</div><div class="cst">Inventory</div><div class="csd">Warehouse inventory levels and locations.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-wh-ord"><div class="cs"><div class="cse">📋</div><div class="cst">Orders</div><div class="csd">Incoming and outgoing order fulfillment.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-reception"><div class="cs"><div class="cse">🏢</div><div class="cst">Reception</div><div class="csd">Visitor log and front desk tools.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-mkt-camp"><div class="cs"><div class="cse">🎯</div><div class="cst">Campaigns</div><div class="csd">Marketing campaigns and performance tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-mkt-ana"><div class="cs"><div class="cse">📊</div><div class="cst">Analytics</div><div class="csd">Website traffic and lead sources.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-ai-ins"><div class="cs"><div class="cse">💡</div><div class="cst">AI Insights</div><div class="csd">AI-powered AR aging analysis and risk flags.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-ai-frc"><div class="cs"><div class="cse">🔮</div><div class="cst">Forecasting</div><div class="csd">Revenue forecasting and collections predictions.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-ai-auto"><div class="cs"><div class="cse">⚡</div><div class="cst">Automation</div><div class="csd">Automated reports, alerts and workflow triggers.</div><span class="csp">Coming Soon</span></div></div>
+
+<!-- ===== AP PANEL ===== -->
+<div class="panel" id="panel-ap">
+<div class="stat-row">
+<div class="sc red"><div class="sc-lbl">Total Outstanding</div><div class="sc-val vr">$284,710</div><div class="sc-sub">Across 23 vendors</div></div>
+<div class="sc gold"><div class="sc-lbl">Due This Week</div><div class="sc-val vg">$67,240</div><div class="sc-sub">8 invoices</div></div>
+<div class="sc"><div class="sc-lbl">Overdue</div><div class="sc-val vr">$31,890</div><div class="sc-sub">3 vendors</div></div>
+<div class="sc grn"><div class="sc-lbl">Paid MTD</div><div class="sc-val vgr">$198,540</div><div class="sc-sub">31 invoices</div></div>
+</div>
+<div class="toolbar">
+<button class="btn b-gold">&#9654; Refresh AP</button>
+<button class="btn b-out">&#8595; Export CSV</button>
+<select class="fsel"><option>All Vendors</option><option>Carriers</option><option>Fuel</option><option>Maintenance</option><option>Other</option></select>
+<select class="fsel"><option>All Status</option><option>Pending</option><option>Due Soon</option><option>Overdue</option><option>Paid</option></select>
+</div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Vendor</th><th>Invoice #</th><th>Type</th><th>Invoice Date</th><th>Due Date</th><th>Amount</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><strong>Love's Travel Stops</strong></td><td>LTS-88341</td><td>Fuel</td><td>04/28/26</td><td>05/08/26</td><td class="ay">$18,440.00</td><td><span class="badge by">Due Soon</span></td></tr>
+<tr><td><strong>Pilot Flying J</strong></td><td>PFJ-22910</td><td>Fuel</td><td>04/30/26</td><td>05/10/26</td><td class="ay">$14,220.00</td><td><span class="badge by">Due Soon</span></td></tr>
+<tr><td><strong>Road Ready Tires</strong></td><td>RRT-5541</td><td>Maintenance</td><td>04/15/26</td><td>04/30/26</td><td class="ar">$9,800.00</td><td><span class="badge br">Overdue</span></td></tr>
+<tr><td><strong>Mack Truck Financial</strong></td><td>MTF-10044</td><td>Equipment</td><td>04/01/26</td><td>05/01/26</td><td class="ar">$22,090.00</td><td><span class="badge br">Overdue</span></td></tr>
+<tr><td><strong>Freight Insurance Group</strong></td><td>FIG-3301</td><td>Insurance</td><td>04/20/26</td><td>05/20/26</td><td>$7,480.00</td><td><span class="badge bn">Pending</span></td></tr>
+<tr><td><strong>Idealease Leasing</strong></td><td>IDL-8820</td><td>Equipment</td><td>04/25/26</td><td>05/25/26</td><td>$34,100.00</td><td><span class="badge bn">Pending</span></td></tr>
+<tr><td><strong>Comdata Fleet</strong></td><td>CMD-1129</td><td>Fuel Cards</td><td>04/28/26</td><td>05/12/26</td><td class="ay">$12,800.00</td><td><span class="badge by">Due Soon</span></td></tr>
+<tr><td><strong>I-44 Truck Plaza</strong></td><td>I44-0049</td><td>Fuel</td><td>04/30/26</td><td>05/14/26</td><td class="ay">$6,220.00</td><td><span class="badge by">Due Soon</span></td></tr>
+<tr><td><strong>Samsara GPS</strong></td><td>SAM-7741</td><td>Technology</td><td>05/01/26</td><td>06/01/26</td><td>$3,640.00</td><td><span class="badge bn">Pending</span></td></tr>
+<tr><td><strong>Blue Beacon Truck Wash</strong></td><td>BBT-4450</td><td>Maintenance</td><td>04/25/26</td><td>05/09/26</td><td class="ay">$1,890.00</td><td><span class="badge by">Due Soon</span></td></tr>
+</tbody></table>
+</div>
+
+<!-- ===== BILLING PANEL ===== -->
+<div class="panel" id="panel-billing">
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">Billed MTD</div><div class="sc-val vgr">$1,247,800</div><div class="sc-sub">184 invoices</div></div>
+<div class="sc gold"><div class="sc-lbl">Avg Linehaul</div><div class="sc-val vg">$6,782</div><div class="sc-sub">Per invoice</div></div>
+<div class="sc"><div class="sc-lbl">Fuel Surcharge MTD</div><div class="sc-val vb">$218,940</div><div class="sc-sub">17.6% of gross</div></div>
+<div class="sc red"><div class="sc-lbl">Disputes Open</div><div class="sc-val vr">7</div><div class="sc-sub">$42,110 at risk</div></div>
+</div>
+<div class="toolbar">
+<button class="btn b-gold">&#9654; Refresh</button>
+<button class="btn b-out">&#8595; Export CSV</button>
+<input class="finp" type="text" placeholder="Search customer..." />
+<select class="fsel"><option>May 2026</option><option>Apr 2026</option><option>Mar 2026</option><option>Feb 2026</option></select>
+<select class="fsel"><option>All Customers</option><option>National Accounts</option><option>Regional</option><option>Spot</option></select>
+</div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Invoice #</th><th>Customer</th><th>Bill Date</th><th>Ship Date</th><th>Origin</th><th>Dest.</th><th>Linehaul</th><th>FSC</th><th>Acc. Charges</th><th>Total</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>MB-44201</td><td><strong>Ozark Natural Foods</strong></td><td>05/01/26</td><td>04/30/26</td><td>Rogers, AR</td><td>Memphis, TN</td><td>$3,800</td><td>$684</td><td>$0</td><td class="ag">$4,484</td><td><span class="badge bg">Paid</span></td></tr>
+<tr><td>MB-44198</td><td><strong>Walmart Stores</strong></td><td>04/30/26</td><td>04/29/26</td><td>Bentonville, AR</td><td>Kansas City, MO</td><td>$5,200</td><td>$936</td><td>$120</td><td class="ag">$6,256</td><td><span class="badge bg">Paid</span></td></tr>
+<tr><td>MB-44195</td><td><strong>Tyson Foods</strong></td><td>04/30/26</td><td>04/28/26</td><td>Springdale, AR</td><td>Dallas, TX</td><td>$4,600</td><td>$828</td><td>$0</td><td class="ay">$5,428</td><td><span class="badge by">Pending</span></td></tr>
+<tr><td>MB-44190</td><td><strong>Murphy Oil Corp</strong></td><td>04/29/26</td><td>04/28/26</td><td>El Dorado, AR</td><td>Tulsa, OK</td><td>$3,200</td><td>$576</td><td>$80</td><td class="ay">$3,856</td><td><span class="badge by">Pending</span></td></tr>
+<tr><td>MB-44187</td><td><strong>Dillard's Inc</strong></td><td>04/29/26</td><td>04/27/26</td><td>Little Rock, AR</td><td>Nashville, TN</td><td>$6,100</td><td>$1,098</td><td>$250</td><td>$7,448</td><td><span class="badge bn">Invoiced</span></td></tr>
+<tr><td>MB-44181</td><td><strong>ArcBest Corp</strong></td><td>04/28/26</td><td>04/26/26</td><td>Fort Smith, AR</td><td>St. Louis, MO</td><td>$4,400</td><td>$792</td><td>$0</td><td class="ar">$5,192</td><td><span class="badge br">Disputed</span></td></tr>
+<tr><td>MB-44177</td><td><strong>ABF Freight</strong></td><td>04/27/26</td><td>04/25/26</td><td>Fort Smith, AR</td><td>Chicago, IL</td><td>$7,800</td><td>$1,404</td><td>$0</td><td class="ag">$9,204</td><td><span class="badge bg">Paid</span></td></tr>
+<tr><td>MB-44170</td><td><strong>J.B. Hunt Transport</strong></td><td>04/26/26</td><td>04/24/26</td><td>Lowell, AR</td><td>Phoenix, AZ</td><td>$9,200</td><td>$1,656</td><td>$400</td><td class="ag">$11,256</td><td><span class="badge bg">Paid</span></td></tr>
+</tbody></table>
+</div>
+<!-- ===== CUSTOM REPORTS PANEL ===== -->
+<div class="panel" id="panel-reports">
+<div class="toolbar" style="margin-bottom:20px">
+<button class="btn b-gold">&#9654; Run Report</button>
+<button class="btn b-out">&#8595; Export CSV</button>
+<select class="fsel"><option>Revenue by Salesperson</option><option>Revenue by Customer</option><option>Revenue by Lane</option><option>AR Aging Summary</option><option>Fuel Surcharge Report</option></select>
+<select class="fsel"><option>Jan 2026</option><option>Feb 2026</option><option>Mar 2026</option><option>Apr 2026</option><option>May 2026</option><option>Q1 2026</option><option>Q2 2026 (MTD)</option></select>
+<select class="fsel"><option>All Customers</option><option>National</option><option>Regional</option><option>Spot</option></select>
+</div>
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">Total Revenue</div><div class="sc-val vgr">$3.84M</div><div class="sc-sub">Apr 2026</div></div>
+<div class="sc gold"><div class="sc-lbl">Loads Completed</div><div class="sc-val vg">581</div><div class="sc-sub">+12% vs Mar</div></div>
+<div class="sc"><div class="sc-lbl">Avg Rev / Load</div><div class="sc-val vb">$6,608</div><div class="sc-sub">+3.2% vs Mar</div></div>
+<div class="sc red"><div class="sc-lbl">Empty Miles %</div><div class="sc-val vr">8.4%</div><div class="sc-sub">Target: &lt;10%</div></div>
+</div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Salesperson</th><th>Customers</th><th>Loads</th><th>Gross Revenue</th><th>FSC</th><th>Net Rev</th><th>Avg / Load</th><th>vs Prior Mo</th></tr></thead>
+<tbody>
+<tr><td><strong>D. Marcum</strong></td><td>42</td><td>188</td><td class="ag">$1,241,800</td><td>$211,106</td><td class="ag">$1,030,694</td><td>$6,605</td><td class="ag">+14.2%</td></tr>
+<tr><td><strong>R. Hoffman</strong></td><td>31</td><td>142</td><td>$981,400</td><td>$167,038</td><td>$814,362</td><td>$6,912</td><td class="ag">+8.7%</td></tr>
+<tr><td><strong>J. McLeod</strong></td><td>28</td><td>118</td><td>$824,100</td><td>$140,097</td><td>$684,003</td><td>$6,984</td><td class="ag">+5.1%</td></tr>
+<tr><td><strong>C. Williams</strong></td><td>19</td><td>89</td><td>$604,200</td><td>$102,714</td><td>$501,486</td><td>$6,789</td><td class="ar">-2.3%</td></tr>
+<tr><td><strong>T. Barnes</strong></td><td>14</td><td>44</td><td>$291,700</td><td>$49,589</td><td>$242,111</td><td>$6,630</td><td class="ag">+18.4%</td></tr>
+</tbody></table>
+</div>
+
+<!-- ===== HR EMPLOYEES PANEL ===== -->
+<div class="panel" id="panel-hr-emp">
+<div class="stat-row-3">
+<div class="sc grn"><div class="sc-lbl">Total Employees</div><div class="sc-val vgr">87</div><div class="sc-sub">8 departments</div></div>
+<div class="sc gold"><div class="sc-lbl">Drivers</div><div class="sc-val vg">52</div><div class="sc-sub">49 active, 3 on leave</div></div>
+<div class="sc"><div class="sc-lbl">Open Positions</div><div class="sc-val vb">4</div><div class="sc-sub">3 drivers, 1 dispatcher</div></div>
+</div>
+<div class="toolbar">
+<input class="finp" type="text" placeholder="Search employees..." style="width:240px" />
+<select class="fsel"><option>All Departments</option><option>Drivers</option><option>Dispatch</option><option>Accounting</option><option>Sales</option><option>Safety</option><option>Maintenance</option><option>Admin</option></select>
+<select class="fsel"><option>All Status</option><option>Active</option><option>On Leave</option><option>Terminated</option></select>
+<div class="spc"></div>
+<span style="font-size:12px;color:var(--dim)">87 employees</span>
+</div>
+<div class="emp-grid">
+<div class="emp-card"><div class="emp-top"><div class="emp-avatar">DM</div><div class="emp-info"><div class="emp-name">David Marcum</div><div class="emp-role">VP of Sales</div></div><span class="badge bg">Active</span></div><div class="emp-details"><div class="emp-det-row"><span class="emp-det-lbl">Dept</span><span class="emp-det-val">Sales</span></div><div class="emp-det-row"><span class="emp-det-lbl">Start Date</span><span class="emp-det-val">03/14/2018</span></div><div class="emp-det-row"><span class="emp-det-lbl">Phone</span><span class="emp-det-val">(479) 555-0142</span></div></div></div>
+<div class="emp-card"><div class="emp-top"><div class="emp-avatar">RH</div><div class="emp-info"><div class="emp-name">Randy Hoffman</div><div class="emp-role">Senior Dispatcher</div></div><span class="badge bg">Active</span></div><div class="emp-details"><div class="emp-det-row"><span class="emp-det-lbl">Dept</span><span class="emp-det-val">Dispatch</span></div><div class="emp-det-row"><span class="emp-det-lbl">Start Date</span><span class="emp-det-val">07/22/2019</span></div><div class="emp-det-row"><span class="emp-det-lbl">Phone</span><span class="emp-det-val">(479) 555-0188</span></div></div></div>
+<div class="emp-card"><div class="emp-top"><div class="emp-avatar">JT</div><div class="emp-info"><div class="emp-name">James Thornton</div><div class="emp-role">CDL-A Driver</div></div><span class="badge bg">Active</span></div><div class="emp-details"><div class="emp-det-row"><span class="emp-det-lbl">Dept</span><span class="emp-det-val">Fleet</span></div><div class="emp-det-row"><span class="emp-det-lbl">Start Date</span><span class="emp-det-val">01/08/2021</span></div><div class="emp-det-row"><span class="emp-det-lbl">Truck</span><span class="emp-det-val">#T-114</span></div></div></div>
+<div class="emp-card"><div class="emp-top"><div class="emp-avatar">CW</div><div class="emp-info"><div class="emp-name">Carla Williams</div><div class="emp-role">Accounts Receivable</div></div><span class="badge bg">Active</span></div><div class="emp-details"><div class="emp-det-row"><span class="emp-det-lbl">Dept</span><span class="emp-det-val">Accounting</span></div><div class="emp-det-row"><span class="emp-det-lbl">Start Date</span><span class="emp-det-val">09/03/2020</span></div><div class="emp-det-row"><span class="emp-det-lbl">Phone</span><span class="emp-det-val">(479) 555-0201</span></div></div></div>
+<div class="emp-card"><div class="emp-top"><div class="emp-avatar">MB</div><div class="emp-info"><div class="emp-name">Mike Barnes</div><div class="emp-role">CDL-A Driver</div></div><span class="badge by">On Leave</span></div><div class="emp-details"><div class="emp-det-row"><span class="emp-det-lbl">Dept</span><span class="emp-det-val">Fleet</span></div><div class="emp-det-row"><span class="emp-det-lbl">Start Date</span><span class="emp-det-val">06/15/2017</span></div><div class="emp-det-row"><span class="emp-det-lbl">Return</span><span class="emp-det-val">05/20/2026</span></div></div></div>
+<div class="emp-card"><div class="emp-top"><div class="emp-avatar">SR</div><div class="emp-info"><div class="emp-name">Susan Rivera</div><div class="emp-role">Safety Director</div></div><span class="badge bg">Active</span></div><div class="emp-details"><div class="emp-det-row"><span class="emp-det-lbl">Dept</span><span class="emp-det-val">Safety</span></div><div class="emp-det-row"><span class="emp-det-lbl">Start Date</span><span class="emp-det-val">02/11/2016</span></div><div class="emp-det-row"><span class="emp-det-lbl">Phone</span><span class="emp-det-val">(479) 555-0099</span></div></div></div>
+</div>
+</div>
+<!-- ===== PAYROLL PANEL ===== -->
+<div class="panel" id="panel-hr-pay">
+<div class="stat-row">
+<div class="sc gold"><div class="sc-lbl">Gross Payroll MTD</div><div class="sc-val vg">$412,840</div><div class="sc-sub">May 2026</div></div>
+<div class="sc grn"><div class="sc-lbl">Net Paid</div><div class="sc-val vgr">$298,120</div><div class="sc-sub">After deductions</div></div>
+<div class="sc"><div class="sc-lbl">Employees Paid</div><div class="sc-val vb">84</div><div class="sc-sub">3 pending</div></div>
+<div class="sc red"><div class="sc-lbl">Next Payroll</div><div class="sc-val" style="font-size:20px;color:var(--yellow)">May 16</div><div class="sc-sub">9 days away</div></div>
+</div>
+<div class="toolbar">
+<button class="btn b-gold">&#9654; Run Payroll Report</button>
+<button class="btn b-out">&#8595; Export</button>
+<select class="fsel"><option>May 2026</option><option>Apr 2026</option><option>Mar 2026</option><option>Q1 2026</option></select>
+<select class="fsel"><option>All Departments</option><option>Drivers</option><option>Office</option><option>Management</option></select>
+</div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Employee</th><th>Dept</th><th>Pay Type</th><th>Period</th><th>Gross</th><th>Fed Tax</th><th>State Tax</th><th>FICA</th><th>Benefits</th><th>Net Pay</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><strong>David Marcum</strong></td><td>Sales</td><td>Salary + Comm</td><td>05/01-05/15</td><td>$9,840</td><td>$1,476</td><td>$738</td><td>$752</td><td>$410</td><td class="ag">$7,464</td><td><span class="badge bn">Scheduled</span></td></tr>
+<tr><td><strong>Randy Hoffman</strong></td><td>Dispatch</td><td>Hourly</td><td>05/01-05/15</td><td>$3,120</td><td>$468</td><td>$234</td><td>$239</td><td>$210</td><td class="ag">$1,969</td><td><span class="badge bn">Scheduled</span></td></tr>
+<tr><td><strong>James Thornton</strong></td><td>Fleet</td><td>CPM + Per Diem</td><td>05/01-05/15</td><td>$4,820</td><td>$723</td><td>$362</td><td>$369</td><td>$210</td><td class="ag">$3,156</td><td><span class="badge bn">Scheduled</span></td></tr>
+<tr><td><strong>Carla Williams</strong></td><td>Accounting</td><td>Salary</td><td>05/01-05/15</td><td>$2,880</td><td>$432</td><td>$216</td><td>$220</td><td>$210</td><td class="ag">$1,802</td><td><span class="badge bn">Scheduled</span></td></tr>
+<tr><td><strong>Susan Rivera</strong></td><td>Safety</td><td>Salary</td><td>05/01-05/15</td><td>$3,640</td><td>$546</td><td>$273</td><td>$278</td><td>$210</td><td class="ag">$2,333</td><td><span class="badge bn">Scheduled</span></td></tr>
+</tbody></table>
+</div>
+
+<!-- ===== ONBOARDING PANEL ===== -->
+<div class="panel" id="panel-hr-ob">
+<div class="stat-row-3">
+<div class="sc grn"><div class="sc-lbl">Active Onboardings</div><div class="sc-val vgr">3</div><div class="sc-sub">New hires in progress</div></div>
+<div class="sc gold"><div class="sc-lbl">Avg Days to Complete</div><div class="sc-val vg">12.4</div><div class="sc-sub">Target: 14 days</div></div>
+<div class="sc"><div class="sc-lbl">Docs Pending</div><div class="sc-val vb">7</div><div class="sc-sub">Across all hires</div></div>
+</div>
+<div style="margin-bottom:20px">
+<select class="fsel"><option>Travis Kelly - CDL Driver (Start 05/12)</option><option>Angela Moore - Dispatcher (Start 05/19)</option><option>Robert Dunn - Maintenance Tech (Start 05/26)</option></select>
+</div>
+<div class="two-col">
+<div>
+<div class="pg-hd">Travis Kelly &mdash; CDL-A Driver <span>Started 05/12/26</span></div>
+<div class="onb-step"><div class="onb-check done"></div><div class="onb-info"><div class="onb-name">Offer Letter Signed</div><div class="onb-meta">Completed 05/08/26 &bull; DocuSign</div></div></div>
+<div class="onb-step"><div class="onb-check done"></div><div class="onb-info"><div class="onb-name">Background Check</div><div class="onb-meta">Cleared 05/09/26 &bull; Verified</div></div></div>
+<div class="onb-step"><div class="onb-check done"></div><div class="onb-info"><div class="onb-name">DOT Physical & Drug Screen</div><div class="onb-meta">Passed 05/10/26 &bull; Dr. Hansen</div></div></div>
+<div class="onb-step"><div class="onb-check done"></div><div class="onb-info"><div class="onb-name">CDL Verification (Class A)</div><div class="onb-meta">Verified 05/10/26 &bull; AR DMV</div></div></div>
+<div class="onb-step"><div class="onb-check pend"></div><div class="onb-info"><div class="onb-name">Orientation - Day 1</div><div class="onb-meta">Scheduled 05/12/26 &bull; In Progress</div></div></div>
+<div class="onb-step"><div class="onb-check"></div><div class="onb-info"><div class="onb-name">Equipment Assignment (Truck #T-108)</div><div class="onb-meta">Pending orientation completion</div></div></div>
+<div class="onb-step"><div class="onb-check"></div><div class="onb-info"><div class="onb-name">ELD Training - Samsara</div><div class="onb-meta">Scheduled 05/13/26</div></div></div>
+<div class="onb-step"><div class="onb-check"></div><div class="onb-info"><div class="onb-name">First Load Assignment</div><div class="onb-meta">Pending ELD certification</div></div></div>
+</div>
+<div>
+<div class="pg-hd">Documents <span>3 of 8 complete</span></div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px">
+<thead><tr><th>Document</th><th>Required By</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>I-9 Employment Eligibility</td><td>Day 1</td><td><span class="badge bg">Complete</span></td></tr>
+<tr><td>W-4 Federal Withholding</td><td>Day 1</td><td><span class="badge bg">Complete</span></td></tr>
+<tr><td>Direct Deposit Setup</td><td>Day 1</td><td><span class="badge bg">Complete</span></td></tr>
+<tr><td>Benefits Enrollment</td><td>Day 3</td><td><span class="badge by">Pending</span></td></tr>
+<tr><td>Driver Qualification File</td><td>Day 1</td><td><span class="badge by">Pending</span></td></tr>
+<tr><td>Company Policy Handbook</td><td>Day 2</td><td><span class="badge by">Pending</span></td></tr>
+<tr><td>Safety Policy Acknowledgment</td><td>Day 2</td><td><span class="badge br">Overdue</span></td></tr>
+<tr><td>ELD Usage Agreement</td><td>Day 3</td><td><span class="badge bn">Not Started</span></td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<!-- ===== SALES PIPELINE PANEL ===== -->
+<div class="panel" id="panel-sales-pipe">
+<div class="stat-row">
+<div class="sc"><div class="sc-lbl">Total Pipeline</div><div class="sc-val vb">$2.14M</div><div class="sc-sub">32 active deals</div></div>
+<div class="sc gold"><div class="sc-lbl">Closing This Month</div><div class="sc-val vg">$480K</div><div class="sc-sub">7 deals &gt;80% likely</div></div>
+<div class="sc grn"><div class="sc-lbl">Won MTD</div><div class="sc-val vgr">$892K</div><div class="sc-sub">14 deals</div></div>
+<div class="sc red"><div class="sc-lbl">Lost MTD</div><div class="sc-val vr">$218K</div><div class="sc-sub">4 deals</div></div>
+</div>
+<div class="kanban">
+<div class="kancol">
+<div class="kancol-hd" style="color:var(--dim)">Prospect <span class="kancol-cnt">8</span></div>
+<div class="kcard"><div class="kcard-title">Simmons Foods</div><div class="kcard-co">Siloam Springs, AR</div><div class="kcard-meta"><span class="badge bn">$120K/yr</span><span style="font-size:10px;color:var(--dim)">D. Marcum</span></div></div>
+<div class="kcard"><div class="kcard-title">Dean Foods Group</div><div class="kcard-co">Dallas, TX</div><div class="kcard-meta"><span class="badge bn">$85K/yr</span><span style="font-size:10px;color:var(--dim)">R. Hoffman</span></div></div>
+<div class="kcard"><div class="kcard-title">Tractor Supply Co.</div><div class="kcard-co">Brentwood, TN</div><div class="kcard-meta"><span class="badge bn">$200K/yr</span><span style="font-size:10px;color:var(--dim)">J. McLeod</span></div></div>
+<div class="kcard"><div class="kcard-title">Land O'Lakes</div><div class="kcard-co">Arden Hills, MN</div><div class="kcard-meta"><span class="badge bn">$160K/yr</span><span style="font-size:10px;color:var(--dim)">D. Marcum</span></div></div>
+</div>
+<div class="kancol">
+<div class="kancol-hd" style="color:#60A5FA">Qualified <span class="kancol-cnt">9</span></div>
+<div class="kcard"><div class="kcard-title">Cargill Meat Solutions</div><div class="kcard-co">Wichita, KS</div><div class="kcard-meta"><span class="badge by">$380K/yr</span><span style="font-size:10px;color:var(--dim)">D. Marcum</span></div></div>
+<div class="kcard"><div class="kcard-title">ConAgra Brands</div><div class="kcard-co">Chicago, IL</div><div class="kcard-meta"><span class="badge by">$290K/yr</span><span style="font-size:10px;color:var(--dim)">C. Williams</span></div></div>
+<div class="kcard"><div class="kcard-title">Dollar General</div><div class="kcard-co">Goodlettsville, TN</div><div class="kcard-meta"><span class="badge by">$440K/yr</span><span style="font-size:10px;color:var(--dim)">J. McLeod</span></div></div>
+</div>
+<div class="kancol">
+<div class="kancol-hd" style="color:var(--yellow)">Proposal Sent <span class="kancol-cnt">8</span></div>
+<div class="kcard"><div class="kcard-title">Walmart Supercenter</div><div class="kcard-co">Bentonville, AR</div><div class="kcard-meta"><span class="badge bg">$1.2M/yr</span><span style="font-size:10px;color:var(--dim)">D. Marcum</span></div></div>
+<div class="kcard"><div class="kcard-title">Murphy USA Inc.</div><div class="kcard-co">El Dorado, AR</div><div class="kcard-meta"><span class="badge bg">$280K/yr</span><span style="font-size:10px;color:var(--dim)">R. Hoffman</span></div></div>
+<div class="kcard"><div class="kcard-title">Arvest Bank Holdings</div><div class="kcard-co">Fayetteville, AR</div><div class="kcard-meta"><span class="badge by">$95K/yr</span><span style="font-size:10px;color:var(--dim)">T. Barnes</span></div></div>
+</div>
+<div class="kancol">
+<div class="kancol-hd" style="color:var(--green)">Negotiation <span class="kancol-cnt">7</span></div>
+<div class="kcard"><div class="kcard-title">Dillard's Inc.</div><div class="kcard-co">Little Rock, AR</div><div class="kcard-meta"><span class="badge bg">$520K/yr</span><span style="font-size:10px;color:var(--dim)">D. Marcum</span></div></div>
+<div class="kcard"><div class="kcard-title">Tyson Foods Inc.</div><div class="kcard-co">Springdale, AR</div><div class="kcard-meta"><span class="badge bg">$840K/yr</span><span style="font-size:10px;color:var(--dim)">D. Marcum</span></div></div>
+<div class="kcard"><div class="kcard-title">ArcBest Freight</div><div class="kcard-co">Fort Smith, AR</div><div class="kcard-meta"><span class="badge by">$310K/yr</span><span style="font-size:10px;color:var(--dim)">R. Hoffman</span></div></div>
+</div>
+</div>
+</div>
+
+<!-- ===== SALES CUSTOMERS PANEL ===== -->
+<div class="panel" id="panel-sales-cust">
+<div class="stat-row-3">
+<div class="sc grn"><div class="sc-lbl">Active Customers</div><div class="sc-val vgr">148</div><div class="sc-sub">+6 new this month</div></div>
+<div class="sc gold"><div class="sc-lbl">Avg Monthly Rev</div><div class="sc-val vg">$8,940</div><div class="sc-sub">Per customer</div></div>
+<div class="sc"><div class="sc-lbl">At Risk</div><div class="sc-val vr">11</div><div class="sc-sub">60+ day AR or disputes</div></div>
+</div>
+<div class="toolbar">
+<input class="finp" type="text" placeholder="Search customers..." style="width:240px" />
+<select class="fsel"><option>All Status</option><option>Active</option><option>At Risk</option><option>Inactive</option></select>
+<select class="fsel"><option>All Salespeople</option><option>D. Marcum</option><option>R. Hoffman</option><option>J. McLeod</option><option>C. Williams</option></select>
+<div class="spc"></div>
+<span style="font-size:12px;color:var(--dim)">148 customers</span>
+</div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Customer</th><th>City</th><th>Salesperson</th><th>Since</th><th>Loads/Mo</th><th>Monthly Rev</th><th>AR Balance</th><th>Avg Pay Days</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><strong>Walmart Stores Inc.</strong></td><td>Bentonville, AR</td><td>D. Marcum</td><td>2019</td><td>88</td><td class="ag">$62,400</td><td>$18,200</td><td class="ag">24d</td><td><span class="badge bg">Active</span></td></tr>
+<tr><td><strong>Tyson Foods Inc.</strong></td><td>Springdale, AR</td><td>D. Marcum</td><td>2018</td><td>64</td><td class="ag">$44,800</td><td>$22,400</td><td class="ay">38d</td><td><span class="badge bg">Active</span></td></tr>
+<tr><td><strong>J.B. Hunt Transport</strong></td><td>Lowell, AR</td><td>R. Hoffman</td><td>2020</td><td>42</td><td>$32,100</td><td>$9,100</td><td class="ag">21d</td><td><span class="badge bg">Active</span></td></tr>
+<tr><td><strong>Murphy Oil Corp.</strong></td><td>El Dorado, AR</td><td>J. McLeod</td><td>2021</td><td>28</td><td>$19,600</td><td>$41,200</td><td class="ar">74d</td><td><span class="badge br">At Risk</span></td></tr>
+<tr><td><strong>Dillard's Inc.</strong></td><td>Little Rock, AR</td><td>D. Marcum</td><td>2017</td><td>36</td><td>$25,200</td><td>$14,400</td><td class="ag">28d</td><td><span class="badge bg">Active</span></td></tr>
+<tr><td><strong>ArcBest Corp.</strong></td><td>Fort Smith, AR</td><td>R. Hoffman</td><td>2022</td><td>18</td><td>$12,600</td><td>$28,800</td><td class="ar">65d</td><td><span class="badge br">At Risk</span></td></tr>
+<tr><td><strong>ABF Freight System</strong></td><td>Fort Smith, AR</td><td>R. Hoffman</td><td>2020</td><td>22</td><td>$15,400</td><td>$7,700</td><td class="ag">32d</td><td><span class="badge bg">Active</span></td></tr>
+<tr><td><strong>Ozark Natural Foods</strong></td><td>Rogers, AR</td><td>T. Barnes</td><td>2023</td><td>12</td><td>$8,400</td><td>$4,200</td><td class="ag">29d</td><td><span class="badge bg">Active</span></td></tr>
+</tbody></table>
+</div>
+
+<!-- ===== SALES REPORTS PANEL ===== -->
+<div class="panel" id="panel-sales-rpt">
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">Q2 Revenue (MTD)</div><div class="sc-val vgr">$1.84M</div><div class="sc-sub">Apr + May 2026</div></div>
+<div class="sc gold"><div class="sc-lbl">Q2 Target</div><div class="sc-val vg">$3.9M</div><div class="sc-sub">47% achieved</div></div>
+<div class="sc blue"><div class="sc-lbl">YTD Revenue</div><div class="sc-val vb">$7.12M</div><div class="sc-sub">vs $6.44M prior yr</div></div>
+<div class="sc grn"><div class="sc-lbl">YTD Growth</div><div class="sc-val vgr">+10.6%</div><div class="sc-sub">vs prior year</div></div>
+</div>
+<div class="forecast-chart">
+<div class="pg-hd">Monthly Revenue &mdash; 2026</div>
+<div class="chart-bars" id="revenue-bars">
+<div class="bar-wrap"><div class="bar" style="height:85%"></div><div class="bar-val">$3.68M</div><div class="bar-lbl">Jan</div></div>
+<div class="bar-wrap"><div class="bar" style="height:79%"></div><div class="bar-val">$3.44M</div><div class="bar-lbl">Feb</div></div>
+<div class="bar-wrap"><div class="bar" style="height:80%"></div><div class="bar-val">$3.50M</div><div class="bar-lbl">Mar</div></div>
+<div class="bar-wrap"><div class="bar" style="height:88%"></div><div class="bar-val">$3.84M</div><div class="bar-lbl">Apr</div></div>
+<div class="bar-wrap"><div class="bar proj" style="height:45%"></div><div class="bar-val" style="color:var(--dim)">$1.84M</div><div class="bar-lbl">May*</div></div>
+<div class="bar-wrap"><div class="bar proj" style="height:92%"></div><div class="bar-val" style="color:var(--dim)">$4.00M</div><div class="bar-lbl">Jun*</div></div>
+</div>
+<div style="font-size:10px;color:var(--dim);margin-top:8px">* Projected based on current pipeline velocity</div>
+</div>
+</div>
+<!-- ===== FLEET TRUCKS PANEL ===== -->
+<div class="panel" id="panel-fleet-tr">
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">Active Trucks</div><div class="sc-val vgr">48</div><div class="sc-sub">On road: 41</div></div>
+<div class="sc gold"><div class="sc-lbl">Fleet Size</div><div class="sc-val vg">54</div><div class="sc-sub">4 OTR, 2 regional</div></div>
+<div class="sc red"><div class="sc-lbl">In Maintenance</div><div class="sc-val vr">4</div><div class="sc-sub">Est. back: 2-3 days</div></div>
+<div class="sc"><div class="sc-lbl">Avg Truck Age</div><div class="sc-val vb">4.2 yrs</div><div class="sc-sub">Model years 2020-2025</div></div>
+</div>
+<div class="toolbar">
+<input class="finp" type="text" placeholder="Search truck #..." />
+<select class="fsel"><option>All Status</option><option>On Road</option><option>Yard</option><option>Maintenance</option><option>Inactive</option></select>
+<select class="fsel"><option>All Makes</option><option>Freightliner</option><option>Kenworth</option><option>Peterbilt</option><option>Mack</option></select>
+</div>
+<div class="fleet-grid">
+<div class="fleet-card"><div class="fleet-top"><div class="fleet-icon">🚛</div><div class="fleet-info"><div class="fleet-num">Truck #T-101</div><div class="fleet-make">2023 Freightliner Cascadia</div></div><span class="badge bg">On Road</span></div><div class="fleet-details"><div class="fleet-det"><div class="fdet-lbl">Driver</div><div class="fdet-val">J. Thornton</div></div><div class="fleet-det"><div class="fdet-lbl">Miles</div><div class="fdet-val">284,120</div></div><div class="fleet-det"><div class="fdet-lbl">Location</div><div class="fdet-val">Memphis, TN</div></div><div class="fleet-det"><div class="fdet-lbl">Next PM</div><div class="fdet-val" style="color:var(--green)">8,440 mi</div></div></div></div>
+<div class="fleet-card"><div class="fleet-top"><div class="fleet-icon">🚛</div><div class="fleet-info"><div class="fleet-num">Truck #T-103</div><div class="fleet-make">2022 Kenworth T680</div></div><span class="badge bg">On Road</span></div><div class="fleet-details"><div class="fleet-det"><div class="fdet-lbl">Driver</div><div class="fdet-val">R. Castillo</div></div><div class="fleet-det"><div class="fdet-lbl">Miles</div><div class="fdet-val">341,800</div></div><div class="fleet-det"><div class="fdet-lbl">Location</div><div class="fdet-val">Dallas, TX</div></div><div class="fleet-det"><div class="fdet-lbl">Next PM</div><div class="fdet-val" style="color:var(--yellow)">1,200 mi</div></div></div></div>
+<div class="fleet-card"><div class="fleet-top"><div class="fleet-icon">🚛</div><div class="fleet-info"><div class="fleet-num">Truck #T-108</div><div class="fleet-make">2024 Peterbilt 579</div></div><span class="badge by">Yard</span></div><div class="fleet-details"><div class="fleet-det"><div class="fdet-lbl">Driver</div><div class="fdet-val">Unassigned</div></div><div class="fleet-det"><div class="fdet-lbl">Miles</div><div class="fdet-val">48,310</div></div><div class="fleet-det"><div class="fdet-lbl">Location</div><div class="fdet-val">Rogers, AR (Yard)</div></div><div class="fleet-det"><div class="fdet-lbl">Next PM</div><div class="fdet-val" style="color:var(--green)">21,690 mi</div></div></div></div>
+<div class="fleet-card"><div class="fleet-top"><div class="fleet-icon">🚛</div><div class="fleet-info"><div class="fleet-num">Truck #T-114</div><div class="fleet-make">2021 Freightliner Cascadia</div></div><span class="badge br">Maintenance</span></div><div class="fleet-details"><div class="fleet-det"><div class="fdet-lbl">Driver</div><div class="fdet-val">M. Barnes (On Leave)</div></div><div class="fleet-det"><div class="fdet-lbl">Miles</div><div class="fdet-val">522,480</div></div><div class="fleet-det"><div class="fdet-lbl">Issue</div><div class="fdet-val" style="color:var(--red)">DPF Replacement</div></div><div class="fleet-det"><div class="fdet-lbl">Est. Return</div><div class="fdet-val">05/09/26</div></div></div></div>
+<div class="fleet-card"><div class="fleet-top"><div class="fleet-icon">🚛</div><div class="fleet-info"><div class="fleet-num">Truck #T-119</div><div class="fleet-make">2022 Mack Anthem</div></div><span class="badge bg">On Road</span></div><div class="fleet-details"><div class="fleet-det"><div class="fdet-lbl">Driver</div><div class="fdet-val">T. Williams</div></div><div class="fleet-det"><div class="fdet-lbl">Miles</div><div class="fdet-val">298,440</div></div><div class="fleet-det"><div class="fdet-lbl">Location</div><div class="fdet-val">Tulsa, OK</div></div><div class="fleet-det"><div class="fdet-lbl">Next PM</div><div class="fdet-val" style="color:var(--green)">12,560 mi</div></div></div></div>
+<div class="fleet-card"><div class="fleet-top"><div class="fleet-icon">🚛</div><div class="fleet-info"><div class="fleet-num">Truck #T-122</div><div class="fleet-make">2025 Kenworth T680</div></div><span class="badge bg">On Road</span></div><div class="fleet-details"><div class="fleet-det"><div class="fdet-lbl">Driver</div><div class="fdet-val">D. Porter</div></div><div class="fleet-det"><div class="fdet-lbl">Miles</div><div class="fdet-val">81,200</div></div><div class="fleet-det"><div class="fdet-lbl">Location</div><div class="fdet-val">Kansas City, MO</div></div><div class="fleet-det"><div class="fdet-lbl">Next PM</div><div class="fdet-val" style="color:var(--green)">18,800 mi</div></div></div></div>
+</div>
+</div>
+
+<!-- ===== FLEET DRIVERS PANEL ===== -->
+<div class="panel" id="panel-fleet-dr">
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">Active Drivers</div><div class="sc-val vgr">49</div><div class="sc-sub">3 on leave</div></div>
+<div class="sc gold"><div class="sc-lbl">Avg HOS Available</div><div class="sc-val vg">6.8h</div><div class="sc-sub">Current shift cycle</div></div>
+<div class="sc red"><div class="sc-lbl">HOS Violations YTD</div><div class="sc-val vr">2</div><div class="sc-sub">0 in last 90 days</div></div>
+<div class="sc"><div class="sc-lbl">Avg Miles/Week</div><div class="sc-val vb">2,840</div><div class="sc-sub">OTR fleet</div></div>
+</div>
+<div class="toolbar">
+<input class="finp" type="text" placeholder="Search driver..." />
+<select class="fsel"><option>All Status</option><option>On Duty</option><option>Off Duty</option><option>Sleeper Berth</option><option>On Leave</option></select>
+<select class="fsel"><option>All CDL</option><option>Class A</option><option>Class B</option><option>Hazmat Endorsed</option></select>
+</div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Driver</th><th>CDL</th><th>Endorsements</th><th>Truck</th><th>HOS Drive Left</th><th>HOS Cycle Left</th><th>Location</th><th>Status</th><th>License Exp.</th></tr></thead>
+<tbody>
+<tr><td><strong>James Thornton</strong></td><td>Class A - AR</td><td>HazMat, Tanker</td><td>#T-101</td><td class="ag">7.5h</td><td class="ag">42h</td><td>Memphis, TN</td><td><span class="badge bg">On Duty</span></td><td>08/2027</td></tr>
+<tr><td><strong>Ramon Castillo</strong></td><td>Class A - TX</td><td>HazMat</td><td>#T-103</td><td class="ay">3.2h</td><td class="ag">28h</td><td>Dallas, TX</td><td><span class="badge bg">Driving</span></td><td>03/2026</td></tr>
+<tr><td><strong>Tommy Williams</strong></td><td>Class A - AR</td><td>None</td><td>#T-119</td><td class="ag">8.5h</td><td class="ag">55h</td><td>Tulsa, OK</td><td><span class="badge bg">On Duty</span></td><td>11/2027</td></tr>
+<tr><td><strong>Derek Porter</strong></td><td>Class A - MO</td><td>HazMat, Double/Triple</td><td>#T-122</td><td class="ag">6.8h</td><td class="ag">38h</td><td>Kansas City, MO</td><td><span class="badge bg">Driving</span></td><td>05/2028</td></tr>
+<tr><td><strong>Mike Barnes</strong></td><td>Class A - AR</td><td>HazMat</td><td>#T-114</td><td>N/A</td><td>N/A</td><td>Rogers, AR</td><td><span class="badge by">On Leave</span></td><td>07/2026</td></tr>
+<tr><td><strong>Luis Gutierrez</strong></td><td>Class A - AR</td><td>None</td><td>#T-107</td><td class="ag">9.0h</td><td class="ag">60h</td><td>Little Rock, AR</td><td><span class="badge bn">Off Duty</span></td><td>02/2027</td></tr>
+<tr><td><strong>Wayne Adkins</strong></td><td>Class A - TN</td><td>Tanker</td><td>#T-112</td><td class="ar">1.0h</td><td class="ay">14h</td><td>Nashville, TN</td><td><span class="badge bg">Sleeper Berth</span></td><td>09/2026</td></tr>
+</tbody></table>
+</div>
+<!-- ===== FLEET MAINTENANCE PANEL ===== -->
+<div class="panel" id="panel-fleet-mx">
+<div class="stat-row">
+<div class="sc red"><div class="sc-lbl">Currently In Shop</div><div class="sc-val vr">4</div><div class="sc-sub">Trucks out of service</div></div>
+<div class="sc yellow"><div class="sc-lbl">PM Due Soon</div><div class="sc-val vg">8</div><div class="sc-sub">Within 5,000 miles</div></div>
+<div class="sc grn"><div class="sc-lbl">Maintenance Cost MTD</div><div class="sc-val vgr">$28,840</div><div class="sc-sub">vs $22,100 avg</div></div>
+<div class="sc"><div class="sc-lbl">Avg Downtime</div><div class="sc-val vb">1.4 days</div><div class="sc-sub">Per repair event</div></div>
+</div>
+<div class="toolbar">
+<button class="btn b-gold">+ New Work Order</button>
+<button class="btn b-out">&#8595; Export</button>
+<select class="fsel"><option>All Status</option><option>In Progress</option><option>Scheduled</option><option>Completed</option></select>
+<select class="fsel"><option>All Types</option><option>Preventive Maintenance</option><option>Repair</option><option>Inspection</option><option>Tires</option></select>
+</div>
+<div class="pg-section">
+<div class="pg-hd">Active Work Orders <span>4 open</span></div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
+<thead><tr><th>WO #</th><th>Truck</th><th>Type</th><th>Issue</th><th>Technician</th><th>Started</th><th>Est. Complete</th><th>Est. Cost</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>WO-4401</td><td><strong>#T-114</strong></td><td>Repair</td><td>DPF Replacement</td><td>B. Cooper</td><td>05/06/26</td><td class="ay">05/09/26</td><td>$4,200</td><td><span class="badge by">In Progress</span></td></tr>
+<tr><td>WO-4402</td><td><strong>#T-118</strong></td><td>Repair</td><td>Brake Caliper - Driver Side</td><td>M. Torres</td><td>05/07/26</td><td class="ag">05/08/26</td><td>$880</td><td><span class="badge by">In Progress</span></td></tr>
+<tr><td>WO-4403</td><td><strong>#T-126</strong></td><td>Preventive Maint.</td><td>100K Mile PM Service</td><td>B. Cooper</td><td>05/07/26</td><td class="ag">05/08/26</td><td>$1,400</td><td><span class="badge by">In Progress</span></td></tr>
+<tr><td>WO-4404</td><td><strong>#T-132</strong></td><td>Tires</td><td>Replace 6 drive tires</td><td>M. Torres</td><td>05/07/26</td><td class="ag">05/07/26</td><td>$3,600</td><td><span class="badge by">In Progress</span></td></tr>
+</tbody></table>
+<div class="pg-hd">PM Schedule - Due Soon <span>8 trucks within 5k miles</span></div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Truck</th><th>Make/Model</th><th>Last PM</th><th>Last PM Miles</th><th>Current Miles</th><th>Miles to PM</th><th>Est. PM Date</th></tr></thead>
+<tbody>
+<tr><td><strong>#T-103</strong></td><td>2022 Kenworth T680</td><td>03/10/26</td><td>335,000</td><td>341,800</td><td class="ar">1,200</td><td>05/10/26</td></tr>
+<tr><td><strong>#T-109</strong></td><td>2021 Freightliner</td><td>02/20/26</td><td>488,000</td><td>491,800</td><td class="ay">3,200</td><td>05/18/26</td></tr>
+<tr><td><strong>#T-115</strong></td><td>2022 Peterbilt 579</td><td>03/28/26</td><td>301,000</td><td>304,200</td><td class="ay">3,800</td><td>05/20/26</td></tr>
+<tr><td><strong>#T-101</strong></td><td>2023 Freightliner</td><td>04/01/26</td><td>275,680</td><td>284,120</td><td>8,440</td><td>05/28/26</td></tr>
+</tbody></table>
+</div>
+</div>
+
+<!-- ===== SAFETY INCIDENTS PANEL ===== -->
+<div class="panel" id="panel-safety-inc">
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">Days Since Last Incident</div><div class="sc-val vgr">28</div><div class="sc-sub">Last: 04/09/26</div></div>
+<div class="sc gold"><div class="sc-lbl">Open Reports</div><div class="sc-val vg">3</div><div class="sc-sub">Awaiting resolution</div></div>
+<div class="sc red"><div class="sc-lbl">YTD Incidents</div><div class="sc-val vr">7</div><td><div class="sc-sub">vs 11 prior year</div></div>
+<div class="sc"><div class="sc-lbl">Recordable Rate</div><div class="sc-val vb">0.84</div><div class="sc-sub">Industry avg: 1.2</div></div>
+</div>
+<div class="toolbar">
+<button class="btn b-gold">+ File Incident Report</button>
+<button class="btn b-out">&#8595; Export</button>
+<select class="fsel"><option>All Types</option><option>Accident</option><option>Near Miss</option><option>Property Damage</option><option>Injury</option><option>Spill</option></select>
+<select class="fsel"><option>2026 YTD</option><option>Q1 2026</option><option>2025</option><option>All Time</option></select>
+</div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Report #</th><th>Date</th><th>Driver</th><th>Truck</th><th>Type</th><th>Location</th><th>Description</th><th>Fault</th><th>Cost</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>IR-2601</td><td>01/14/26</td><td>R. Castillo</td><td>#T-103</td><td><span class="badge by">Near Miss</span></td><td>I-40, Okla City</td><td>Deer strike avoided, hard braking</td><td>N/A</td><td>$0</td><td><span class="badge bg">Closed</span></td></tr>
+<tr><td>IR-2602</td><td>02/03/26</td><td>T. Williams</td><td>#T-119</td><td><span class="badge br">Accident</span></td><td>US-71, AR</td><td>Sideswipe - 4-wheeler cut lane</td><td>No Fault</td><td>$8,200</td><td><span class="badge bg">Closed</span></td></tr>
+<tr><td>IR-2603</td><td>03/18/26</td><td>W. Adkins</td><td>#T-112</td><td><span class="badge by">Property Dmg</span></td><td>Nashville TN</td><td>Mirror clipped dock door frame</td><td>Preventable</td><td>$1,400</td><td><span class="badge bg">Closed</span></td></tr>
+<tr><td>IR-2604</td><td>04/09/26</td><td>D. Porter</td><td>#T-122</td><td><span class="badge br">Accident</span></td><td>I-70, MO</td><td>Rear-ended in construction zone</td><td>No Fault</td><td>$14,800</td><td><span class="badge by">Open</span></td></tr>
+</tbody></table>
+</div>
+
+<!-- ===== SAFETY COMPLIANCE PANEL ===== -->
+<div class="panel" id="panel-safety-cmp">
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">DOT Compliance Score</div><div class="sc-val vgr">94.2%</div><div class="sc-sub">Exceeds threshold</div></div>
+<div class="sc gold"><div class="sc-lbl">CSA Score (BASIC)</div><div class="sc-val vg">18.4</div><div class="sc-sub">Threshold: 65</div></div>
+<div class="sc"><div class="sc-lbl">Inspections Passed</div><div class="sc-val vb">48 / 52</div><div class="sc-sub">YTD roadside</div></div>
+<div class="sc red"><div class="sc-lbl">Open Violations</div><div class="sc-val vr">4</div><div class="sc-sub">Pending correction</div></div>
+</div>
+<div class="two-col" style="margin-top:4px">
+<div>
+<div class="pg-hd">CSA BASIC Scores</div>
+<div class="crow" style="cursor:default"><div class="crh" style="cursor:default"><div class="cri"><span class="crn" style="font-size:13px">Unsafe Driving</span></div><div style="display:flex;align-items:center;gap:10px;min-width:200px"><div class="progress-bar" style="flex:1"><div class="progress-fill pf-grn" style="width:18%"></div></div><span class="ag" style="font-weight:700;font-size:13px">18.0</span><span style="font-size:11px;color:var(--dim)">&nbsp;/ 65 threshold</span></div></div></div>
+<div class="crow" style="cursor:default"><div class="crh" style="cursor:default"><div class="cri"><span class="crn" style="font-size:13px">HOS Compliance</span></div><div style="display:flex;align-items:center;gap:10px;min-width:200px"><div class="progress-bar" style="flex:1"><div class="progress-fill pf-grn" style="width:12%"></div></div><span class="ag" style="font-weight:700;font-size:13px">8.4</span><span style="font-size:11px;color:var(--dim)">&nbsp;/ 65 threshold</span></div></div></div>
+<div class="crow" style="cursor:default"><div class="crh" style="cursor:default"><div class="cri"><span class="crn" style="font-size:13px">Vehicle Maint.</span></div><div style="display:flex;align-items:center;gap:10px;min-width:200px"><div class="progress-bar" style="flex:1"><div class="progress-fill pf-grn" style="width:32%"></div></div><span class="ay" style="font-weight:700;font-size:13px">22.1</span><span style="font-size:11px;color:var(--dim)">&nbsp;/ 80 threshold</span></div></div></div>
+<div class="crow" style="cursor:default"><div class="crh" style="cursor:default"><div class="cri"><span class="crn" style="font-size:13px">Controlled Substances</span></div><div style="display:flex;align-items:center;gap:10px;min-width:200px"><div class="progress-bar" style="flex:1"><div class="progress-fill pf-grn" style="width:0%"></div></div><span class="ag" style="font-weight:700;font-size:13px">0.0</span><span style="font-size:11px;color:var(--dim)">&nbsp;/ 65 threshold</span></div></div></div>
+<div class="crow" style="cursor:default"><div class="crh" style="cursor:default"><div class="cri"><span class="crn" style="font-size:13px">Driver Fitness</span></div><div style="display:flex;align-items:center;gap:10px;min-width:200px"><div class="progress-bar" style="flex:1"><div class="progress-fill pf-grn" style="width:5%"></div></div><span class="ag" style="font-weight:700;font-size:13px">4.2</span><span style="font-size:11px;color:var(--dim)">&nbsp;/ 65 threshold</span></div></div></div>
+</div>
+<div>
+<div class="pg-hd">Open Violations <span>4 items</span></div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Date</th><th>Driver</th><th>Violation</th><th>BASIC</th><th>Points</th><th>Due</th></tr></thead>
+<tbody>
+<tr><td>04/09/26</td><td>D. Porter</td><td>Speeding 11-14 MPH Over</td><td>Unsafe Driving</td><td class="ay">5</td><td class="ay">06/09/26</td></tr>
+<tr><td>03/22/26</td><td>W. Adkins</td><td>Light / Reflector Defective</td><td>Vehicle Maint.</td><td class="ag">1</td><td class="ag">05/22/26</td></tr>
+<tr><td>02/14/26</td><td>L. Gutierrez</td><td>Log Book Not Current</td><td>HOS Compliance</td><td class="ay">5</td><td class="ag">04/14/26</td></tr>
+<tr><td>01/28/26</td><td>R. Castillo</td><td>Tire Tread Depth Defect</td><td>Vehicle Maint.</td><td class="ag">3</td><td class="ag">03/28/26</td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<!-- ===== SAFETY TRAINING PANEL ===== -->
+<div class="panel" id="panel-safety-tr">
+<div class="stat-row-3">
+<div class="sc grn"><div class="sc-lbl">Certifications Current</div><div class="sc-val vgr">79 / 87</div><div class="sc-sub">91% compliance</div></div>
+<div class="sc red"><div class="sc-lbl">Expiring in 30 Days</div><div class="sc-val vr">8</div><div class="sc-sub">Action required</div></div>
+<div class="sc gold"><div class="sc-lbl">Training Hours YTD</div><div class="sc-val vg">1,248</div><div class="sc-sub">Avg 14.3 hrs/employee</div></div>
+</div>
+<div class="pg-section">
+<div class="pg-hd">Upcoming Expirations <span>Next 30 days</span></div>
+<div class="train-row"><div class="train-icon">🏥</div><div class="train-info"><div class="train-name">DOT Physical &mdash; Ramon Castillo</div><div class="train-meta">Expires 05/15/26 &bull; <span style="color:var(--red)">8 days</span></div></div><button class="btn b-out" style="font-size:11px;padding:5px 12px">Schedule</button></div>
+<div class="train-row"><div class="train-icon">⚗️</div><div class="train-info"><div class="train-name">HazMat Refresher &mdash; James Thornton</div><div class="train-meta">Expires 05/22/26 &bull; <span style="color:var(--yellow)">15 days</span></div></div><button class="btn b-out" style="font-size:11px;padding:5px 12px">Schedule</button></div>
+<div class="train-row"><div class="train-icon">🚛</div><div class="train-info"><div class="train-name">CDL Renewal &mdash; Ramon Castillo</div><div class="train-meta">Expires 03/20/26 &bull; <span style="color:var(--red)">OVERDUE</span></div></div><button class="btn b-red" style="font-size:11px;padding:5px 12px">⚠ Urgent</button></div>
+<div class="train-row"><div class="train-icon">🔥</div><div class="train-info"><div class="train-name">Hazardous Materials &mdash; Wayne Adkins</div><div class="train-meta">Expires 06/01/26 &bull; <span style="color:var(--yellow)">25 days</span></div></div><button class="btn b-out" style="font-size:11px;padding:5px 12px">Schedule</button></div>
+</div>
+<div class="pg-section">
+<div class="pg-hd">Completed This Month <span>May 2026</span></div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Employee</th><th>Training</th><th>Completed</th><th>Score</th><th>Expires</th><th>Provider</th></tr></thead>
+<tbody>
+<tr><td>Travis Kelly</td><td>New Driver Orientation</td><td>05/12/26</td><td class="ag">Pass</td><td>N/A</td><td>In-House</td></tr>
+<tr><td>L. Gutierrez</td><td>Defensive Driving Refresher</td><td>05/05/26</td><td class="ag">94%</td><td>05/2028</td><td>FMCSA Online</td></tr>
+<tr><td>D. Porter</td><td>Speed Management &amp; CSA</td><td>05/01/26</td><td class="ag">88%</td><td>05/2028</td><td>In-House</td></tr>
+<tr><td>S. Rivera</td><td>DOT Compliance Update 2026</td><td>04/28/26</td><td class="ag">100%</td><td>04/2028</td><td>ATBS</td></tr>
+</tbody></table>
+</div>
+</div>
+
+<!-- ===== LOGS PANEL ===== -->
+<div class="panel" id="panel-logs">
+<div class="stat-row-3">
+<div class="sc"><div class="sc-lbl">API Calls Today</div><div class="sc-val vb">2,841</div><div class="sc-sub">TMS + internal</div></div>
+<div class="sc grn"><div class="sc-lbl">Errors Today</div><div class="sc-val vgr">3</div><div class="sc-sub">All non-critical</div></div>
+<div class="sc gold"><div class="sc-lbl">Active Sessions</div><div class="sc-val vg">7</div><div class="sc-sub">Right now</div></div>
+</div>
+<div class="toolbar">
+<input class="finp" type="text" placeholder="Filter logs..." style="width:280px" />
+<select class="fsel"><option>All Levels</option><option>Info</option><option>Warning</option><option>Error</option><option>Debug</option></select>
+<select class="fsel"><option>All Sources</option><option>TMS API</option><option>Auth</option><option>AR Module</option><option>System</option></select>
+<select class="fsel"><option>Last 1 Hour</option><option>Last 4 Hours</option><option>Today</option><option>Yesterday</option></select>
+<div class="spc"></div>
+<button class="btn b-out" style="font-size:11px">&#8635; Refresh</button>
+</div>
+<div id="log-entries">
+<div class="log-row"><div class="log-time">04:00:01</div><div class="log-dot" style="background:var(--green)"></div><div class="log-txt">AR report scan completed &mdash; 148 customers, $2,841,440 total balance, 38 slow payers</div><div class="log-src">AR Module</div></div>
+<div class="log-row"><div class="log-time">03:58:44</div><div class="log-dot" style="background:#60A5FA"></div><div class="log-txt">User dmarcum authenticated via session token</div><div class="log-src">Auth</div></div>
+<div class="log-row"><div class="log-time">03:57:12</div><div class="log-dot" style="background:var(--green)"></div><div class="log-txt">TMS API health check OK &mdash; 142ms response</div><div class="log-src">TMS API</div></div>
+<div class="log-row"><div class="log-time">03:52:09</div><div class="log-dot" style="background:var(--yellow)"></div><div class="log-txt">Rate limit warning: 85% of hourly quota reached for /ws/customers/agedARReport</div><div class="log-src">TMS API</div></div>
+<div class="log-row"><div class="log-time">03:44:28</div><div class="log-dot" style="background:var(--red)"></div><div class="log-txt">PDF parse error for customer ID C-00441 &mdash; empty buffer returned (balance $0, skipped)</div><div class="log-src">AR Module</div></div>
+<div class="log-row"><div class="log-time">03:38:14</div><div class="log-dot" style="background:var(--green)"></div><div class="log-txt">Payroll batch scheduled for 05/16/26 &mdash; 84 employees, est. $298,120 net</div><div class="log-src">System</div></div>
+<div class="log-row"><div class="log-time">03:30:00</div><div class="log-dot" style="background:#60A5FA"></div><div class="log-txt">Nightly data sync started &mdash; TMS orders, fleet positions, HOS records</div><div class="log-src">System</div></div>
+<div class="log-row"><div class="log-time">03:29:41</div><div class="log-dot" style="background:var(--green)"></div><div class="log-txt">Fleet GPS sync: 41 trucks reported position, 4 offline (in maintenance)</div><div class="log-src">TMS API</div></div>
+<div class="log-row"><div class="log-time">02:14:08</div><div class="log-dot" style="background:var(--red)"></div><div class="log-txt">Failed API call to /ws/customers/search?id=C-00819 &mdash; 404 Not Found (customer deleted)</div><div class="log-src">TMS API</div></div>
+<div class="log-row"><div class="log-time">01:00:00</div><div class="log-dot" style="background:#60A5FA"></div><div class="log-txt">Automated report: Weekly AR aging summary emailed to accounting@meiborginc.com</div><div class="log-src">System</div></div>
+</div>
+</div>
+<!-- ===== CS TICKETS PANEL ===== -->
+<div class="panel" id="panel-cs-tix">
+<div class="stat-row">
+<div class="sc red"><div class="sc-lbl">Open Tickets</div><div class="sc-val vr">18</div><div class="sc-sub">Across all reps</div></div>
+<div class="sc yellow"><div class="sc-lbl">Avg Resolution Time</div><div class="sc-val vg">2.4 days</div><div class="sc-sub">Last 30 days</div></div>
+<div class="sc grn"><div class="sc-lbl">Resolved MTD</div><div class="sc-val vgr">44</div><div class="sc-sub">May 2026</div></div>
+<div class="sc"><div class="sc-lbl">CSAT Score</div><div class="sc-val vb">4.6 / 5</div><div class="sc-sub">Last 30 days</div></div>
+</div>
+<div class="toolbar">
+<button class="btn b-gold">+ New Ticket</button>
+<input class="finp" type="text" placeholder="Search tickets..." />
+<select class="fsel"><option>All Status</option><option>Open</option><option>In Progress</option><option>Waiting</option><option>Resolved</option></select>
+<select class="fsel"><option>All Priority</option><option>Critical</option><option>High</option><option>Normal</option><option>Low</option></select>
+<select class="fsel"><option>All Assignees</option><option>R. Hoffman</option><option>C. Williams</option><option>D. Marcum</option></select>
+</div>
+<div class="ticket-row" style="grid-template-columns:auto 1fr auto auto auto"><div class="tick-id">#TK-0441</div><div><div class="tick-subj">Invoice dispute - load #MB-44181 incorrect fuel surcharge</div><div class="tick-co">ArcBest Corp &bull; Fort Smith, AR</div></div><span class="badge br">Critical</span><div class="tick-assign">R. Hoffman</div><span class="badge by">Open 3d</span></div>
+<div class="ticket-row" style="grid-template-columns:auto 1fr auto auto auto"><div class="tick-id">#TK-0439</div><div><div class="tick-subj">POD missing for shipment 04/28 &mdash; Walmart Bentonville</div><div class="tick-co">Walmart Stores Inc. &bull; Bentonville, AR</div></div><span class="badge by">High</span><div class="tick-assign">C. Williams</div><span class="badge by">Open 1d</span></div>
+<div class="ticket-row" style="grid-template-columns:auto 1fr auto auto auto"><div class="tick-id">#TK-0438</div><div><div class="tick-subj">Request for load tracking update &mdash; shipment delayed</div><div class="tick-co">Murphy Oil Corp &bull; El Dorado, AR</div></div><span class="badge bn">Normal</span><div class="tick-assign">D. Marcum</div><span class="badge bg">Waiting</span></div>
+<div class="ticket-row" style="grid-template-columns:auto 1fr auto auto auto"><div class="tick-id">#TK-0437</div><div><div class="tick-subj">New lane rate quote needed - AR to CO corridor</div><div class="tick-co">Tyson Foods Inc. &bull; Springdale, AR</div></div><span class="badge by">High</span><div class="tick-assign">D. Marcum</div><span class="badge by">Open 2d</span></div>
+<div class="ticket-row" style="grid-template-columns:auto 1fr auto auto auto"><div class="tick-id">#TK-0436</div><div><div class="tick-subj">Driver complaint &mdash; truck T-103 AC not working</div><div class="tick-co">Internal &bull; Fleet Dept.</div></div><span class="badge by">High</span><div class="tick-assign">R. Hoffman</div><span class="badge by">In Progress</span></div>
+<div class="ticket-row" style="grid-template-columns:auto 1fr auto auto auto"><div class="tick-id">#TK-0434</div><div><div class="tick-subj">Credit memo request &mdash; overcharge on detention fees</div><div class="tick-co">Dillard's Inc. &bull; Little Rock, AR</div></div><span class="badge bn">Normal</span><div class="tick-assign">C. Williams</div><span class="badge by">Open 4d</span></div>
+</div>
+
+<!-- ===== CS CONTACTS PANEL ===== -->
+<div class="panel" id="panel-cs-con">
+<div class="stat-row-3">
+<div class="sc grn"><div class="sc-lbl">Total Contacts</div><div class="sc-val vgr">284</div><div class="sc-sub">Active customers</div></div>
+<div class="sc gold"><div class="sc-lbl">Companies</div><div class="sc-val vg">148</div><div class="sc-sub">Customer accounts</div></div>
+<div class="sc"><div class="sc-lbl">New This Month</div><div class="sc-val vb">12</div><div class="sc-sub">New contacts added</div></div>
+</div>
+<div class="toolbar">
+<input class="finp" type="text" placeholder="Search contacts..." style="width:280px" />
+<select class="fsel"><option>All Companies</option><option>Walmart</option><option>Tyson Foods</option><option>J.B. Hunt</option><option>Murphy Oil</option></select>
+<select class="fsel"><option>All Roles</option><option>AP Contact</option><option>Shipping Mgr</option><option>Operations</option><option>Exec</option></select>
+</div>
+<div class="contacts-grid">
+<div class="contact-card"><div class="cont-name">Linda Patterson</div><div class="cont-co">Walmart Stores Inc.</div><div class="cont-row">📧 <span>lpatterson@walmart.com</span></div><div class="cont-row">📞 <span>(479) 273-4000 x2281</span></div><div class="cont-row">👤 <span>AP Manager</span></div><div style="margin-top:8px"><span class="badge bg">Primary AP</span></div></div>
+<div class="contact-card"><div class="cont-name">Greg Summers</div><div class="cont-co">Tyson Foods Inc.</div><div class="cont-row">📧 <span>gsummers@tyson.com</span></div><div class="cont-row">📞 <span>(479) 290-4000 x4410</span></div><div class="cont-row">👤 <span>Transportation Mgr</span></div><div style="margin-top:8px"><span class="badge bg">Primary</span></div></div>
+<div class="contact-card"><div class="cont-name">Amy Nichols</div><div class="cont-co">J.B. Hunt Transport</div><div class="cont-row">📧 <span>anichols@jbhunt.com</span></div><div class="cont-row">📞 <span>(479) 820-0000 x1812</span></div><div class="cont-row">👤 <span>Carrier Relations</span></div><div style="margin-top:8px"><span class="badge bg">Primary</span></div></div>
+<div class="contact-card"><div class="cont-name">Kevin Drake</div><div class="cont-co">Murphy Oil Corp.</div><div class="cont-row">📧 <span>kdrake@murphyoil.com</span></div><div class="cont-row">📞 <span>(870) 862-6411 x320</span></div><div class="cont-row">👤 <span>Logistics Coordinator</span></div><div style="margin-top:8px"><span class="badge by">At Risk Acct</span></div></div>
+<div class="contact-card"><div class="cont-name">Sharon Bell</div><div class="cont-co">Dillard's Inc.</div><div class="cont-row">📧 <span>sbell@dillards.com</span></div><div class="cont-row">📞 <span>(501) 376-5200 x2904</span></div><div class="cont-row">👤 <span>VP Logistics</span></div><div style="margin-top:8px"><span class="badge bg">Primary</span></div></div>
+<div class="contact-card"><div class="cont-name">Todd Larsen</div><div class="cont-co">ArcBest Corp.</div><div class="cont-row">📧 <span>tlarsen@arcbest.com</span></div><div class="cont-row">📞 <span>(479) 785-8700 x1140</span></div><div class="cont-row">👤 <span>Freight Payables</span></div><div style="margin-top:8px"><span class="badge by">Disputed Inv.</span></div></div>
+</div>
+</div>
+<!-- ===== WAREHOUSE INVENTORY PANEL ===== -->
+<div class="panel" id="panel-wh-inv">
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">Total SKUs</div><div class="sc-val vgr">1,284</div><div class="sc-sub">Active inventory</div></div>
+<div class="sc gold"><div class="sc-lbl">Total Units</div><div class="sc-val vg">84,440</div><div class="sc-sub">Across all locations</div></div>
+<div class="sc red"><div class="sc-lbl">Low Stock Items</div><div class="sc-val vr">23</div><div class="sc-sub">Below reorder point</div></div>
+<div class="sc"><div class="sc-lbl">Warehouse Utilization</div><div class="sc-val vb">72%</div><div class="sc-sub">44,800 / 62,000 sqft</div></div>
+</div>
+<div class="toolbar">
+<input class="finp" type="text" placeholder="Search SKU or item..." style="width:240px" />
+<select class="fsel"><option>All Locations</option><option>Zone A</option><option>Zone B</option><option>Zone C</option><option>Receiving</option><option>Shipping</option></select>
+<select class="fsel"><option>All Status</option><option>Normal</option><option>Low Stock</option><option>Out of Stock</option><option>Overstock</option></select>
+</div>
+<div class="inv-row" style="font-size:11px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.5px;border:none;background:transparent;padding-bottom:4px"><span>Item</span><span>Zone</span><span>Units</span><span>Reorder At</span><span>Status</span></div>
+<div class="inv-row"><div><div class="inv-name">Stretch Wrap Film - 18" x 1500'</div><div class="inv-loc">SKU: SW-18150 &bull; Pallet Supplies</div></div><span style="color:var(--dim)">Zone B</span><span style="font-weight:700">2,840</span><span style="color:var(--dim)">500</span><span class="badge bg">Normal</span></div>
+<div class="inv-row"><div><div class="inv-name">Corner Protectors - Cardboard 3"</div><div class="inv-loc">SKU: CP-003 &bull; Packing Materials</div></div><span style="color:var(--dim)">Zone B</span><span style="font-weight:700">8,400</span><span style="color:var(--dim)">2,000</span><span class="badge bg">Normal</span></div>
+<div class="inv-row"><div><div class="inv-name">Load Bars - Adjustable 96-104"</div><div class="inv-loc">SKU: LB-9610 &bull; Equipment</div></div><span style="color:var(--dim)">Zone C</span><span class="ay" style="font-weight:700">48</span><span style="color:var(--dim)">50</span><span class="badge by">Low Stock</span></div>
+<div class="inv-row"><div><div class="inv-name">Pallet Jack - 5500lb Cap.</div><div class="inv-loc">SKU: PJ-5500 &bull; Equipment</div></div><span style="color:var(--dim)">Zone A</span><span style="font-weight:700">6</span><span style="color:var(--dim)">2</span><span class="badge bg">Normal</span></div>
+<div class="inv-row"><div><div class="inv-name">Shrink Bags - 48"x96" Heavy Duty</div><div class="inv-loc">SKU: SB-4896 &bull; Packing Materials</div></div><span style="color:var(--dim)">Zone B</span><span class="ar" style="font-weight:700">12</span><span style="color:var(--dim)">200</span><span class="badge br">Low Stock</span></div>
+<div class="inv-row"><div><div class="inv-name">E-Track Straps - 4" x 20'</div><div class="inv-loc">SKU: ET-420 &bull; Cargo Securement</div></div><span style="color:var(--dim)">Zone C</span><span class="ay" style="font-weight:700">84</span><span style="color:var(--dim)">100</span><span class="badge by">Low Stock</span></div>
+<div class="inv-row"><div><div class="inv-name">PPE - Safety Vests (Sz M-XXL)</div><div class="inv-loc">SKU: PPE-VEST &bull; Safety Supplies</div></div><span style="color:var(--dim)">Zone A</span><span style="font-weight:700">240</span><span style="color:var(--dim)">50</span><span class="badge bg">Normal</span></div>
+<div class="inv-row"><div><div class="inv-name">Dock Seals - 96" x 144"</div><div class="inv-loc">SKU: DS-9614 &bull; Dock Equipment</div></div><span style="color:var(--dim)">Zone A</span><span class="ar" style="font-weight:700">0</span><span style="color:var(--dim)">2</span><span class="badge br">Out of Stock</span></div>
+</div>
+
+<!-- ===== WAREHOUSE ORDERS PANEL ===== -->
+<div class="panel" id="panel-wh-ord">
+<div class="stat-row">
+<div class="sc"><div class="sc-lbl">Orders Today</div><div class="sc-val vb">28</div><div class="sc-sub">14 inbound, 14 outbound</div></div>
+<div class="sc grn"><div class="sc-lbl">Picked & Loaded</div><div class="sc-val vgr">21</div><div class="sc-sub">75% completion</div></div>
+<div class="sc yellow"><div class="sc-lbl">Pending</div><div class="sc-val vg">7</div><div class="sc-sub">In queue</div></div>
+<div class="sc red"><div class="sc-lbl">Delayed</div><div class="sc-val vr">2</div><div class="sc-sub">Behind schedule</div></div>
+</div>
+<div class="toolbar">
+<button class="btn b-gold">+ Create Order</button>
+<input class="finp" type="text" placeholder="Order # or customer..." />
+<select class="fsel"><option>All Types</option><option>Inbound</option><option>Outbound</option><option>Transfer</option></select>
+<select class="fsel"><option>Today</option><option>Yesterday</option><option>This Week</option></select>
+</div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Order #</th><th>Type</th><th>Customer/Vendor</th><th>Dock</th><th>Items</th><th>Units</th><th>Scheduled</th><th>Driver</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>WH-4501</td><td>📤 Outbound</td><td><strong>Walmart Supercenter</strong></td><td>Dock 3</td><td>8 SKUs</td><td>1,240</td><td>07:00 AM</td><td>J. Thornton</td><td><span class="badge bg">Loaded</span></td></tr>
+<tr><td>WH-4502</td><td>📥 Inbound</td><td><strong>Tyson Foods</strong></td><td>Dock 1</td><td>4 SKUs</td><td>880</td><td>08:30 AM</td><td>R. Castillo</td><td><span class="badge bg">Received</span></td></tr>
+<tr><td>WH-4503</td><td>📤 Outbound</td><td><strong>Dillard's Inc.</strong></td><td>Dock 5</td><td>12 SKUs</td><td>2,100</td><td>09:00 AM</td><td>T. Williams</td><td><span class="badge bg">Loaded</span></td></tr>
+<tr><td>WH-4504</td><td>📥 Inbound</td><td><strong>Road Ready Tires</strong></td><td>Dock 2</td><td>1 SKU</td><td>24</td><td>10:00 AM</td><td>Vendor</td><td><span class="badge by">Picking</span></td></tr>
+<tr><td>WH-4505</td><td>📤 Outbound</td><td><strong>J.B. Hunt</strong></td><td>Dock 4</td><td>6 SKUs</td><td>960</td><td>11:30 AM</td><td>D. Porter</td><td><span class="badge by">Pending</span></td></tr>
+<tr><td>WH-4506</td><td>📤 Outbound</td><td><strong>Murphy Oil Corp.</strong></td><td>Dock 6</td><td>3 SKUs</td><td>440</td><td>01:00 PM</td><td>L. Gutierrez</td><td><span class="badge br">Delayed</span></td></tr>
+</tbody></table>
+</div>
+
+<!-- ===== RECEPTION PANEL ===== -->
+<div class="panel" id="panel-reception">
+<div class="stat-row-3">
+<div class="sc"><div class="sc-lbl">Visitors Today</div><div class="sc-val vb">8</div><div class="sc-sub">4 currently on site</div></div>
+<div class="sc grn"><div class="sc-lbl">Deliveries</div><div class="sc-val vgr">3</div><div class="sc-sub">Today</div></div>
+<div class="sc gold"><div class="sc-lbl">Conference Rooms</div><div class="sc-val vg">2 / 4</div><div class="sc-sub">In use right now</div></div>
+</div>
+<div class="two-col">
+<div>
+<div class="pg-hd">Visitor Log &mdash; Today <span>8 visitors</span></div>
+<div class="recep-visitor"><div class="vis-avatar">👤</div><div class="vis-info"><div class="vis-name">Bob Stanton</div><div class="vis-meta">Mack Financial Services &bull; Meeting: D. Marcum &bull; <span style="color:var(--green)">On Site</span></div></div><div class="vis-time">Checked in 9:14 AM<br><span style="color:var(--dim)">Est. departure: 11:00</span></div></div>
+<div class="recep-visitor"><div class="vis-avatar">👤</div><div class="vis-info"><div class="vis-name">Janet Kowalski</div><div class="vis-meta">Samsara GPS &bull; Tech Support Install &bull; <span style="color:var(--green)">On Site</span></div></div><div class="vis-time">Checked in 8:30 AM<br><span style="color:var(--dim)">Shop Area</span></div></div>
+<div class="recep-visitor"><div class="vis-avatar">👤</div><div class="vis-info"><div class="vis-name">Travis Kelly</div><div class="vis-meta">New Employee &bull; Orientation - Day 1 &bull; <span style="color:var(--green)">On Site</span></div></div><div class="vis-time">Checked in 7:45 AM<br><span style="color:var(--dim)">Conference B</span></div></div>
+<div class="recep-visitor"><div class="vis-avatar">👤</div><div class="vis-info"><div class="vis-name">Craig Fowler</div><div class="vis-meta">Pilot Flying J &bull; Fuel Card Rep &bull; <span style="color:var(--dim)">Departed</span></div></div><div class="vis-time">In: 10:00 AM<br>Out: 11:30 AM</div></div>
+</div>
+<div>
+<div class="pg-hd">Conference Rooms</div>
+<div class="crow" style="cursor:default;margin-bottom:10px"><div class="crh" style="cursor:default"><div class="cri"><span class="crn">Conference Room A</span><div style="font-size:11px;color:var(--dim);margin-top:3px">Seats 12 &bull; Projector, Whiteboard</div></div><span class="badge by">In Use</span></div></div>
+<div class="crow" style="cursor:default;margin-bottom:10px"><div class="crh" style="cursor:default"><div class="cri"><span class="crn">Conference Room B</span><div style="font-size:11px;color:var(--dim);margin-top:3px">Seats 6 &bull; TV, Whiteboard</div></div><span class="badge by">In Use &mdash; Orientation</span></div></div>
+<div class="crow" style="cursor:default;margin-bottom:10px"><div class="crh" style="cursor:default"><div class="cri"><span class="crn">Conference Room C</span><div style="font-size:11px;color:var(--dim);margin-top:3px">Seats 4 &bull; TV</div></div><span class="badge bg">Available</span></div></div>
+<div class="crow" style="cursor:default;margin-bottom:10px"><div class="crh" style="cursor:default"><div class="cri"><span class="crn">Board Room</span><div style="font-size:11px;color:var(--dim);margin-top:3px">Seats 20 &bull; Full AV, Video Conf.</div></div><span class="badge bg">Available</span></div></div>
+</div>
+</div>
+</div>
+<!-- ===== MARKETING CAMPAIGNS PANEL ===== -->
+<div class="panel" id="panel-mkt-camp">
+<div class="stat-row">
+<div class="sc"><div class="sc-lbl">Active Campaigns</div><div class="sc-val vb">4</div><div class="sc-sub">Running now</div></div>
+<div class="sc gold"><div class="sc-lbl">Total Spend MTD</div><div class="sc-val vg">$12,840</div><div class="sc-sub">May 2026</div></div>
+<div class="sc grn"><div class="sc-lbl">New Leads MTD</div><div class="sc-val vgr">38</div><div class="sc-sub">+22% vs Apr</div></div>
+<div class="sc"><div class="sc-lbl">Cost Per Lead</div><div class="sc-val vb">$338</div><div class="sc-sub">Target: &lt;$400</div></div>
+</div>
+<div class="campaign-card">
+<div class="camp-top"><div><div class="camp-name">Q2 Regional Shipper Outreach</div><div class="camp-type">Email &bull; LinkedIn</div></div><span class="badge bg">Active</span></div>
+<div class="camp-metrics"><div class="cmet"><div class="cmet-val vb">1,240</div><div class="cmet-lbl">Sent</div></div><div class="cmet"><div class="cmet-val vg">28.4%</div><div class="cmet-lbl">Open Rate</div></div><div class="cmet"><div class="cmet-val vgr">6.2%</div><div class="cmet-lbl">Click Rate</div></div><div class="cmet"><div class="cmet-val" style="color:var(--gold)">14</div><div class="cmet-lbl">Leads</div></div></div>
+</div>
+<div class="campaign-card">
+<div class="camp-top"><div><div class="camp-name">Dry Van Capacity Availability</div><div class="camp-type">Google Ads &bull; Direct Mail</div></div><span class="badge bg">Active</span></div>
+<div class="camp-metrics"><div class="cmet"><div class="cmet-val vb">8,440</div><div class="cmet-lbl">Impressions</div></div><div class="cmet"><div class="cmet-val vg">3.1%</div><div class="cmet-lbl">CTR</div></div><div class="cmet"><div class="cmet-val vgr">$4.20</div><div class="cmet-lbl">CPC</div></div><div class="cmet"><div class="cmet-val" style="color:var(--gold)">8</div><div class="cmet-lbl">Leads</div></div></div>
+</div>
+<div class="campaign-card">
+<div class="camp-top"><div><div class="camp-name">AR/OK Food Grade Specialist</div><div class="camp-type">SEO &bull; Content</div></div><span class="badge bg">Active</span></div>
+<div class="camp-metrics"><div class="cmet"><div class="cmet-val vb">2,810</div><div class="cmet-lbl">Organic Visits</div></div><div class="cmet"><div class="cmet-val vg">4:12</div><div class="cmet-lbl">Avg Session</div></div><div class="cmet"><div class="cmet-val vgr">12</div><div class="cmet-lbl">Form Fills</div></div><div class="cmet"><div class="cmet-val" style="color:var(--gold)">9</div><div class="cmet-lbl">Leads</div></div></div>
+</div>
+<div class="campaign-card">
+<div class="camp-top"><div><div class="camp-name">Driver Recruitment 2026</div><div class="camp-type">Indeed &bull; CDLjobs.com</div></div><span class="badge by">Paused</span></div>
+<div class="camp-metrics"><div class="cmet"><div class="cmet-val vb">184</div><div class="cmet-lbl">Applications</div></div><div class="cmet"><div class="cmet-val vg">18</div><div class="cmet-lbl">Screened</div></div><div class="cmet"><div class="cmet-val vgr">4</div><div class="cmet-lbl">Hired</div></div><div class="cmet"><div class="cmet-val" style="color:var(--dim)">Paused</div><div class="cmet-lbl">Status</div></div></div>
+</div>
+</div>
+
+<!-- ===== MARKETING ANALYTICS PANEL ===== -->
+<div class="panel" id="panel-mkt-ana">
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">Website Visits MTD</div><div class="sc-val vgr">4,841</div><div class="sc-sub">+18% vs Apr</div></div>
+<div class="sc gold"><div class="sc-lbl">New Visitors</div><div class="sc-val vg">62%</div><div class="sc-sub">2,992 unique</div></div>
+<div class="sc"><div class="sc-lbl">Top Source</div><div class="sc-val vb">Organic</div><div class="sc-sub">38% of traffic</div></div>
+<div class="sc red"><div class="sc-lbl">Bounce Rate</div><div class="sc-val vr">48.2%</div><div class="sc-sub">Target: &lt;45%</div></div>
+</div>
+<div class="two-col">
+<div>
+<div class="pg-hd">Traffic Sources <span>May 2026 MTD</span></div>
+<div style="margin-bottom:10px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px"><span>Organic Search</span><span style="font-weight:700;color:var(--green)">38%</span></div>
+<div class="progress-bar" style="height:8px;margin-bottom:12px"><div class="progress-fill pf-grn" style="width:38%"></div></div>
+<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px"><span>Direct</span><span style="font-weight:700;color:var(--gold)">24%</span></div>
+<div class="progress-bar" style="height:8px;margin-bottom:12px"><div class="progress-fill" style="width:24%;background:var(--gold)"></div></div>
+<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px"><span>Email Campaigns</span><span style="font-weight:700;color:#60A5FA">18%</span></div>
+<div class="progress-bar" style="height:8px;margin-bottom:12px"><div class="progress-fill" style="width:18%;background:#60A5FA"></div></div>
+<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px"><span>Paid Search</span><span style="font-weight:700;color:var(--yellow)">12%</span></div>
+<div class="progress-bar" style="height:8px;margin-bottom:12px"><div class="progress-fill pf-yel" style="width:12%"></div></div>
+<div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px"><span>Social</span><span style="font-weight:700;color:var(--dim)">8%</span></div>
+<div class="progress-bar" style="height:8px;margin-bottom:12px"><div class="progress-fill" style="width:8%;background:var(--dim)"></div></div>
+</div>
+</div>
+<div>
+<div class="pg-hd">Top Pages <span>By visits</span></div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Page</th><th>Visits</th><th>Avg Time</th><th>Leads</th></tr></thead>
+<tbody>
+<tr><td>/services/dry-van</td><td class="ag">1,240</td><td>3:44</td><td class="ag">12</td></tr>
+<tr><td>/contact</td><td>880</td><td>2:18</td><td class="ag">24</td></tr>
+<tr><td>/about</td><td>720</td><td>1:52</td><td>3</td></tr>
+<tr><td>/services/reefer</td><td>540</td><td>2:44</td><td class="ag">6</td></tr>
+<tr><td>/careers</td><td>480</td><td>4:12</td><td class="ag">18</td></tr>
+<tr><td>/</td><td>440</td><td>1:14</td><td>2</td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<!-- ===== AI INSIGHTS PANEL ===== -->
+<div class="panel" id="panel-ai-ins">
+<div class="stat-row-3">
+<div class="sc red"><div class="sc-lbl">High Risk Accounts</div><div class="sc-val vr">8</div><div class="sc-sub">AI flagged</div></div>
+<div class="sc gold"><div class="sc-lbl">Predicted Collections (30d)</div><div class="sc-val vg">$1.84M</div><div class="sc-sub">82% confidence</div></div>
+<div class="sc grn"><div class="sc-lbl">Anomalies Detected</div><div class="sc-val vgr">3</div><div class="sc-sub">This week</div></div>
+</div>
+<div class="pg-section">
+<div class="pg-hd">AI Risk Analysis &mdash; AR Aging <span>Updated 05/07/26 04:00 AM</span></div>
+<div class="ai-card risk">
+<div class="ai-card-hd"><div class="ai-card-title">⚠ High Risk &mdash; Murphy Oil Corp. ($41,200 balance)</div><span class="badge br">High Risk</span></div>
+<div class="ai-card-body">Account is 74 days past due and trending upward. Average pay days increased from 38 to 74 over the last 4 invoices. Pattern matches historical slow-payer escalation. Model predicts 24% probability of collection difficulty within 60 days if no action taken. Last payment was $12,400 on 02/18/26.</div>
+<div class="ai-card-action"><button class="btn b-red" style="font-size:12px">Send Collection Notice</button><button class="btn b-out" style="font-size:12px">View Full Account</button></div>
+</div>
+<div class="ai-card warn">
+<div class="ai-card-hd"><div class="ai-card-title">⚡ Watch &mdash; ArcBest Corp. ($28,800 balance)</div><span class="badge by">Watch</span></div>
+<div class="ai-card-body">Invoice #MB-44181 in active dispute ($5,192). Historical data shows ArcBest disputes resolve within 7-14 days 78% of the time when escalated. Recommend reaching out to Todd Larsen (AP) directly to resolve the fuel surcharge discrepancy and prevent aging further.</div>
+<div class="ai-card-action"><button class="btn b-out" style="font-size:12px">View Dispute</button><button class="btn b-out" style="font-size:12px">Contact AP</button></div>
+</div>
+<div class="ai-card warn">
+<div class="ai-card-hd"><div class="ai-card-title">📊 Anomaly &mdash; Tyson Foods avg pay days increased</div><span class="badge by">Anomaly</span></div>
+<div class="ai-card-body">Tyson Foods average pay days jumped from 22d to 38d in the last 2 months. This is a 73% increase but remains within acceptable range. Possible causes: new AP processor, internal system change, or cash flow strain. Recommend monitoring — no action needed yet.</div>
+<div class="ai-card-action"><button class="btn b-out" style="font-size:12px">View Account</button></div>
+</div>
+<div class="ai-card ok">
+<div class="ai-card-hd"><div class="ai-card-title">✅ Healthy &mdash; Walmart Stores ($18,200 balance)</div><span class="badge bg">Healthy</span></div>
+<div class="ai-card-body">Account consistently pays in 21-28 days. High revenue customer with no payment issues in 6+ years. Current balance represents approximately 1.5 weeks of billing. No action required.</div>
+</div>
+</div>
+</div>
+
+<!-- ===== AI FORECASTING PANEL ===== -->
+<div class="panel" id="panel-ai-frc">
+<div class="stat-row">
+<div class="sc grn"><div class="sc-lbl">Q2 Revenue Forecast</div><div class="sc-val vgr">$7.82M</div><div class="sc-sub">82% confidence</div></div>
+<div class="sc gold"><div class="sc-lbl">Collections Forecast (30d)</div><div class="sc-val vg">$1.84M</div><div class="sc-sub">From current AR</div></div>
+<div class="sc red"><div class="sc-lbl">At-Risk AR</div><div class="sc-val vr">$84,200</div><div class="sc-sub">Model: may not collect</div></div>
+<div class="sc"><div class="sc-lbl">Model Accuracy (90d)</div><div class="sc-val vb">91.4%</div><div class="sc-sub">Actual vs. predicted</div></div>
+</div>
+<div class="forecast-chart">
+<div class="pg-hd">Revenue Forecast &mdash; Next 6 Months</div>
+<div class="chart-bars">
+<div class="bar-wrap"><div class="bar" style="height:88%"></div><div class="bar-val">$3.84M</div><div class="bar-lbl">Apr ✓</div></div>
+<div class="bar-wrap"><div class="bar proj" style="height:91%"></div><div class="bar-val" style="color:var(--gold)">$3.98M</div><div class="bar-lbl">May</div></div>
+<div class="bar-wrap"><div class="bar proj" style="height:95%"></div><div class="bar-val" style="color:var(--gold)">$4.14M</div><div class="bar-lbl">Jun</div></div>
+<div class="bar-wrap"><div class="bar proj" style="height:90%"></div><div class="bar-val" style="color:var(--gold)">$3.92M</div><div class="bar-lbl">Jul</div></div>
+<div class="bar-wrap"><div class="bar proj" style="height:85%"></div><div class="bar-val" style="color:var(--gold)">$3.71M</div><div class="bar-lbl">Aug</div></div>
+<div class="bar-wrap"><div class="bar proj" style="height:88%"></div><div class="bar-val" style="color:var(--gold)">$3.84M</div><div class="bar-lbl">Sep</div></div>
+</div>
+<div style="font-size:10px;color:var(--dim);margin-top:8px">Dashed bars = projected &bull; Based on pipeline, seasonality, and historical patterns</div>
+</div>
+<div class="two-col">
+<div>
+<div class="pg-hd">Collections Forecast <span>Next 30 days</span></div>
+<table class="itable" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+<thead><tr><th>Customer</th><th>Balance</th><th>Predicted</th><th>Confidence</th></tr></thead>
+<tbody>
+<tr><td>Walmart Stores</td><td>$18,200</td><td class="ag">$18,200</td><td class="ag">98%</td></tr>
+<tr><td>Tyson Foods</td><td>$22,400</td><td class="ag">$22,400</td><td class="ay">84%</td></tr>
+<tr><td>J.B. Hunt</td><td>$9,100</td><td class="ag">$9,100</td><td class="ag">97%</td></tr>
+<tr><td>Dillard's Inc.</td><td>$14,400</td><td class="ay">$12,000</td><td class="ay">79%</td></tr>
+<tr><td>ArcBest Corp.</td><td>$28,800</td><td class="ay">$18,000</td><td class="ay">66%</td></tr>
+<tr><td>Murphy Oil Corp.</td><td>$41,200</td><td class="ar">$15,000</td><td class="ar">41%</td></tr>
+</tbody></table>
+</div>
+<div>
+<div class="pg-hd">Key Drivers</div>
+<div class="ai-card ok" style="margin-bottom:10px"><div style="font-size:13px;color:var(--text)">📈 <strong>Seasonal tailwind:</strong> June-August typically +8-12% for AR corridor freight. Pipeline is 18% above this time last year.</div></div>
+<div class="ai-card warn" style="margin-bottom:10px"><div style="font-size:13px;color:var(--text)">⚡ <strong>Fuel risk:</strong> Diesel at $3.84/gal. Each $0.10 increase reduces margin ~0.8%. Watch FSC lag.</div></div>
+<div class="ai-card ok"><div style="font-size:13px;color:var(--text)">✅ <strong>Fleet availability:</strong> Maintenance backlog resolving. 48 trucks active vs. 41 last month. +17% capacity.</div></div>
+</div>
+</div>
+</div>
+
+<!-- ===== AI AUTOMATION PANEL ===== -->
+<div class="panel" id="panel-ai-auto">
+<div class="stat-row-3">
+<div class="sc grn"><div class="sc-lbl">Active Rules</div><div class="sc-val vgr">8</div><div class="sc-sub">Running automatically</div></div>
+<div class="sc gold"><div class="sc-lbl">Actions Taken This Month</div><div class="sc-val vg">241</div><div class="sc-sub">Emails, flags, reports</div></div>
+<div class="sc"><div class="sc-lbl">Time Saved Est.</div><div class="sc-val vb">18.4 hrs</div><div class="sc-sub">May 2026</div></div>
+</div>
+<div class="auto-rule">
+<div class="auto-icon">📧</div>
+<div class="auto-info"><div class="auto-name">Weekly AR Aging Summary</div><div class="auto-desc">Email AR aging report to accounting@meiborginc.com and dmarcum every Monday at 6:00 AM</div><div class="auto-meta"><span>Last run: 05/05/26</span><span>Runs: 48</span><span>Trigger: Schedule</span></div></div>
+<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+</div>
+<div class="auto-rule">
+<div class="auto-icon">🚨</div>
+<div class="auto-info"><div class="auto-name">Slow Payer Alert</div><div class="auto-desc">Flag and notify salesperson when customer AR exceeds 60 days past due</div><div class="auto-meta"><span>Last triggered: 05/02/26</span><span>Alerts sent: 12</span><span>Trigger: Daily scan</span></div></div>
+<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+</div>
+<div class="auto-rule">
+<div class="auto-icon">🔧</div>
+<div class="auto-info"><div class="auto-name">PM Due Reminder</div><div class="auto-desc">Alert maintenance team when truck is within 5,000 miles of scheduled PM</div><div class="auto-meta"><span>Last triggered: 05/06/26</span><span>Alerts sent: 38</span><span>Trigger: Daily sync</span></div></div>
+<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+</div>
+<div class="auto-rule">
+<div class="auto-icon">📋</div>
+<div class="auto-info"><div class="auto-name">HOS Compliance Watch</div><div class="auto-desc">Flag dispatcher when driver has less than 2 hours of drive time remaining</div><div class="auto-meta"><span>Last triggered: Today 03:14 AM</span><span>Alerts sent: 84</span><span>Trigger: GPS/ELD sync</span></div></div>
+<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+</div>
+<div class="auto-rule">
+<div class="auto-icon">💳</div>
+<div class="auto-info"><div class="auto-name">AP Due Date Alert</div><div class="auto-desc">Email accounting when vendor invoice is 7 days from due date</div><div class="auto-meta"><span>Last triggered: 05/05/26</span><span>Alerts sent: 22</span><span>Trigger: Daily AP scan</span></div></div>
+<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+</div>
+<div class="auto-rule">
+<div class="auto-icon">📊</div>
+<div class="auto-info"><div class="auto-name">Monthly Revenue Report</div><div class="auto-desc">Auto-generate and email full revenue report to management on the 1st of each month</div><div class="auto-meta"><span>Last run: 05/01/26</span><span>Runs: 5</span><span>Trigger: Monthly</span></div></div>
+<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+</div>
+<div class="auto-rule">
+<div class="auto-icon">🚛</div>
+<div class="auto-info"><div class="auto-name">Empty Miles Alert</div><div class="auto-desc">Notify dispatch when projected empty miles exceed 15% for any given week</div><div class="auto-meta"><span>Last triggered: 04/28/26</span><span>Alerts sent: 8</span><span>Trigger: Weekly projection</span></div></div>
+<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+</div>
+<div class="auto-rule">
+<div class="auto-icon">🎓</div>
+<div class="auto-info"><div class="auto-name">Certification Expiration Reminder</div><div class="auto-desc">Alert HR and driver 30 days before CDL, DOT physical, or HazMat certification expires</div><div class="auto-meta"><span>Last triggered: 05/04/26</span><span>Alerts sent: 18</span><span>Trigger: Daily check</span></div></div>
+<label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+</div>
+</div>
+
 </div></div>
 <script>
 var TOKEN='2da181f4-4a04-4f91-97f7-768188ac80d6';
