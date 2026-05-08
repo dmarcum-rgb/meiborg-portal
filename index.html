@@ -1100,8 +1100,7 @@ function exportFleetWeekly() {
   if (!_fw.length) return;
   var rows = [['Order#','Customer','Equipment','Revenue','Miles','Status','BOL']];
   _fw.forEach(function(o){rows.push([o.id,o.customer_id,o.equipment,o.revenue.toFixed(2),o.miles,o.status_descr,o.blnum]);});
-  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('
-');
+  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n'));
   var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   a.download = 'Meiborg_Fleet_Weekly_' + (document.getElementById('fw-date').value||new Date().toISOString().slice(0,10)) + '.csv'; a.click();
 }
@@ -1265,8 +1264,7 @@ function exportFleetMonthly() {
     var ds = o.ordered_date ? o.ordered_date.substring(4,6)+'/'+o.ordered_date.substring(6,8)+'/'+o.ordered_date.substring(0,4) : '';
     rows.push([o.id,o.customer_id,o.order_mode||'OTR',o.equipment,o.revenue.toFixed(2),o.miles,o.status_descr,ds]);
   });
-  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('
-');
+  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n'));
   var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   a.download = 'Meiborg_Fleet_Monthly_' + (document.getElementById('fm-month').value||new Date().toISOString().slice(0,7)) + '.csv'; a.click();
 }
