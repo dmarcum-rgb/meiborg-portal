@@ -1271,3 +1271,86 @@ function exportFleetMonthly() {
 
 
 // 
+
+
+
+//     PUSH TO GOOGLE SHEETS                                                   
+var SHEETS_WEB_APP = 'https://script.google.com/macros/s/AKfycbzawZCoUBQF0hvw9JZ_cyA8_qPVWeyH2_24d4CoBy717nhOKmXoXO-x-ZhAALwnTFFG/exec';
+
+function pushWeeklyToSheets() {
+  if (!_fw || !_fw.length) { alert('Run the weekly report first.'); return; }
+  var btn = document.getElementById('fw-sbtn');
+  btn.textContent = '� Pushing...'; btn.disabled = true;
+
+  var dateVal = document.getElementById('fw-date').value;
+  var totalRev = _fw.reduce(function(s,o){return s+o.revenue;},0);
+  var totalMiles = _fw.reduce(function(s,o){return s+o.miles;},0);
+  var revMiles = _fw.filter(function(o){return o.revenue>0;}).reduce(function(s,o){return s+o.miles;},0);
+
+  var fleetRev=0,reeferRev=0,oilRev=0,fleetMi=0,reeferMi=0,oilMi=0;
+  var fleetTr=new Set(),reeferTr=new Set(),oilTr=new Set();
+  _fw.forEach(function(o){
+    var eq=(o.equipment||'').toLowerCase();
+    var rev=o.revenue||0,mi=o.miles||0;
+    if(eq.includes('reef')||o.order_type==='R'){reeferRev+=rev;reeferMi+=mi;if(o.tractor_id)reeferTr.add(o.tractor_id);}
+    else if(eq.includes('oil')||eq.includes('tank')||o.revenue_code==='OIL'){oilRev+=rev;oilMi+=mi;if(o.tractor_id)oilTr.add(o.tractor_id);}
+    else{fleetRev+=rev;fleetMi+=mi;if(o.tractor_id)fleetTr.add(o.tractor_id);}
+  });
+  var allTr=new Set([].concat(Array.from(fleetTr),Array.from(reeferTr),Array.from(oilTr)));
+  var deadheadPct=totalMiles>0?Math.max(0,(totalMiles-revMiles)/totalMiles):0;
+
+  var p1={type:'weekly_stats',week_ending:dateVal,revenue:totalRev,total_miles:totalMiles,revenue_miles:revMiles,tractors:allTr.size,deadhead_pct:deadheadPct,notes:''};
+  var p2={type:'fleet_report',week_ending:dateVal,fleet_rev:fleetRev,reefer_rev:reeferRev,oil_rev:oilRev,fleet_tractors:fleetTr.size,reefer_tractors:reeferTr.size,oil_tractors:oilTr.size,fleet_miles:fleetMi,reefer_miles:reeferMi,oil_miles:oilMi};
+
+  Promise.all([p1,p2].map(function(p){
+    return fetch(SHEETS_WEB_APP,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(p)}).then(function(r){return r.json();}).catch(function(e){return {success:false,error:e.message};});
+  })).then(function(results){
+    var ok=results.every(function(r){return r.success;});
+    btn.textContent=ok?' Pushed to Sheets!':' Partial error';
+    btn.style.color=ok?'var(--green)':'var(--yellow)';
+    btn.disabled=false;
+    if(!ok)console.error('Sheets push:',results);
+    setTimeout(function(){btn.textContent='� Push to Sheets';btn.style.color='#22C55E';},4000);
+  });
+}
+
+function pushMonthlyToSheets() {
+  if (!_fm || !_fm.length) { alert('Run the monthly report first.'); return; }
+  var btn = document.getElementById('fm-sbtn');
+  btn.textContent = '� Pushing...'; btn.disabled = true;
+
+  // Group orders by week-ending Saturday
+  var weekMap = {};
+  _fm.forEach(function(o) {
+    var d=o.ordered_date;
+    if(!d||d.length<8) return;
+    var dt=new Date(d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8)+'T12:00:00');
+    var day=dt.getDay();
+    var sat=new Date(dt);
+    sat.setDate(dt.getDate()+(6-day));
+    var satStr=sat.toISOString().slice(0,10);
+    if(!weekMap[satStr])weekMap[satStr]=[];
+    weekMap[satStr].push(o);
+  });
+
+  var weekRequests = Object.keys(weekMap).map(function(weekEnd) {
+    var wo=weekMap[weekEnd];
+    var wRev=wo.reduce(function(s,o){return s+o.revenue;},0);
+    var wMi=wo.reduce(function(s,o){return s+o.miles;},0);
+    var wRevMi=wo.filter(function(o){return o.revenue>0;}).reduce(function(s,o){return s+o.miles;},0);
+    var wTr=new Set(wo.filter(function(o){return o.tractor_id;}).map(function(o){return o.tractor_id;}));
+    var wDh=wMi>0?Math.max(0,(wMi-wRevMi)/wMi):0;
+    return fetch(SHEETS_WEB_APP,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({type:'weekly_stats',week_ending:weekEnd,revenue:wRev,total_miles:wMi,revenue_miles:wRevMi,tractors:wTr.size,deadhead_pct:wDh,notes:''})}).then(function(r){return r.json();}).catch(function(e){return {success:false,error:e.message};});
+  });
+
+  Promise.all(weekRequests).then(function(results){
+    var ok=results.every(function(r){return r.success;});
+    btn.textContent=ok?' Pushed '+results.length+' weeks!':' Partial error';
+    btn.style.color=ok?'var(--green)':'var(--yellow)';
+    btn.disabled=false;
+    if(!ok)console.error('Monthly sheets push:',results);
+    setTimeout(function(){btn.textContent='� Push to Sheets';btn.style.color='#22C55E';},4000);
+  });
+}
+
+</script></body></html>
