@@ -144,6 +144,8 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="nl" id="nl-fleet-dr" onclick="showPanel('fleet-dr','Fleet','Drivers')"><span class="ni">🧑‍✈️</span>Drivers</div>
 <div class="nl" id="nl-fleet-mx" onclick="showPanel('fleet-mx','Fleet','Maintenance')"><span class="ni">🔧</span>Maintenance</div>
 </div>
+<div class="nl" id="nl-fleet-weekly" onclick="showPanel('fleet-weekly','Fleet','Weekly Revenue Report')"><span class="ni">📅</span>Weekly Report</div>
+<div class="nl" id="nl-fleet-monthly" onclick="showPanel('fleet-monthly','Fleet','Monthly Revenue Report')"><span class="ni">📆</span>Monthly Report</div>
 <div class="dept" id="dh-safety" onclick="tDept('safety')"><span class="di">🦺</span><span class="dl">Safety</span><span class="dc">&#9658;</span></div>
 <div class="sub" id="ds-safety">
 <div class="nl" id="nl-safety-inc" onclick="showPanel('safety-inc','Safety','Incidents')"><span class="ni">⚠️</span>Incidents</div>
@@ -245,6 +247,38 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="panel" id="panel-fleet-tr"><div class="cs"><div class="cse">🚚</div><div class="cst">Trucks</div><div class="csd">Fleet inventory, status and location tracking.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-fleet-dr"><div class="cs"><div class="cse">🧑‍✈️</div><div class="cst">Drivers</div><div class="csd">Driver roster, licenses and HOS compliance.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-fleet-mx"><div class="cs"><div class="cse">🔧</div><div class="cst">Maintenance</div><div class="csd">Service schedules and repair history.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-fleet-weekly">
+<div class="stat-row">
+<div class="sc gold"><div class="sc-lbl">Fleet Revenue</div><div class="sc-val vg" id="fw-fleet-rev">—</div></div>
+<div class="sc gold"><div class="sc-lbl">Reefer Revenue</div><div class="sc-val vg" id="fw-reefer-rev">—</div></div>
+<div class="sc"><div class="sc-lbl">Oil Revenue</div><div class="sc-val vg" id="fw-oil-rev">—</div></div>
+<div class="sc"><div class="sc-lbl">Total Tractors</div><div class="sc-val vw" id="fw-tractors">—</div></div>
+</div>
+<div class="toolbar" style="flex-wrap:wrap;gap:6px">
+<button class="btn b-gold" id="fw-rbtn" onclick="runFleetWeekly()">&#9654; Pull Weekly Report</button>
+<button class="btn b-out" id="fw-ebtn" onclick="exportFleetWeekly()" disabled>&#8595; Export CSV</button>
+<label class="chk" style="margin-left:8px">Week Ending: <input type="date" id="fw-date" class="fsel" style="margin-left:4px;padding:3px 6px;background:var(--navy-mid);color:var(--text);border:1px solid var(--navy-mid);border-radius:4px"></label>
+<div class="spc"></div>
+<div><div class="smsg" id="fw-smsg"><div class="pbar"><div class="pfill" id="fw-pfill" style="width:0%"></div></div></div></div>
+</div>
+<div id="fw-list"></div>
+</div>
+<div class="panel" id="panel-fleet-monthly">
+<div class="stat-row">
+<div class="sc gold"><div class="sc-lbl">Local Revenue</div><div class="sc-val vg" id="fm-local-rev">—</div></div>
+<div class="sc gold"><div class="sc-lbl">Shuttle Revenue</div><div class="sc-val vg" id="fm-shuttle-rev">—</div></div>
+<div class="sc"><div class="sc-lbl">OTR Revenue</div><div class="sc-val vg" id="fm-otr-rev">—</div></div>
+<div class="sc"><div class="sc-lbl">Total Tractors</div><div class="sc-val vw" id="fm-tractors">—</div></div>
+</div>
+<div class="toolbar" style="flex-wrap:wrap;gap:6px">
+<button class="btn b-gold" id="fm-rbtn" onclick="runFleetMonthly()">&#9654; Pull Monthly Report</button>
+<button class="btn b-out" id="fm-ebtn" onclick="exportFleetMonthly()" disabled>&#8595; Export CSV</button>
+<label class="chk" style="margin-left:8px">Month: <input type="month" id="fm-month" class="fsel" style="margin-left:4px;padding:3px 6px;background:var(--navy-mid);color:var(--text);border:1px solid var(--navy-mid);border-radius:4px"></label>
+<div class="spc"></div>
+<div><div class="smsg" id="fm-smsg"><div class="pbar"><div class="pfill" id="fm-pfill" style="width:0%"></div></div></div></div>
+</div>
+<div id="fm-list"></div>
+</div>
 <div class="panel" id="panel-safety-inc"><div class="cs"><div class="cse">⚠️</div><div class="cst">Incidents</div><div class="csd">Incident reports and resolution tracking.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-safety-cmp"><div class="cs"><div class="cse">✅</div><div class="cst">Compliance</div><div class="csd">DOT compliance and CSA scores.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-safety-tr"><div class="cs"><div class="cse">📚</div><div class="cst">Training</div><div class="csd">Safety certifications and training records.</div><span class="csp">Coming Soon</span></div></div>
@@ -916,6 +950,321 @@ function exportSales() {
 function rawReportSales() {
   if(!_sr.length) return;
   exportSales(); // Same data - raw report = full CSV
+}
+
+
+// ===== FLEET WEEKLY REPORT =====
+var _fw = [], _fwRun = false;
+
+function fwDefaultDate() {
+  var today = new Date();
+  var day = today.getDay();
+  var lastSat = new Date(today);
+  lastSat.setDate(today.getDate() - (day === 6 ? 0 : day + 1));
+  var el = document.getElementById('fw-date');
+  if (el && !el.value) el.value = lastSat.toISOString().slice(0,10);
+}
+
+function setFwSt(msg, pct) {
+  var el = document.getElementById('fw-smsg');
+  if (el) el.innerHTML = msg + '<div class="pbar"><div class="pfill" style="width:'+(pct||0)+'%"></div></div>';
+}
+
+function fmtMoney(n) { return '$' + (n||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+
+function runFleetWeekly() {
+  if (_fwRun) return;
+  fwDefaultDate();
+  var dateVal = document.getElementById('fw-date').value;
+  if (!dateVal) { alert('Please select a week ending date.'); return; }
+  _fwRun = true; _fw = [];
+  var btn = document.getElementById('fw-rbtn');
+  btn.textContent = 'Running...'; btn.disabled = true;
+  document.getElementById('fw-ebtn').disabled = true;
+  document.getElementById('fw-list').innerHTML = '';
+  ['fw-fleet-rev','fw-reefer-rev','fw-oil-rev','fw-tractors'].forEach(function(id){document.getElementById(id).textContent='…';});
+  setFwSt('Fetching orders for week ending ' + dateVal + '…', 5);
+
+  var endDate = new Date(dateVal + 'T12:00:00');
+  var startDate = new Date(endDate);
+  startDate.setDate(endDate.getDate() - 6);
+  var fromMc = startDate.toISOString().slice(0,10).replace(/-/g,'') + '000000-0500';
+  var toMc = endDate.toISOString().slice(0,10).replace(/-/g,'') + '235959-0500';
+
+  var statuses = ['A','D','P'];
+  var allFetches = statuses.map(function(st) {
+    return fetch(BASE + '/orders/search?status=' + st, {
+      headers: { 'Authorization': _token, 'CompanyID': 'TMS', 'Accept': 'application/xml' }
+    }).then(function(r){ return r.text(); }).then(function(xml){
+      return parseFwOrders(xml, fromMc.substring(0,8), toMc.substring(0,8));
+    }).catch(function(){ return []; });
+  });
+
+  Promise.all(allFetches).then(function(results) {
+    results.forEach(function(r){ _fw = _fw.concat(r); });
+    var seen = {}; _fw = _fw.filter(function(o){ if(seen[o.id]) return false; seen[o.id]=true; return true; });
+
+    var fleetRev=0, reeferRev=0, oilRev=0;
+    var fleetTr=new Set(), reeferTr=new Set(), oilTr=new Set();
+    _fw.forEach(function(o) {
+      var eq = (o.equipment||'').toLowerCase();
+      var rev = o.revenue || 0;
+      if (eq.includes('reef') || o.order_type === 'R') {
+        reeferRev += rev; if(o.tractor_id) reeferTr.add(o.tractor_id);
+      } else if (eq.includes('oil') || eq.includes('tank') || o.revenue_code === 'OIL') {
+        oilRev += rev; if(o.tractor_id) oilTr.add(o.tractor_id);
+      } else {
+        fleetRev += rev; if(o.tractor_id) fleetTr.add(o.tractor_id);
+      }
+    });
+    var allTr = new Set([...Array.from(fleetTr),...Array.from(reeferTr),...Array.from(oilTr)]);
+    var totalTractors = allTr.size;
+
+    document.getElementById('fw-fleet-rev').textContent = fmtMoney(fleetRev);
+    document.getElementById('fw-reefer-rev').textContent = fmtMoney(reeferRev);
+    document.getElementById('fw-oil-rev').textContent = fmtMoney(oilRev);
+    document.getElementById('fw-tractors').textContent = _fw.length ? (totalTractors || _fw.length) : '—';
+
+    setFwSt('Complete · ' + _fw.length + ' loads · ' + fmtMoney(fleetRev+reeferRev+oilRev), 100);
+    renderFleetWeekly(fleetRev, reeferRev, oilRev);
+    btn.textContent = '▶ Pull Weekly Report'; btn.disabled = false;
+    document.getElementById('fw-ebtn').disabled = false;
+    _fwRun = false;
+  }).catch(function(e){
+    setFwSt('Error: ' + e.message, 0);
+    btn.textContent = '▶ Pull Weekly Report'; btn.disabled = false;
+    _fwRun = false;
+  });
+}
+
+function parseFwOrders(xml, fromDate, toDate) {
+  var results = [];
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(xml, 'application/xml');
+  var orders = doc.querySelectorAll('orders');
+  orders.forEach(function(o) {
+    var ordDate = (o.getAttribute('ordered_date') || '').substring(0,8);
+    if (ordDate < fromDate || ordDate > toDate) return;
+    results.push({
+      id: o.getAttribute('id') || '',
+      revenue: parseFloat(o.getAttribute('freight_charge') || o.getAttribute('total_charge') || '0'),
+      equipment: o.getAttribute('__equipmentTypeDescr') || o.getAttribute('equipment_type_id') || '',
+      order_type: o.getAttribute('order_type_id') || '',
+      revenue_code: o.getAttribute('revenue_code_id') || '',
+      tractor_id: o.getAttribute('tractor_id') || '',
+      status: o.getAttribute('status') || '',
+      status_descr: o.getAttribute('__statusDescr') || '',
+      ordered_date: ordDate,
+      miles: parseFloat(o.getAttribute('bill_distance') || '0'),
+      customer_id: o.getAttribute('customer_id') || '',
+      blnum: o.getAttribute('blnum') || ''
+    });
+  });
+  return results;
+}
+
+function renderFleetWeekly(fleetRev, reeferRev, oilRev) {
+  var el = document.getElementById('fw-list');
+  if (!_fw.length) { el.innerHTML = '<div style="padding:20px;color:var(--dim)">No loads found for the selected week.</div>'; return; }
+
+  var totalMiles = _fw.reduce(function(s,o){return s+o.miles;},0);
+  var totalRev = fleetRev + reeferRev + oilRev;
+
+  var html = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px">';
+  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Weekly Summary — By Equipment Type</div>';
+  html += '<div style="overflow-x:auto"><table class="itable" style="min-width:600px"><thead><tr>';
+  html += '<th>Category</th><th>Total Revenue</th><th>% of Total</th><th>Rev/Mile</th></tr></thead><tbody>';
+  var cats = [{name:'Fleet (Dry Van)',rev:fleetRev},{name:'Reefer',rev:reeferRev},{name:'Oil/Tank',rev:oilRev}];
+  cats.forEach(function(c) {
+    var pct = totalRev ? ((c.rev/totalRev)*100).toFixed(1) : '0.0';
+    html += '<tr><td><strong>' + c.name + '</strong></td><td style="color:var(--green);font-weight:700">' + fmtMoney(c.rev) + '</td><td>' + pct + '%</td><td>' + (totalMiles ? '$'+(c.rev/totalMiles).toFixed(2) : '—') + '</td></tr>';
+  });
+  html += '<tr style="border-top:2px solid var(--border)"><td><strong>TOTAL</strong></td><td style="color:var(--gold);font-weight:800">' + fmtMoney(totalRev) + '</td><td>100%</td><td style="color:var(--gold);font-weight:700">$' + (totalMiles ? (totalRev/totalMiles).toFixed(2) : '0.00') + '</td></tr>';
+  html += '</tbody></table></div></div>';
+
+  html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px">';
+  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">All Loads (' + _fw.length + ')</div>';
+  html += '<div style="overflow-x:auto"><table class="itable" style="width:100%;min-width:800px"><thead><tr><th>Order #</th><th>Customer</th><th>Equipment</th><th>Revenue</th><th>Miles</th><th>Status</th><th>BOL</th></tr></thead><tbody>';
+  _fw.forEach(function(o) {
+    var rc = o.revenue > 5000 ? 'color:var(--green)' : o.revenue > 2000 ? 'color:var(--gold)' : '';
+    html += '<tr><td><strong>' + o.id + '</strong></td><td>' + o.customer_id + '</td><td>' + o.equipment + '</td><td style="' + rc + ';font-weight:700">$' + o.revenue.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</td><td>' + (o.miles ? o.miles.toFixed(0) : '') + '</td><td>' + o.status_descr + '</td><td>' + o.blnum + '</td></tr>';
+  });
+  html += '</tbody></table></div></div>';
+  el.innerHTML = html;
+}
+
+function exportFleetWeekly() {
+  if (!_fw.length) return;
+  var rows = [['Order#','Customer','Equipment','Revenue','Miles','Status','BOL']];
+  _fw.forEach(function(o){rows.push([o.id,o.customer_id,o.equipment,o.revenue.toFixed(2),o.miles,o.status_descr,o.blnum]);});
+  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('
+');
+  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'Meiborg_Fleet_Weekly_' + (document.getElementById('fw-date').value||new Date().toISOString().slice(0,10)) + '.csv'; a.click();
+}
+
+// ===== FLEET MONTHLY REPORT =====
+var _fm = [], _fmRun = false;
+
+function fmDefaultMonth() {
+  var today = new Date();
+  var el = document.getElementById('fm-month');
+  if (el && !el.value) {
+    var lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    el.value = lastMonth.toISOString().slice(0,7);
+  }
+}
+
+function setFmSt(msg, pct) {
+  var el = document.getElementById('fm-smsg');
+  if (el) el.innerHTML = msg + '<div class="pbar"><div class="pfill" style="width:'+(pct||0)+'%"></div></div>';
+}
+
+function runFleetMonthly() {
+  if (_fmRun) return;
+  fmDefaultMonth();
+  var monthVal = document.getElementById('fm-month').value;
+  if (!monthVal) { alert('Please select a month.'); return; }
+  _fmRun = true; _fm = [];
+  var btn = document.getElementById('fm-rbtn');
+  btn.textContent = 'Running...'; btn.disabled = true;
+  document.getElementById('fm-ebtn').disabled = true;
+  document.getElementById('fm-list').innerHTML = '';
+  ['fm-local-rev','fm-shuttle-rev','fm-otr-rev','fm-tractors'].forEach(function(id){document.getElementById(id).textContent='…';});
+
+  var parts = monthVal.split('-');
+  var year = parseInt(parts[0]), month = parseInt(parts[1]);
+  var fromDate = monthVal.replace('-','') + '01';
+  var lastDay = new Date(year, month, 0).getDate();
+  var toDate = monthVal.replace('-','') + String(lastDay).padStart(2,'0');
+  setFmSt('Fetching orders for ' + new Date(year, month-1).toLocaleString('en-US',{month:'long',year:'numeric'}) + '…', 5);
+
+  var statuses = ['A','D','P'];
+  var allFetches = statuses.map(function(st) {
+    return fetch(BASE + '/orders/search?status=' + st, {
+      headers: { 'Authorization': _token, 'CompanyID': 'TMS', 'Accept': 'application/xml' }
+    }).then(function(r){ return r.text(); }).then(function(xml){
+      return parseFmOrders(xml, fromDate, toDate);
+    }).catch(function(){ return []; });
+  });
+
+  Promise.all(allFetches).then(function(results) {
+    results.forEach(function(r){ _fm = _fm.concat(r); });
+    var seen = {}; _fm = _fm.filter(function(o){ if(seen[o.id]) return false; seen[o.id]=true; return true; });
+
+    var localRev=0, shuttleRev=0, otrRev=0;
+    var localTr=new Set(), shuttleTr=new Set(), otrTr=new Set();
+    _fm.forEach(function(o) {
+      var mode = (o.order_mode||'').toUpperCase();
+      var rev = o.revenue || 0;
+      if (mode === 'L' || mode === 'LOCAL') {
+        localRev += rev; if(o.tractor_id) localTr.add(o.tractor_id);
+      } else if (mode === 'S' || mode === 'SHUTTLE') {
+        shuttleRev += rev; if(o.tractor_id) shuttleTr.add(o.tractor_id);
+      } else {
+        otrRev += rev; if(o.tractor_id) otrTr.add(o.tractor_id);
+      }
+    });
+    var allTr2 = new Set([...Array.from(localTr),...Array.from(shuttleTr),...Array.from(otrTr)]);
+    var totalTractors = allTr2.size;
+
+    document.getElementById('fm-local-rev').textContent = fmtMoney(localRev);
+    document.getElementById('fm-shuttle-rev').textContent = fmtMoney(shuttleRev);
+    document.getElementById('fm-otr-rev').textContent = fmtMoney(otrRev);
+    document.getElementById('fm-tractors').textContent = totalTractors || _fm.length || '—';
+
+    setFmSt('Complete · ' + _fm.length + ' loads · ' + fmtMoney(localRev+shuttleRev+otrRev), 100);
+    renderFleetMonthly(localRev, shuttleRev, otrRev, monthVal);
+    btn.textContent = '▶ Pull Monthly Report'; btn.disabled = false;
+    document.getElementById('fm-ebtn').disabled = false;
+    _fmRun = false;
+  }).catch(function(e){
+    setFmSt('Error: ' + e.message, 0);
+    btn.textContent = '▶ Pull Monthly Report'; btn.disabled = false;
+    _fmRun = false;
+  });
+}
+
+function parseFmOrders(xml, fromDate, toDate) {
+  var results = [];
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(xml, 'application/xml');
+  var orders = doc.querySelectorAll('orders');
+  orders.forEach(function(o) {
+    var ordDate = (o.getAttribute('ordered_date') || '').substring(0,8);
+    if (ordDate < fromDate || ordDate > toDate) return;
+    results.push({
+      id: o.getAttribute('id') || '',
+      revenue: parseFloat(o.getAttribute('freight_charge') || o.getAttribute('total_charge') || '0'),
+      equipment: o.getAttribute('__equipmentTypeDescr') || o.getAttribute('equipment_type_id') || '',
+      order_type: o.getAttribute('order_type_id') || '',
+      order_mode: o.getAttribute('order_mode') || '',
+      revenue_code: o.getAttribute('revenue_code_id') || '',
+      tractor_id: o.getAttribute('tractor_id') || '',
+      status: o.getAttribute('status') || '',
+      status_descr: o.getAttribute('__statusDescr') || '',
+      ordered_date: ordDate,
+      miles: parseFloat(o.getAttribute('bill_distance') || '0'),
+      customer_id: o.getAttribute('customer_id') || '',
+      blnum: o.getAttribute('blnum') || ''
+    });
+  });
+  return results;
+}
+
+function renderFleetMonthly(localRev, shuttleRev, otrRev, monthVal) {
+  var el = document.getElementById('fm-list');
+  if (!_fm.length) { el.innerHTML = '<div style="padding:20px;color:var(--dim)">No loads found for the selected month.</div>'; return; }
+
+  var totalMiles = _fm.reduce(function(s,o){return s+o.miles;},0);
+  var totalRev = localRev + shuttleRev + otrRev;
+  var monthName = new Date(monthVal + '-01T12:00:00').toLocaleString('en-US',{month:'long',year:'numeric'});
+  var allTr3 = new Set(_fm.filter(function(o){return o.tractor_id;}).map(function(o){return o.tractor_id;}));
+  var totalTractors = allTr3.size;
+
+  var html = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px">';
+  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Monthly Summary — ' + monthName + ' (Fleet / Dry Vans)</div>';
+  html += '<div style="overflow-x:auto"><table class="itable" style="min-width:650px"><thead><tr><th>Category</th><th>Total Revenue</th><th>Total Tractors</th><th>Rev/Tractor</th><th>Rev/Mile</th></tr></thead><tbody>';
+
+  var cats = [{name:'Local',rev:localRev},{name:'Shuttle',rev:shuttleRev},{name:'OTR',rev:otrRev}];
+  cats.forEach(function(c) {
+    var catLoads = _fm.filter(function(o){
+      var m=(o.order_mode||'').toUpperCase();
+      if(c.name==='Local') return m==='L'||m==='LOCAL';
+      if(c.name==='Shuttle') return m==='S'||m==='SHUTTLE';
+      return m!=='L'&&m!=='LOCAL'&&m!=='S'&&m!=='SHUTTLE';
+    });
+    var catTrSet = new Set(catLoads.filter(function(o){return o.tractor_id;}).map(function(o){return o.tractor_id;}));
+    var catTr = catTrSet.size;
+    var catMiles = catLoads.reduce(function(s,o){return s+o.miles;},0);
+    html += '<tr><td><strong>' + c.name + '</strong></td><td style="color:var(--green);font-weight:700">' + fmtMoney(c.rev) + '</td><td>' + (catTr||catLoads.length) + '</td><td>' + (catTr ? '$'+(c.rev/catTr).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—') + '</td><td>' + (catMiles ? '$'+(c.rev/catMiles).toFixed(2) : '—') + '</td></tr>';
+  });
+  html += '<tr style="border-top:2px solid var(--border)"><td><strong>TOTAL</strong></td><td style="color:var(--gold);font-weight:800">' + fmtMoney(totalRev) + '</td><td>' + totalTractors + '</td><td style="color:var(--gold);font-weight:700">' + (totalTractors ? '$'+(totalRev/totalTractors).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—') + '</td><td style="color:var(--gold);font-weight:700">' + (totalMiles ? '$'+(totalRev/totalMiles).toFixed(2) : '—') + '</td></tr>';
+  html += '</tbody></table></div></div>';
+
+  html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px">';
+  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">All Loads (' + _fm.length + ')</div>';
+  html += '<div style="overflow-x:auto"><table class="itable" style="width:100%;min-width:900px"><thead><tr><th>Order #</th><th>Customer</th><th>Mode</th><th>Equipment</th><th>Revenue</th><th>Miles</th><th>Status</th><th>Date</th></tr></thead><tbody>';
+  _fm.forEach(function(o) {
+    var rc = o.revenue > 5000 ? 'color:var(--green)' : o.revenue > 2000 ? 'color:var(--gold)' : '';
+    var ds = o.ordered_date ? o.ordered_date.substring(4,6)+'/'+o.ordered_date.substring(6,8)+'/'+o.ordered_date.substring(0,4) : '';
+    html += '<tr><td><strong>' + o.id + '</strong></td><td>' + o.customer_id + '</td><td>' + (o.order_mode||'OTR') + '</td><td>' + o.equipment + '</td><td style="' + rc + ';font-weight:700">$' + o.revenue.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</td><td>' + (o.miles ? o.miles.toFixed(0) : '') + '</td><td>' + o.status_descr + '</td><td>' + ds + '</td></tr>';
+  });
+  html += '</tbody></table></div></div>';
+  el.innerHTML = html;
+}
+
+function exportFleetMonthly() {
+  if (!_fm.length) return;
+  var rows = [['Order#','Customer','Mode','Equipment','Revenue','Miles','Status','Date']];
+  _fm.forEach(function(o){
+    var ds = o.ordered_date ? o.ordered_date.substring(4,6)+'/'+o.ordered_date.substring(6,8)+'/'+o.ordered_date.substring(0,4) : '';
+    rows.push([o.id,o.customer_id,o.order_mode||'OTR',o.equipment,o.revenue.toFixed(2),o.miles,o.status_descr,ds]);
+  });
+  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('
+');
+  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'Meiborg_Fleet_Monthly_' + (document.getElementById('fm-month').value||new Date().toISOString().slice(0,7)) + '.csv'; a.click();
 }
 
 </script></body></html>
