@@ -181,6 +181,7 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div id="main">
 <div id="topbar"><div><div class="tb-br" id="tbr">Accounting</div><div class="tb-ti" id="tbt">Accounts Receivable</div></div>
 <div class="tb-rt"><div id="tbclock" style="font-size:12px"></div><div class="tb-st" id="tms-status" onclick="doLogout()"><span class="dot dot-off" id="tms-dot"></span><span id="tms-lbl">Not connected</span></div></div></div>
+        <div class="dept" id="dh-bookings" onclick="showPanel('bookings','','Bookings')"><span class="di">📅</span><span class="dl">Bookings</span><span class="dc">▶</span></div>
 <div id="content">
 
 <div class="panel active" id="panel-ar">
@@ -295,7 +296,9 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="panel" id="panel-ai-ins"><div class="cs"><div class="cse">💡</div><div class="cst">AI Insights</div><div class="csd">AI-powered AR aging analysis and risk flags.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-ai-frc"><div class="cs"><div class="cse">🔮</div><div class="cst">Forecasting</div><div class="csd">Revenue forecasting and collections predictions.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-ai-auto"><div class="cs"><div class="cse">⚡</div><div class="cst">Automation</div><div class="csd">Automated reports, alerts and workflow triggers.</div><span class="csp">Coming Soon</span></div></div>
-</div></div><script>
+</div>
+
+<div class="panel" id="panel-bookings"><div class="panel-header"><h2>📅 Bookings</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div><script>
 var BASE='https://tms.meiborginc.com/ws';
 var _token='';var _user='';
 var _ar=[];var _run=false;
