@@ -219,7 +219,29 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="panel" id="panel-hr-ob"><div class="cs"><div class="cse">📋</div><div class="cst">Onboarding</div><div class="csd">New hire checklists and document tracking.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-sales-pipe"><div class="cs"><div class="cse">🔄</div><div class="cst">Sales Pipeline</div><div class="csd">Track active deals from prospect to close.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-sales-cust"><div class="cs"><div class="cse">🏢</div><div class="cst">Customers</div><div class="csd">Full customer list with contact info and account status.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-sales-rpt"><div class="cs"><div class="cse">📊</div><div class="cst">Sales Reports</div><div class="csd">Revenue by salesperson and time period.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-sales-rpt">
+<div class="stat-row">
+  <div class="sc"><div class="sc-lbl">Total Loads</div><div class="sc-val" id="sr-total">—</div></div>
+  <div class="sc"><div class="sc-lbl">Total Revenue</div><div class="sc-val vg" id="sr-rev">—</div></div>
+  <div class="sc"><div class="sc-lbl">Avg Revenue/Load</div><div class="sc-val vy" id="sr-avg">—</div></div>
+  <div class="sc"><div class="sc-lbl">Total Miles</div><div class="sc-val" id="sr-miles">—</div></div>
+</div>
+<div class="toolbar" style="flex-wrap:wrap;gap:6px">
+  <button class="btn b-gold" id="sr-rbtn" onclick="runSalesReport()">&#9654; Pull Report</button>
+  <button class="btn b-out" id="sr-ebtn" onclick="exportSales()" disabled>&#8595; Export CSV</button>
+  <button class="btn b-out" id="sr-rrpt" onclick="rawReportSales()" disabled>&#128196; Raw Report</button>
+  <label class="chk">Status:
+    <label class="chk" style="margin-left:6px"><input type="checkbox" id="sr-sa" checked> Available</label>
+    <label class="chk" style="margin-left:6px"><input type="checkbox" id="sr-sd" checked> Delivered</label>
+    <label class="chk" style="margin-left:6px"><input type="checkbox" id="sr-sp" checked> In Progress</label>
+  </label>
+  <label class="chk" style="margin-left:8px">From: <input type="date" id="sr-from" class="fsel" style="margin-left:4px;padding:3px 6px;background:var(--navy-mid);color:var(--text);border:1px solid var(--navy-mid);border-radius:4px"></label>
+  <label class="chk" style="margin-left:8px">To: <input type="date" id="sr-to" class="fsel" style="margin-left:4px;padding:3px 6px;background:var(--navy-mid);color:var(--text);border:1px solid var(--navy-mid);border-radius:4px"></label>
+  <div class="spc"></div>
+  <div><div class="smsg" id="sr-smsg"><div class="pbar"><div class="pfill" id="sr-pfill" style="width:0%"></div></div></div></div>
+</div>
+<div id="sr-list"></div>
+</div>
 <div class="panel" id="panel-fleet-tr"><div class="cs"><div class="cse">🚚</div><div class="cst">Trucks</div><div class="csd">Fleet inventory, status and location tracking.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-fleet-dr"><div class="cs"><div class="cse">🧑‍✈️</div><div class="cst">Drivers</div><div class="csd">Driver roster, licenses and HOS compliance.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-fleet-mx"><div class="cs"><div class="cse">🔧</div><div class="cst">Maintenance</div><div class="csd">Service schedules and repair history.</div><span class="csp">Coming Soon</span></div></div>
@@ -697,6 +719,203 @@ function rawReportAP() {
   var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   a.download = 'Meiborg_AP_Raw_' + now.toISOString().slice(0,10) + '.csv'; a.click();
   setTimeout(function(){},5000);
+}
+
+
+// ===== SALES REPORT =====
+var _sr = [], _srRun = false;
+
+function srDefaultDates() {
+  // Default to last full week Sun-Sat
+  var today = new Date();
+  var day = today.getDay(); // 0=Sun
+  var lastSat = new Date(today);
+  lastSat.setDate(today.getDate() - day - 1);
+  var lastSun = new Date(lastSat);
+  lastSun.setDate(lastSat.getDate() - 6);
+  var fmt = function(d) { return d.toISOString().slice(0,10); };
+  var fromEl = document.getElementById('sr-from');
+  var toEl   = document.getElementById('sr-to');
+  if(fromEl && !fromEl.value) fromEl.value = fmt(lastSun);
+  if(toEl   && !toEl.value)   toEl.value   = fmt(lastSat);
+}
+
+function setSrSt(msg, pct) {
+  var el = document.getElementById('sr-smsg');
+  if(el) el.innerHTML = msg + '<div class="pbar"><div class="pfill" style="width:'+(pct||0)+'%"></div></div>';
+}
+
+function mcleodDate(d) {
+  // Convert YYYY-MM-DD to McLeod timestamp prefix YYYYMMDD
+  return d.replace(/-/g,'');
+}
+
+function parseSrDate(ts) {
+  // Parse McLeod date "20260507143500-0500" -> "05/07/2026"
+  if(!ts || ts.length < 8) return '';
+  return ts.substring(4,6)+'/'+ts.substring(6,8)+'/'+ts.substring(0,4);
+}
+
+function runSalesReport() {
+  if(_srRun) return;
+  // Set defaults if empty
+  srDefaultDates();
+  var fromVal = document.getElementById('sr-from').value;
+  var toVal   = document.getElementById('sr-to').value;
+  if(!fromVal || !toVal) { alert('Please select a date range.'); return; }
+
+  _srRun = true;
+  _sr = [];
+  var btn = document.getElementById('sr-rbtn');
+  if(btn) { btn.textContent='Running...'; btn.disabled=true; }
+  document.getElementById('sr-ebtn').disabled=true;
+  document.getElementById('sr-rrpt').disabled=true;
+  document.getElementById('sr-list').innerHTML='';
+  document.getElementById('sr-total').textContent='—';
+  document.getElementById('sr-rev').textContent='—';
+  document.getElementById('sr-avg').textContent='—';
+  document.getElementById('sr-miles').textContent='—';
+  setSrSt('Fetching orders…', 5);
+
+  // Build status list
+  var statuses = [];
+  if(document.getElementById('sr-sa').checked) statuses.push('A');
+  if(document.getElementById('sr-sd').checked) statuses.push('D');
+  if(document.getElementById('sr-sp').checked) statuses.push('P');
+  if(!statuses.length) statuses = ['A','D','P'];
+
+  var fromMc = mcleodDate(fromVal) + '000000-0500';
+  var toMc   = mcleodDate(toVal)   + '235959-0500';
+
+  // Fetch orders for each status
+  var allFetches = statuses.map(function(st) {
+    return fetch(BASE + '/orders/search?status=' + st, {
+      headers: { 'Authorization': _token, 'CompanyID': 'TMS', 'Accept': 'application/xml' }
+    }).then(function(r){ return r.text(); }).then(function(xml){
+      return parseSrOrders(xml, fromMc, toMc);
+    }).catch(function(){ return []; });
+  });
+
+  Promise.all(allFetches).then(function(results) {
+    results.forEach(function(r){ _sr = _sr.concat(r); });
+
+    // Deduplicate by id
+    var seen = {};
+    _sr = _sr.filter(function(o){ if(seen[o.id]) return false; seen[o.id]=true; return true; });
+
+    // Sort by ordered_date desc
+    _sr.sort(function(a,b){ return b.ordered_date_raw > a.ordered_date_raw ? 1 : -1; });
+
+    var totalRev = _sr.reduce(function(s,o){return s+o.revenue;},0);
+    var totalMiles = _sr.reduce(function(s,o){return s+(parseFloat(o.miles)||0);},0);
+    var avgRev = _sr.length ? totalRev/_sr.length : 0;
+
+    document.getElementById('sr-total').textContent = _sr.length.toLocaleString();
+    document.getElementById('sr-rev').textContent   = '$'+totalRev.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+    document.getElementById('sr-avg').textContent   = '$'+avgRev.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+    document.getElementById('sr-miles').textContent = Math.round(totalMiles).toLocaleString();
+
+    setSrSt('Complete \u00b7 '+_sr.length+' loads \u00b7 $'+totalRev.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}), 100);
+    renderSalesReport();
+    if(btn){btn.textContent='\u25ba Pull Report';btn.disabled=false;}
+    document.getElementById('sr-ebtn').disabled=false;
+    document.getElementById('sr-rrpt').disabled=false;
+    _srRun=false;
+  });
+}
+
+function parseSrOrders(xml, fromMc, toMc) {
+  // Parse order XML and filter by ordered_date range
+  var results = [];
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(xml, 'application/xml');
+  var orders = doc.querySelectorAll('orders');
+  orders.forEach(function(o) {
+    var ordDate = o.getAttribute('ordered_date') || '';
+    // Filter by date range (compare YYYYMMDD prefix)
+    var ordPrefix = ordDate.substring(0,8);
+    var fromPrefix = fromMc.substring(0,8);
+    var toPrefix   = toMc.substring(0,8);
+    if(ordPrefix < fromPrefix || ordPrefix > toPrefix) return;
+
+    var revenue = parseFloat(o.getAttribute('freight_charge') || o.getAttribute('total_charge') || '0');
+    results.push({
+      id:           o.getAttribute('id') || '',
+      order_type:   o.getAttribute('order_type_id') || '',
+      customer_id:  o.getAttribute('customer_id') || '',
+      revenue:      revenue,
+      total_charge: parseFloat(o.getAttribute('total_charge') || '0'),
+      status:       o.getAttribute('status') || '',
+      status_descr: o.getAttribute('__statusDescr') || '',
+      ordered_date_raw: ordDate,
+      ordered_date: parseSrDate(ordDate),
+      miles:        o.getAttribute('bill_distance') || '0',
+      weight:       o.getAttribute('weight') || '',
+      commodity:    o.getAttribute('commodity') || '',
+      equipment:    o.getAttribute('__equipmentTypeDescr') || o.getAttribute('equipment_type_id') || '',
+      blnum:        o.getAttribute('blnum') || '',
+      ops_user:     o.getAttribute('operations_user') || '',
+      entered_by:   o.getAttribute('entered_user_id') || '',
+      revenue_code: o.getAttribute('revenue_code_id') || '',
+      order_mode:   o.getAttribute('order_mode') || '',
+      shipper_stop: o.getAttribute('shipper_stop_id') || '',
+      consignee_stop: o.getAttribute('consignee_stop_id') || ''
+    });
+  });
+  return results;
+}
+
+function renderSalesReport() {
+  var el = document.getElementById('sr-list');
+  if(!el) return;
+  if(!_sr.length) {
+    el.innerHTML = '<div style="padding:20px;color:var(--dim)">No loads found for the selected date range and status filters.</div>';
+    return;
+  }
+
+  var html = '<div class="ar-meta"><span>'+_sr.length+' loads</span><span>Sorted by date desc</span><span>'+new Date().toLocaleString()+'</span></div>';
+  html += '<div style="overflow-x:auto"><table class="ar-tbl" style="width:100%;min-width:900px">';
+  html += '<thead><tr>';
+  html += '<th>Order #</th><th>Type</th><th>Customer</th><th>Revenue</th><th>Miles</th><th>Weight</th>';
+  html += '<th>Equipment</th><th>Status</th><th>Ordered Date</th><th>BOL</th><th>Ops User</th>';
+  html += '</tr></thead><tbody>';
+
+  _sr.forEach(function(o) {
+    var revColor = o.revenue > 5000 ? 'color:var(--green)' : o.revenue > 2000 ? 'color:var(--gold)' : '';
+    var statusBadge = o.status === 'D' ? 'vg' : o.status === 'A' ? 'vy' : '';
+    html += '<tr>';
+    html += '<td><strong>'+o.id+'</strong></td>';
+    html += '<td>'+o.order_type+'</td>';
+    html += '<td>'+o.customer_id+'</td>';
+    html += '<td style="'+revColor+'"><strong>$'+o.revenue.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'</strong></td>';
+    html += '<td>'+(o.miles?parseFloat(o.miles).toFixed(0):'')+'</td>';
+    html += '<td>'+(o.weight?parseFloat(o.weight).toLocaleString():'')+'</td>';
+    html += '<td>'+o.equipment+'</td>';
+    html += '<td><span class="'+statusBadge+'" style="font-size:11px;font-weight:700">'+o.status_descr+'</span></td>';
+    html += '<td>'+o.ordered_date+'</td>';
+    html += '<td>'+o.blnum+'</td>';
+    html += '<td>'+o.ops_user+'</td>';
+    html += '</tr>';
+  });
+
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+
+function exportSales() {
+  if(!_sr.length) return;
+  var rows = [['Order#','Type','Customer','Revenue','Total Charge','Miles','Weight','Commodity','Equipment','Status','Ordered Date','BOL','Ops User','Entered By','Revenue Code']];
+  _sr.forEach(function(o){
+    rows.push([o.id,o.order_type,o.customer_id,o.revenue.toFixed(2),o.total_charge.toFixed(2),o.miles,o.weight,o.commodity,o.equipment,o.status_descr,o.ordered_date,o.blnum,o.ops_user,o.entered_by,o.revenue_code]);
+  });
+  var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='Meiborg_Sales_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+
+function rawReportSales() {
+  if(!_sr.length) return;
+  exportSales(); // Same data - raw report = full CSV
 }
 
 </script></body></html>
