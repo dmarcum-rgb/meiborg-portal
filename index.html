@@ -163,17 +163,15 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="nl" id="nl-wh-inv" onclick="showPanel('wh-inv','Warehouse','Inventory')"><span class="ni">📦</span>Inventory</div>
 <div class="nl" id="nl-wh-ord" onclick="showPanel('wh-ord','Warehouse','Orders')"><span class="ni">📋</span>Orders</div>
 </div>
-<div class="dept" id="dh-reception" onclick="showPanel('reception','','Reception')"><span class="di">🏢</span><span class="dl">Reception</span></div>
+<div class="dept" id="dh-reception" onclick="tDept('reception')"><span class="di">🏢</span><span class="dl">Reception</span><span class="dc">&#9654;</span></div>
+<div class="sub" id="ds-reception">
+<div class="nl" id="nl-reception-main" onclick="showPanel('reception','Reception','Reception')"><span class="ni">🏢</span>Reception</div>
+<div class="nl" id="nl-reception-booking" onclick="showPanel('bookings','Reception','Massage Booking')"><span class="ni">📅</span>Massage Booking</div>
+</div>
 <div class="dept" id="dh-mkt" onclick="tDept('mkt')"><span class="di">📣</span><span class="dl">Marketing</span><span class="dc">&#9658;</span></div>
 <div class="sub" id="ds-mkt">
 <div class="nl" id="nl-mkt-camp" onclick="showPanel('mkt-camp','Marketing','Campaigns')"><span class="ni">🎯</span>Campaigns</div>
 <div class="nl" id="nl-mkt-ana" onclick="showPanel('mkt-ana','Marketing','Analytics')"><span class="ni">📊</span>Analytics</div>
-</div>
-<div class="dept" id="dh-ai" onclick="tDept('ai')"><span class="di">🤖</span><span class="dl">AI</span><span class="dc">&#9658;</span></div>
-<div class="sub" id="ds-ai">
-<div class="nl" id="nl-ai-ins" onclick="showPanel('ai-ins','AI','Insights')"><span class="ni">💡</span>Insights</div>
-<div class="nl" id="nl-ai-frc" onclick="showPanel('ai-frc','AI','Forecasting')"><span class="ni">🔮</span>Forecasting</div>
-<div class="nl" id="nl-ai-auto" onclick="showPanel('ai-auto','AI','Automation')"><span class="ni">⚡</span>Automation</div>
 </div>
 </nav>
 <div id="sb-foot"><div class="sf-nm" id="sf-nm"><span class="dot dot-off" id="sf-dot"></span><span id="sf-user">Not signed in</span></div><div class="sf-rl">Meiborg Bros &middot; Production</div></div>
@@ -181,7 +179,6 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div id="main">
 <div id="topbar"><div><div class="tb-br" id="tbr">Accounting</div><div class="tb-ti" id="tbt">Accounts Receivable</div></div>
 <div class="tb-rt"><div id="tbclock" style="font-size:12px"></div><div class="tb-st" id="tms-status" onclick="doLogout()"><span class="dot dot-off" id="tms-dot"></span><span id="tms-lbl">Not connected</span></div></div></div>
-        <div class="dept" id="dh-bookings" onclick="showPanel('bookings','','Bookings')"><span class="di">📅</span><span class="dl">Bookings</span><span class="dc">▶</span></div>
 <div id="content">
 
 <div class="panel active" id="panel-ar">
@@ -293,12 +290,9 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="panel" id="panel-reception"><div class="cs"><div class="cse">🏢</div><div class="cst">Reception</div><div class="csd">Visitor log and front desk tools.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-mkt-camp"><div class="cs"><div class="cse">🎯</div><div class="cst">Campaigns</div><div class="csd">Marketing campaigns and performance tracking.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-mkt-ana"><div class="cs"><div class="cse">📊</div><div class="cst">Analytics</div><div class="csd">Website traffic and lead sources.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-ai-ins"><div class="cs"><div class="cse">💡</div><div class="cst">AI Insights</div><div class="csd">AI-powered AR aging analysis and risk flags.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-ai-frc"><div class="cs"><div class="cse">🔮</div><div class="cst">Forecasting</div><div class="csd">Revenue forecasting and collections predictions.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-ai-auto"><div class="cs"><div class="cse">⚡</div><div class="cst">Automation</div><div class="csd">Automated reports, alerts and workflow triggers.</div><span class="csp">Coming Soon</span></div></div>
 </div>
 
-<div class="panel" id="panel-bookings"><div class="panel-header"><h2>📅 Bookings</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div><script>
+<div class="panel" id="panel-bookings"><div class="panel-header"><h2>📅 Massage Booking</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div><script>
 var BASE='https://tms.meiborginc.com/ws';
 var _token='';var _user='';
 var _ar=[];var _run=false;
