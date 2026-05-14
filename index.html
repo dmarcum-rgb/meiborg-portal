@@ -173,6 +173,11 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="nl" id="nl-mkt-camp" onclick="showPanel('mkt-camp','Marketing','Campaigns')"><span class="ni">🎯</span>Campaigns</div>
 <div class="nl" id="nl-mkt-ana" onclick="showPanel('mkt-ana','Marketing','Analytics')"><span class="ni">📊</span>Analytics</div>
 </div>
+
+<div class="dept" id="dh-mcleod" onclick="tDept('mcleod')"><span class="di">🔄</span><span class="dl">McLeod Reports</span><span class="dc">▶</span></div>
+<div class="sub" id="ds-mcleod">
+<div class="nl" id="nl-mcleod-rpt" onclick="showPanel('mcleod-rpt','McLeod','Reports')"><span class="ni">📊</span>Pull Reports</div>
+</div>
 </nav>
 <div id="sb-foot"><div class="sf-nm" id="sf-nm"><span class="dot dot-off" id="sf-dot"></span><span id="sf-user">Not signed in</span></div><div class="sf-rl">Meiborg Bros &middot; Production</div></div>
 </div>
@@ -292,7 +297,114 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="panel" id="panel-mkt-ana"><div class="cs"><div class="cse">📊</div><div class="cst">Analytics</div><div class="csd">Website traffic and lead sources.</div><span class="csp">Coming Soon</span></div></div>
 </div>
 
-<div class="panel" id="panel-bookings"><div class="panel-header"><h2>📅 Massage Booking</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div><script>
+<div class="panel" id="panel-bookings"><div class="panel-header"><h2>📅 Massage Booking</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div>
+<div class="panel" id="panel-mcleod-rpt">
+
+<!-- ===== STYLES for McLeod Reports ===== -->
+<style>
+.mr-hero{background:linear-gradient(135deg,var(--navy-dark),var(--navy-mid));border:1px solid var(--border);border-radius:14px;padding:32px 36px;text-align:center;margin-bottom:22px;position:relative;overflow:hidden}
+.mr-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(245,184,0,.08),transparent 70%);pointer-events:none}
+.mr-hero-title{font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px}
+.mr-hero-sub{font-size:13px;color:var(--dim);margin-bottom:24px}
+.mr-pull-btn{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;border:none;border-radius:10px;padding:14px 40px;font-size:15px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;font-family:"Inter",sans-serif;box-shadow:0 4px 20px rgba(245,184,0,.4);transition:all .2s}
+.mr-pull-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(245,184,0,.5)}
+.mr-pull-btn:disabled{background:var(--bg3);color:var(--dim);box-shadow:none;transform:none;cursor:not-allowed}
+.mr-pull-btn .spin{display:none}.mr-pull-btn.loading .spin{display:inline-block;animation:spin .8s linear infinite}
+.mr-pull-btn.loading .ico{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mr-status{font-size:12px;color:var(--dim);margin-top:12px;min-height:18px}
+.mr-status.ok{color:var(--green)}.mr-status.err{color:var(--red)}
+.mr-progress{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:12px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;display:none}
+.mr-progress.show{display:block}
+.mr-pfill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:2px;transition:width .3s}
+.mr-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px}
+.mr-tab{padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.mr-tab:hover{color:var(--text)}.mr-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.mr-tab-badge{background:var(--bg3);color:var(--dim);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center}
+.mr-tab.active .mr-tab-badge{background:rgba(245,184,0,.15);color:var(--gold)}
+.mr-pane{display:none}.mr-pane.active{display:block}
+.dept-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.dept-section-header{display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;background:var(--bg3);border-bottom:1px solid var(--border)}
+.dept-section-icon{font-size:18px;width:28px;text-align:center}
+.dept-section-title{font-size:15px;font-weight:800;color:var(--text);flex:1}
+.dept-section-meta{font-size:11px;color:var(--dim);margin-right:8px}
+.dept-section-toggle{font-size:10px;color:var(--dim);transition:transform .2s}.dept-section-toggle.open{transform:rotate(90deg);color:var(--gold)}
+.dept-section-body{display:none;padding:16px 20px}.dept-section-body.open{display:block}
+.dept-stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.dept-stat{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.dept-stat-lbl{font-size:10px;text-transform:uppercase;color:var(--dim);letter-spacing:.7px;font-weight:600;margin-bottom:5px}
+.dept-stat-val{font-size:22px;font-weight:800;color:var(--text)}
+.dept-stat-val.gold{color:var(--gold)}.dept-stat-val.grn{color:var(--green)}.dept-stat-val.red{color:var(--red)}.dept-stat-val.blue{color:#60A5FA}
+.dept-table-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;max-height:320px;overflow-y:auto}
+.dept-table-wrap::-webkit-scrollbar{width:5px}.dept-table-wrap::-webkit-scrollbar-thumb{background:var(--border)}
+.dept-table{width:100%;border-collapse:collapse;font-size:12px}
+.dept-table th{background:var(--bg3);color:var(--dim);padding:8px 12px;text-align:left;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);position:sticky;top:0}
+.dept-table td{padding:8px 12px;border-bottom:1px solid rgba(30,42,80,.5);color:var(--text)}
+.dept-table tr:last-child td{border-bottom:none}
+.dept-table tr:hover td{background:var(--bg2)}
+.mr-empty{text-align:center;padding:48px 20px;color:var(--dim)}
+.mr-empty-icon{font-size:40px;margin-bottom:12px;opacity:.4}
+.mr-empty-text{font-size:14px;font-weight:600;color:var(--dim)}
+.raw-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.raw-tab{background:var(--bg3);border:1px solid var(--border);color:var(--dim);padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.raw-tab:hover{color:var(--text)}.raw-tab.active{background:rgba(245,184,0,.12);color:var(--gold);border-color:rgba(245,184,0,.3)}
+.raw-pane{display:none}.raw-pane.active{display:block}
+.raw-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.raw-copy-btn{background:var(--bg3);border:1px solid var(--border);color:var(--dim);padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;font-family:"Inter",sans-serif}
+.raw-copy-btn:hover{color:var(--text);border-color:var(--gold)}
+.raw-count{font-size:11px;color:var(--dim)}
+.raw-pre{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:monospace;font-size:11px;color:#A8B5CF;max-height:420px;overflow-y:auto;overflow-x:auto;white-space:pre;line-height:1.5}
+.raw-pre::-webkit-scrollbar{width:5px;height:5px}.raw-pre::-webkit-scrollbar-thumb{background:var(--border)}
+.mr-last-pull{font-size:11px;color:var(--dim);text-align:right;margin-bottom:16px}
+</style>
+
+<!-- Hero Pull Section -->
+<div class="mr-hero">
+<div class="mr-hero-title">McLeod TMS Reports</div>
+<div class="mr-hero-sub">Pull live data from McLeod across all departments in one click</div>
+<button class="mr-pull-btn" id="mr-pull-btn" onclick="mrPullAll()">
+<span class="ico">🔄</span>
+<span class="spin">⏳</span>
+Pull All Reports
+</button>
+<div class="mr-progress" id="mr-progress"><div class="mr-pfill" id="mr-pfill" style="width:0%"></div></div>
+<div class="mr-status" id="mr-status">Ready to pull</div>
+</div>
+
+<!-- Last pull timestamp -->
+<div class="mr-last-pull" id="mr-last-pull"></div>
+
+<!-- Main Tabs -->
+<div class="mr-tabs">
+<div class="mr-tab active" id="mr-tab-dept" onclick="mrSwitchTab('dept')">📊 By Department <span class="mr-tab-badge" id="mr-badge-dept">—</span></div>
+<div class="mr-tab" id="mr-tab-raw" onclick="mrSwitchTab('raw')">🗂️ Raw Data <span class="mr-tab-badge" id="mr-badge-raw">—</span></div>
+</div>
+
+<!-- DEPT PANE -->
+<div class="mr-pane active" id="mr-pane-dept">
+<div id="mr-dept-empty" class="mr-empty">
+<div class="mr-empty-icon">📦</div>
+<div class="mr-empty-text">No data yet — click Pull All Reports to load</div>
+</div>
+<div id="mr-dept-content" style="display:none">
+<!-- Sections injected by JS -->
+</div>
+</div>
+
+<!-- RAW PANE -->
+<div class="mr-pane" id="mr-pane-raw">
+<div id="mr-raw-empty" class="mr-empty">
+<div class="mr-empty-icon">🗂️</div>
+<div class="mr-empty-text">No data yet — click Pull All Reports to load</div>
+</div>
+<div id="mr-raw-content" style="display:none">
+<div class="raw-tabs" id="mr-raw-tabs"></div>
+<div id="mr-raw-panes"></div>
+</div>
+</div>
+
+</div><!-- end panel-mcleod-rpt -->
+<script>
 var BASE='https://tms.meiborginc.com/ws';
 var _token='';var _user='';
 var _ar=[];var _run=false;
@@ -1350,4 +1462,242 @@ function pushMonthlyToSheets() {
   });
 }
 
+
+
+// ========== McLeod Reports ==========
+const MR_PULLS = [
+  { key:'orders',    label:'Orders',      icon:'📦', dept:'Dispatch / Operations', endpoint:'orders/search',    params:{status:'A,D,C,P', rowCount:200} },
+  { key:'movements', label:'Movements',   icon:'🚛', dept:'Dispatch / Operations', endpoint:'movements/search', params:{rowCount:200} },
+  { key:'drivers',   label:'Drivers',     icon:'👤', dept:'Fleet',                 endpoint:'driver/search',    params:{rowCount:200} },
+  { key:'tractors',  label:'Tractors',    icon:'🚜', dept:'Fleet',                 endpoint:'tractor/search',   params:{rowCount:200} },
+  { key:'trailers',  label:'Trailers',    icon:'🔗', dept:'Fleet',                 endpoint:'trailer/search',   params:{rowCount:200} },
+  { key:'carriers',  label:'Carriers',    icon:'🏢', dept:'Carrier Management',    endpoint:'carrier/search',   params:{rowCount:200} },
+  { key:'customers', label:'Customers',   icon:'🤝', dept:'Sales / Customers',     endpoint:'customer/search',  params:{rowCount:200} },
+  { key:'settlements',label:'Settlements',icon:'💰', dept:'Accounting',            endpoint:'settlements/search',params:{rowCount:200} },
+  { key:'payroll',   label:'Payroll',     icon:'💵', dept:'Accounting',            endpoint:'payroll/deductCodes',params:{} },
+];
+
+let mrRawData = {};
+let mrToken = '';
+let mrCompany = 'TMS';
+
+function mrGetCreds() {
+  mrToken = sessionStorage.getItem('mcleod_token') || '';
+  mrCompany = sessionStorage.getItem('mcleod_company') || 'TMS';
+}
+
+async function mrFetch(endpoint, params={}) {
+  const qs = Object.keys(params).length ? '?' + new URLSearchParams(params).toString() : '';
+  const url = '/api/mcleod?path=' + endpoint + (qs ? '&' + new URLSearchParams(params).toString() : '');
+  const headers = { 'Content-Type':'application/json' };
+  if (mrToken) { headers['x-mcleod-token'] = mrToken; headers['x-mcleod-company'] = mrCompany; }
+  const resp = await fetch(url, { headers });
+  if (!resp.ok) { const t = await resp.text(); throw new Error(resp.status + ': ' + t.slice(0,120)); }
+  const ct = resp.headers.get('content-type') || '';
+  return ct.includes('json') ? resp.json() : resp.text();
+}
+
+async function mrPullAll() {
+  mrGetCreds();
+  const btn = document.getElementById('mr-pull-btn');
+  const status = document.getElementById('mr-status');
+  const prog = document.getElementById('mr-progress');
+  const pfill = document.getElementById('mr-pfill');
+  if (!btn) return;
+  btn.disabled = true;
+  btn.classList.add('loading');
+  prog.classList.add('show');
+  mrRawData = {};
+  const total = MR_PULLS.length;
+  let done = 0, errors = 0;
+  for (const pull of MR_PULLS) {
+    status.textContent = 'Pulling ' + pull.label + '...';
+    status.className = 'mr-status';
+    try {
+      const data = await mrFetch(pull.endpoint, pull.params);
+      mrRawData[pull.key] = { label:pull.label, icon:pull.icon, dept:pull.dept, data, error:null };
+    } catch(e) {
+      mrRawData[pull.key] = { label:pull.label, icon:pull.icon, dept:pull.dept, data:null, error:e.message };
+      errors++;
+    }
+    done++;
+    pfill.style.width = Math.round((done/total)*100) + '%';
+  }
+  btn.disabled = false;
+  btn.classList.remove('loading');
+  if (errors === 0) { status.textContent = 'All reports pulled successfully ✓'; status.className = 'mr-status ok'; }
+  else { status.textContent = errors + ' endpoint(s) failed — check Raw Data tab for details'; status.className = 'mr-status err'; }
+  const now = new Date();
+  const lastPull = document.getElementById('mr-last-pull');
+  if (lastPull) lastPull.textContent = 'Last pulled: ' + now.toLocaleString();
+  mrRenderDept();
+  mrRenderRaw();
+  const totalRecords = Object.values(mrRawData).reduce((acc,v) => acc + mrCountRecords(v.data), 0);
+  const dBadge = document.getElementById('mr-badge-dept');
+  const rBadge = document.getElementById('mr-badge-raw');
+  if (dBadge) dBadge.textContent = totalRecords.toLocaleString();
+  if (rBadge) rBadge.textContent = MR_PULLS.length;
+}
+
+function mrCountRecords(data) {
+  if (!data) return 0;
+  if (Array.isArray(data)) return data.length;
+  if (typeof data === 'object') {
+    const arr = data.data || data.results || data.rows || data.items || data.list || Object.values(data).find(v => Array.isArray(v));
+    if (Array.isArray(arr)) return arr.length;
+    return 1;
+  }
+  return 0;
+}
+
+function mrExtractRows(data) {
+  if (!data) return [];
+  if (Array.isArray(data)) return data;
+  if (typeof data === 'object') {
+    const arr = data.data || data.results || data.rows || data.items || data.list || Object.values(data).find(v => Array.isArray(v));
+    if (Array.isArray(arr)) return arr;
+    return [data];
+  }
+  return [];
+}
+
+function mrRenderDept() {
+  const empty = document.getElementById('mr-dept-empty');
+  const content = document.getElementById('mr-dept-content');
+  if (!empty || !content) return;
+  // Group by dept
+  const depts = {};
+  for (const [key, v] of Object.entries(mrRawData)) {
+    if (!depts[v.dept]) depts[v.dept] = [];
+    depts[v.dept].push({ key, ...v });
+  }
+  const deptIcons = {
+    'Dispatch / Operations':'🚚', 'Fleet':'🚛', 'Carrier Management':'🏢',
+    'Sales / Customers':'📈', 'Accounting':'💰'
+  };
+  let html = '';
+  for (const [deptName, items] of Object.entries(depts)) {
+    const icon = deptIcons[deptName] || '📋';
+    const totalRecs = items.reduce((a,v) => a + mrCountRecords(v.data), 0);
+    const hasError = items.some(v => v.error);
+    html += '<div class="dept-section">';
+    html += '<div class="dept-section-header" onclick="mrToggleDeptSection(this)">';
+    html += '<span class="dept-section-icon">' + icon + '</span>';
+    html += '<span class="dept-section-title">' + deptName + '</span>';
+    html += '<span class="dept-section-meta">' + totalRecs.toLocaleString() + ' records</span>';
+    if (hasError) html += '<span style="color:var(--red);font-size:11px;margin-right:8px">⚠ some errors</span>';
+    html += '<span class="dept-section-toggle">▶</span>';
+    html += '</div>';
+    html += '<div class="dept-section-body">';
+    // Summary stats
+    html += '<div class="dept-stat-row">';
+    for (const item of items) {
+      const cnt = mrCountRecords(item.data);
+      html += '<div class="dept-stat">';
+      html += '<div class="dept-stat-lbl">' + item.icon + ' ' + item.label + '</div>';
+      html += '<div class="dept-stat-val ' + (item.error ? 'red' : cnt > 0 ? 'grn' : '') + '">' + (item.error ? 'Error' : cnt.toLocaleString()) + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+    // Tables for each item
+    for (const item of items) {
+      html += '<div style="margin-bottom:16px">';
+      html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">' + item.icon + ' ' + item.label + '</div>';
+      if (item.error) {
+        html += '<div style="background:var(--red-bg);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red)">' + item.error + '</div>';
+      } else {
+        const rows = mrExtractRows(item.data);
+        if (rows.length === 0) {
+          html += '<div style="color:var(--dim);font-size:12px;padding:8px 0">No records returned</div>';
+        } else {
+          const cols = Object.keys(rows[0]).filter(k => !k.startsWith('__')).slice(0, 8);
+          html += '<div class="dept-table-wrap"><table class="dept-table"><thead><tr>';
+          for (const col of cols) html += '<th>' + col + '</th>';
+          html += '</tr></thead><tbody>';
+          for (const row of rows.slice(0, 50)) {
+            html += '<tr>';
+            for (const col of cols) {
+              const val = row[col] != null ? String(row[col]).slice(0,40) : '';
+              html += '<td>' + val.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</td>';
+            }
+            html += '</tr>';
+          }
+          html += '</tbody></table></div>';
+          if (rows.length > 50) html += '<div style="font-size:11px;color:var(--dim);margin-top:6px">Showing 50 of ' + rows.length + ' records — see Raw Data tab for full set</div>';
+        }
+      }
+      html += '</div>';
+    }
+    html += '</div></div>';
+  }
+  content.innerHTML = html;
+  empty.style.display = 'none';
+  content.style.display = 'block';
+}
+
+function mrToggleDeptSection(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.dept-section-toggle');
+  if (!body) return;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if (toggle) toggle.classList.toggle('open', !isOpen);
+}
+
+function mrRenderRaw() {
+  const empty = document.getElementById('mr-raw-empty');
+  const content = document.getElementById('mr-raw-content');
+  const tabsEl = document.getElementById('mr-raw-tabs');
+  const panesEl = document.getElementById('mr-raw-panes');
+  if (!empty || !content || !tabsEl || !panesEl) return;
+  const keys = Object.keys(mrRawData);
+  if (keys.length === 0) return;
+  let tabsHTML = '', panesHTML = '';
+  keys.forEach((key, i) => {
+    const v = mrRawData[key];
+    const isActive = i === 0;
+    tabsHTML += '<div class="raw-tab' + (isActive ? ' active' : '') + '" id="raw-tab-' + key + '" onclick="mrSwitchRawTab(\'' + key + '\')">' + v.icon + ' ' + v.label + '</div>';
+    const cnt = mrCountRecords(v.data);
+    const jsonStr = v.error ? ('ERROR: ' + v.error) : JSON.stringify(v.data, null, 2);
+    panesHTML += '<div class="raw-pane' + (isActive ? ' active' : '') + '" id="raw-pane-' + key + '">';
+    panesHTML += '<div class="raw-toolbar">';
+    panesHTML += '<span class="raw-count">' + (v.error ? '<span style="color:var(--red)">⚠ Error</span>' : cnt.toLocaleString() + ' records') + '</span>';
+    panesHTML += '<button class="raw-copy-btn" onclick="mrCopyRaw(\'' + key + '\')">📋 Copy JSON</button>';
+    panesHTML += '</div>';
+    panesHTML += '<pre class="raw-pre" id="raw-json-' + key + '">' + jsonStr.replace(/</g,'&lt;').replace(/>/g,'&gt;').slice(0, 60000) + '</pre>';
+    panesHTML += '</div>';
+  });
+  tabsEl.innerHTML = tabsHTML;
+  panesEl.innerHTML = panesHTML;
+  empty.style.display = 'none';
+  content.style.display = 'block';
+}
+
+function mrSwitchRawTab(key) {
+  document.querySelectorAll('.raw-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.raw-pane').forEach(p => p.classList.remove('active'));
+  const tab = document.getElementById('raw-tab-' + key);
+  const pane = document.getElementById('raw-pane-' + key);
+  if (tab) tab.classList.add('active');
+  if (pane) pane.classList.add('active');
+}
+
+function mrCopyRaw(key) {
+  const pre = document.getElementById('raw-json-' + key);
+  if (!pre) return;
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    const btn = pre.previousElementSibling ? pre.previousElementSibling.querySelector('.raw-copy-btn') : null;
+    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = '📋 Copy JSON', 1500); }
+  });
+}
+
+function mrSwitchTab(tab) {
+  document.querySelectorAll('.mr-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mr-pane').forEach(p => p.classList.remove('active'));
+  const tabEl = document.getElementById('mr-tab-' + tab);
+  const paneEl = document.getElementById('mr-pane-' + tab);
+  if (tabEl) tabEl.classList.add('active');
+  if (paneEl) paneEl.classList.add('active');
+}
+// ========== End McLeod Reports ==========
 </script></body></html>
