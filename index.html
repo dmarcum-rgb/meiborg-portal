@@ -174,11 +174,10 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="nl" id="nl-mkt-ana" onclick="showPanel('mkt-ana','Marketing','Analytics')"><span class="ni">ð</span>Analytics</div>
 </div>
 
-<div class="dept" id="dh-mcleod" onclick="tDept('mcleod')"><span class="di">ð</span><span class="dl">McLeod Reports</span><span class="dc">â¶</span></div>
+<div class="dept" id="dh-mcleod" onclick="tDept('mcleod')"><span class="di" style="font-size:14px;opacity:.8">TMS</span><span class="dl">McLeod Reports</span><span class="dc" style="font-family:sans-serif">&#x25BE;</span></div>
 <div class="sub" id="ds-mcleod">
-<div class="nl" id="nl-mcleod-rpt" onclick="showPanel('mcleod-rpt','McLeod','Reports')"><span class="ni">ð</span>Pull Reports</div>
-</div>
-</nav>
+<div class="nl" id="nl-mcleod-rpt" onclick="showPanel('mcleod-rpt','McLeod','Reports')"><span class="ni" style="font-size:11px;font-weight:700;color:var(--gold)">&#x25B6;</span>Pull Reports</div>
+</div></nav>
 <div id="sb-foot"><div class="sf-nm" id="sf-nm"><span class="dot dot-off" id="sf-dot"></span><span id="sf-user">Not signed in</span></div><div class="sf-rl">Meiborg Bros &middot; Production</div></div>
 </div>
 <div id="main">
@@ -298,238 +297,360 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 </div>
 
 <div class="panel" id="panel-bookings"><div class="panel-header"><h2>ð Massage Booking</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div>
-<style>#panel-mcleod-rpt{min-width:0;width:100%}</style>
-<div class="panel" id="panel-mcleod-rpt">
-
-<!-- ===== STYLES for McLeod Reports ===== -->
 <style>
-.mr-hero{background:linear-gradient(135deg,var(--navy-dark),var(--navy-mid));border:1px solid var(--border);border-radius:14px;padding:32px 36px;text-align:center;margin-bottom:22px;position:relative;overflow:hidden}
-.mr-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(245,184,0,.08),transparent 70%);pointer-events:none}
-.mr-hero-title{font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px}
-.mr-hero-sub{font-size:13px;color:var(--dim);margin-bottom:24px}
-.mr-pull-btn{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;border:none;border-radius:10px;padding:14px 40px;font-size:15px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:10px;font-family:"Inter",sans-serif;box-shadow:0 4px 20px rgba(245,184,0,.4);transition:all .2s}
-.mr-pull-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(245,184,0,.5)}
-.mr-pull-btn:disabled{background:var(--bg3);color:var(--dim);box-shadow:none;transform:none;cursor:not-allowed}
-.mr-pull-btn .spin{display:none}.mr-pull-btn.loading .spin{display:inline-block;animation:spin .8s linear infinite}
-.mr-pull-btn.loading .ico{display:none}
-@keyframes spin{to{transform:rotate(360deg)}}
-.mr-status{font-size:12px;color:var(--dim);margin-top:12px;min-height:18px}
-.mr-status.ok{color:var(--green)}.mr-status.err{color:var(--red)}
-.mr-progress{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:12px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;display:none}
-.mr-progress.show{display:block}
-.mr-pfill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:2px;transition:width .3s}
-.mr-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px}
-.mr-tab{padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:6px}
-.mr-tab:hover{color:var(--text)}.mr-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-.mr-tab-badge{background:var(--bg3);color:var(--dim);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center}
-.mr-tab.active .mr-tab-badge{background:rgba(245,184,0,.15);color:var(--gold)}
-.mr-pane{display:none}.mr-pane.active{display:block}
-.dept-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}
-.dept-section-header{display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;background:var(--bg3);border-bottom:1px solid var(--border)}
-.dept-section-icon{font-size:18px;width:28px;text-align:center}
-.dept-section-title{font-size:15px;font-weight:800;color:var(--text);flex:1}
-.dept-section-meta{font-size:11px;color:var(--dim);margin-right:8px}
-.dept-section-toggle{font-size:10px;color:var(--dim);transition:transform .2s}.dept-section-toggle.open{transform:rotate(90deg);color:var(--gold)}
-.dept-section-body{display:none;padding:16px 20px}.dept-section-body.open{display:block}
-.dept-stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px}
-.dept-stat{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
-.dept-stat-lbl{font-size:10px;text-transform:uppercase;color:var(--dim);letter-spacing:.7px;font-weight:600;margin-bottom:5px}
-.dept-stat-val{font-size:22px;font-weight:800;color:var(--text)}
-.dept-stat-val.gold{color:var(--gold)}.dept-stat-val.grn{color:var(--green)}.dept-stat-val.red{color:var(--red)}.dept-stat-val.blue{color:#60A5FA}
-.dept-table-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;max-height:320px;overflow-y:auto}
-.dept-table-wrap::-webkit-scrollbar{width:5px}.dept-table-wrap::-webkit-scrollbar-thumb{background:var(--border)}
-.dept-table{width:100%;border-collapse:collapse;font-size:12px}
-.dept-table th{background:var(--bg3);color:var(--dim);padding:8px 12px;text-align:left;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);position:sticky;top:0}
-.dept-table td{padding:8px 12px;border-bottom:1px solid rgba(30,42,80,.5);color:var(--text)}
-.dept-table tr:last-child td{border-bottom:none}
-.dept-table tr:hover td{background:var(--bg2)}
-.mr-empty{text-align:center;padding:48px 20px;color:var(--dim)}
-.mr-empty-icon{font-size:40px;margin-bottom:12px;opacity:.4}
-.mr-empty-text{font-size:14px;font-weight:600;color:var(--dim)}
-.raw-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.raw-tab{background:var(--bg3);border:1px solid var(--border);color:var(--dim);padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
-.raw-tab:hover{color:var(--text)}.raw-tab.active{background:rgba(245,184,0,.12);color:var(--gold);border-color:rgba(245,184,0,.3)}
-.raw-pane{display:none}.raw-pane.active{display:block}
-.raw-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.raw-copy-btn{background:var(--bg3);border:1px solid var(--border);color:var(--dim);padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;font-family:"Inter",sans-serif}
-.raw-copy-btn:hover{color:var(--text);border-color:var(--gold)}
-.raw-count{font-size:11px;color:var(--dim)}
-.raw-pre{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:monospace;font-size:11px;color:#A8B5CF;max-height:420px;overflow-y:auto;overflow-x:auto;white-space:pre;line-height:1.5}
-.raw-pre::-webkit-scrollbar{width:5px;height:5px}.raw-pre::-webkit-scrollbar-thumb{background:var(--border)}
-.mr-last-pull{font-size:11px;color:var(--dim);text-align:right;margin-bottom:16px}
+#panel-mcleod-rpt{min-width:0;width:100%}
+.mr-wrap{padding:28px 32px;font-family:"Inter",sans-serif;color:var(--text)}
+.mr-hero-bar{background:linear-gradient(135deg,#0a1628 0%,#0d1f3c 50%,#132947 100%);border-radius:16px;padding:32px 40px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:24px;border:1px solid rgba(245,184,0,.18);box-shadow:0 4px 32px rgba(0,0,0,.4)}
+.mr-hero-left h1{font-size:28px;font-weight:700;color:#fff;margin:0 0 6px 0;letter-spacing:-.3px}
+.mr-hero-left p{font-size:13px;color:rgba(255,255,255,.55);margin:0}
+.mr-pull-btn{background:linear-gradient(135deg,#F5B800,#FFD740);color:#0a1628;font-weight:700;font-size:15px;padding:14px 32px;border:none;border-radius:10px;cursor:pointer;letter-spacing:.3px;transition:all .2s;white-space:nowrap;box-shadow:0 4px 16px rgba(245,184,0,.3)}
+.mr-pull-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(245,184,0,.45)}
+.mr-pull-btn:active{transform:translateY(0);box-shadow:none}
+.mr-pull-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.mr-progress-wrap{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:16px;overflow:hidden;display:none}
+.mr-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#F5B800,#FFD740);border-radius:2px;transition:width .3s}
+.mr-status-msg{font-size:12px;margin-top:8px;color:rgba(255,255,255,.55);display:none}
+.mr-status-msg.ok{color:#22c55e}
+.mr-status-msg.err{color:#ef4444}
+.mr-tabs{display:flex;gap:6px;margin-bottom:24px;border-bottom:2px solid rgba(255,255,255,.07);padding-bottom:0}
+.mr-tab{padding:10px 20px;font-size:13px;font-weight:600;color:rgba(255,255,255,.45);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;border-radius:6px 6px 0 0;letter-spacing:.2px}
+.mr-tab:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.04)}
+.mr-tab.active{color:#F5B800;border-bottom-color:#F5B800;background:rgba(245,184,0,.06)}
+.mr-tab-cnt{display:inline-block;background:rgba(245,184,0,.15);color:#F5B800;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.mr-pane{display:none}
+.mr-pane.active{display:block}
+.mr-dept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:28px}
+.mr-kpi-card{background:#0d1f3c;border:1px solid rgba(245,184,0,.12);border-radius:12px;padding:20px 24px;transition:border-color .2s}
+.mr-kpi-card:hover{border-color:rgba(245,184,0,.3)}
+.mr-kpi-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px}
+.mr-kpi-value{font-size:36px;font-weight:700;color:#F5B800;line-height:1;margin-bottom:4px}
+.mr-kpi-sub{font-size:12px;color:rgba(255,255,255,.35)}
+.mr-section{margin-bottom:32px}
+.mr-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.07)}
+.mr-section-badge{background:rgba(245,184,0,.12);color:#F5B800;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:.5px}
+.mr-section-count{font-size:12px;color:rgba(255,255,255,.35)}
+.mr-dept-label{display:inline-flex;align-items:center;gap:6px;background:rgba(245,184,0,.08);border:1px solid rgba(245,184,0,.15);color:#FFD740;font-size:12px;font-weight:600;padding:4px 12px;border-radius:6px;text-transform:uppercase;letter-spacing:.8px}
+.mr-table-wrap{background:#0a1628;border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden;overflow-x:auto}
+.mr-table{width:100%;border-collapse:collapse;font-size:12px}
+.mr-table thead tr{background:rgba(245,184,0,.07);border-bottom:1px solid rgba(245,184,0,.15)}
+.mr-table thead th{padding:10px 14px;text-align:left;color:#F5B800;font-weight:600;font-size:11px;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap}
+.mr-table tbody tr{border-bottom:1px solid rgba(255,255,255,.03);transition:background .1s}
+.mr-table tbody tr:hover{background:rgba(255,255,255,.03)}
+.mr-table tbody td{padding:9px 14px;color:rgba(255,255,255,.75);white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.mr-badge-active{background:rgba(34,197,94,.12);color:#22c55e;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
+.mr-badge-dispatched{background:rgba(59,130,246,.12);color:#60a5fa;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
+.mr-badge-pending{background:rgba(245,184,0,.12);color:#F5B800;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
+.mr-badge-default{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
+.mr-no-data{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;color:rgba(255,255,255,.25);text-align:center}
+.mr-no-data p{margin:12px 0 0;font-size:13px}
+.mr-raw-section{margin-bottom:24px;background:#0a1628;border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden}
+.mr-raw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);background:#0d1f3c}
+.mr-raw-title{font-size:13px;font-weight:600;color:#fff}
+.mr-raw-meta{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
+.mr-raw-copy{background:rgba(245,184,0,.1);border:1px solid rgba(245,184,0,.2);color:#F5B800;font-size:11px;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s}
+.mr-raw-copy:hover{background:rgba(245,184,0,.2)}
+.mr-raw-body{padding:16px 20px;overflow-x:auto;max-height:400px;overflow-y:auto}
+.mr-raw-body pre{margin:0;font-family:"Courier New",monospace;font-size:11px;color:rgba(255,255,255,.6);line-height:1.5;white-space:pre-wrap;word-break:break-all}
+.mr-summary-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.mr-summary-pill{background:#0d1f3c;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px 18px;font-size:12px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:8px}
+.mr-summary-pill strong{color:#F5B800;font-size:18px;font-weight:700}
 </style>
-
-<!-- Hero Pull Section -->
-<div class="mr-hero">
-<div class="mr-hero-title">McLeod TMS Reports</div>
-<div class="mr-hero-sub">Pull live data from McLeod across all departments in one click</div>
-<button class="mr-pull-btn" id="mr-pull-btn" onclick="mrPullAll()">
-<span class="ico">ð</span>
-<span class="spin">â³</span>
-Pull All Reports
-</button>
-<div class="mr-progress" id="mr-progress"><div class="mr-pfill" id="mr-pfill" style="width:0%"></div></div>
-<div class="mr-status" id="mr-status">Ready to pull</div>
+<div class="panel" id="panel-mcleod-rpt">
+<div class="mr-wrap">
+  <div class="mr-hero-bar">
+    <div class="mr-hero-left">
+      <h1>McLeod TMS Reports</h1>
+      <p>Live data across all departments &mdash; Orders, Fleet, Sales, Brokerage &amp; Accounting</p>
+      <div class="mr-progress-wrap" id="mr-progress-wrap"><div class="mr-progress-bar" id="mr-progress-bar"></div></div>
+      <div class="mr-status-msg" id="mr-status-msg"></div>
+    </div>
+    <button class="mr-pull-btn" id="mr-pull-btn" onclick="mrPullAll()">Pull All Reports</button>
+  </div>
+  <div class="mr-summary-bar" id="mr-summary-bar" style="display:none"></div>
+  <div class="mr-tabs">
+    <div class="mr-tab active" id="mr-tab-dept" onclick="mrTab('dept')">By Department <span class="mr-tab-cnt" id="mr-cnt-dept">0</span></div>
+    <div class="mr-tab" id="mr-tab-raw" onclick="mrTab('raw')">Raw Data <span class="mr-tab-cnt" id="mr-cnt-raw">0</span></div>
+  </div>
+  <div class="mr-pane active" id="mr-pane-dept">
+    <div class="mr-no-data" id="mr-no-data-dept">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="12" width="32" height="24" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="8" y1="20" x2="40" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="28" x2="24" y2="28" stroke="currentColor" stroke-width="1.5"/></svg>
+      <p>Click "Pull All Reports" to load live data from McLeod TMS</p>
+    </div>
+    <div id="mr-dept-content" style="display:none"></div>
+  </div>
+  <div class="mr-pane" id="mr-pane-raw">
+    <div class="mr-no-data" id="mr-no-data-raw">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="12" width="32" height="24" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="8" y1="20" x2="40" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="28" x2="24" y2="28" stroke="currentColor" stroke-width="1.5"/></svg>
+      <p>Click "Pull All Reports" to load raw API responses</p>
+    </div>
+    <div id="mr-raw-content" style="display:none"></div>
+  </div>
+  <div style="text-align:right;font-size:11px;color:rgba(255,255,255,.2);margin-top:24px" id="mr-last-pulled"></div>
 </div>
-
-<!-- Last pull timestamp -->
-<div class="mr-last-pull" id="mr-last-pull"></div>
-
-<!-- Main Tabs -->
-<div class="mr-tabs">
-<div class="mr-tab active" id="mr-tab-dept" onclick="mrSwitchTab('dept')">ð By Department <span class="mr-tab-badge" id="mr-badge-dept">â</span></div>
-<div class="mr-tab" id="mr-tab-raw" onclick="mrSwitchTab('raw')">ðï¸ Raw Data <span class="mr-tab-badge" id="mr-badge-raw">â</span></div>
-</div>
-
-<!-- DEPT PANE -->
-<div class="mr-pane active" id="mr-pane-dept">
-<div id="mr-dept-empty" class="mr-empty">
-<div class="mr-empty-icon">ð¦</div>
-<div class="mr-empty-text">No data yet â click Pull All Reports to load</div>
-</div>
-<div id="mr-dept-content" style="display:none">
-<!-- Sections injected by JS -->
-</div>
-</div>
-
-<!-- RAW PANE -->
-<div class="mr-pane" id="mr-pane-raw">
-<div id="mr-raw-empty" class="mr-empty">
-<div class="mr-empty-icon">ðï¸</div>
-<div class="mr-empty-text">No data yet â click Pull All Reports to load</div>
-</div>
-<div id="mr-raw-content" style="display:none">
-<div class="raw-tabs" id="mr-raw-tabs"></div>
-<div id="mr-raw-panes"></div>
-</div>
-</div>
-
 </div><!-- end panel-mcleod-rpt -->
 <script>
-
-/* ========== McLeod Reports Logic ========== */
 /* ========== McLeod Reports Logic ========== */
 var MR_ENDPOINTS = [
-  { key:'orders_a', label:'Active Orders',  icon:'ð¦', path:'orders/search?status=A', dept:'Dispatch / Operations' },
-  { key:'orders_d', label:'Dispatched',     icon:'ð', path:'orders/search?status=D', dept:'Dispatch / Operations' },
-  { key:'orders_p', label:'Pending Orders', icon:'â³', path:'orders/search?status=P', dept:'Dispatch / Operations' }
+  { key:"orders_a",    label:"Active Orders",      path:"orders/search?status=A",    dept:"Dispatch / Operations", badge:"active" },
+  { key:"orders_d",    label:"Dispatched Orders",  path:"orders/search?status=D",    dept:"Dispatch / Operations", badge:"dispatched" },
+  { key:"orders_p",    label:"Pending Orders",     path:"orders/search?status=P",    dept:"Dispatch / Operations", badge:"pending" },
+  { key:"drivers",     label:"Drivers",            path:"drivers/search?id=%25",     dept:"Fleet", badge:"default" },
+  { key:"tractors",    label:"Tractors",           path:"tractors/search?id=%25",    dept:"Fleet", badge:"default" },
+  { key:"trailers",    label:"Trailers",           path:"trailers/search?id=%25",    dept:"Fleet", badge:"default" },
+  { key:"customers",   label:"Customers",          path:"customers/search?id=%25",   dept:"Sales / CRM", badge:"default" },
+  { key:"carriers",    label:"Carriers",           path:"carriers/search?id=%25",    dept:"Brokerage", badge:"default" },
+  { key:"settlements", label:"Settlements",        path:"settlements/search?driver_id=%25", dept:"Accounting", badge:"default" }
 ];
-var MR_DEPT_META = { 'Dispatch / Operations': { icon:'ð¦', color:'gold' } };
-var MR_DATA = {};
+var MR_RESULTS = {};
+var MR_ERRORS  = {};
 
-function mrSwitchTab(tab){
-  document.querySelectorAll('.mr-tab').forEach(function(t){t.classList.remove('active');});
-  document.querySelectorAll('.mr-pane').forEach(function(p){p.classList.remove('active');});
-  document.getElementById('mr-tab-'+tab).classList.add('active');
-  document.getElementById('mr-pane-'+tab).classList.add('active');
+function mrTab(t) {
+  document.querySelectorAll(".mr-tab").forEach(function(el){ el.classList.remove("active"); });
+  document.querySelectorAll(".mr-pane").forEach(function(el){ el.classList.remove("active"); });
+  document.getElementById("mr-tab-"+t).classList.add("active");
+  document.getElementById("mr-pane-"+t).classList.add("active");
 }
 
-function mrDoFetch(ep){
-  return fetch(BASE+'/'+ep.path,{headers:{'Authorization':_token,'CompanyID':'TMS','Accept':'application/json'}})
-    .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})
-    .then(function(txt){
-      if(!txt||!txt.trim())return [];
-      var j=JSON.parse(txt);
-      if(Array.isArray(j))return j;
-      var ks=Object.keys(j);for(var i=0;i<ks.length;i++){if(Array.isArray(j[ks[i]]))return j[ks[i]];}
-      return [j];
+function mrDoFetch(ep) {
+  var url = window.BASE + "/" + ep.path;
+  return fetch(url, {
+    headers: {
+      "Authorization": window._token,
+      "CompanyID": "TMS",
+      "Accept": "application/json"
+    }
+  }).then(function(r){
+    if(!r.ok) return r.text().then(function(t){ throw new Error("HTTP "+r.status+" on "+ep.label+": "+t.slice(0,120)); });
+    return r.json().then(function(data){
+      MR_RESULTS[ep.key] = Array.isArray(data) ? data : (data.results || data.items || [data]);
+      return MR_RESULTS[ep.key];
     });
+  }).catch(function(e){
+    MR_ERRORS[ep.key] = e.message;
+    MR_RESULTS[ep.key] = [];
+    throw e;
+  });
 }
 
-function mrPullAll(){
-  var btn=document.getElementById('mr-pull-btn');
-  var status=document.getElementById('mr-status');
-  var progress=document.getElementById('mr-progress');
-  var pfill=document.getElementById('mr-pfill');
-  btn.disabled=true;btn.classList.add('loading');
-  progress.classList.add('show');pfill.style.width='0%';
-  status.className='mr-status';status.textContent='Connecting to McLeod...';
-  MR_DATA={};
-  var total=MR_ENDPOINTS.length,done=0,errors=[];
-  var chain=Promise.resolve();
+function mrPullAll() {
+  MR_RESULTS = {};
+  MR_ERRORS  = {};
+  var btn = document.getElementById("mr-pull-btn");
+  var progWrap = document.getElementById("mr-progress-wrap");
+  var progBar  = document.getElementById("mr-progress-bar");
+  var statusEl = document.getElementById("mr-status-msg");
+  btn.disabled = true;
+  btn.textContent = "Pulling...";
+  progWrap.style.display = "block";
+  progBar.style.width = "5%";
+  statusEl.style.display = "block";
+  statusEl.className = "mr-status-msg";
+  statusEl.textContent = "Connecting to McLeod TMS...";
+  var total = MR_ENDPOINTS.length;
+  var done  = 0;
+  var errs  = 0;
+  var promises = MR_ENDPOINTS.map(function(ep){
+    return mrDoFetch(ep)
+      .then(function(){ done++; })
+      .catch(function(){ done++; errs++; })
+      .then(function(){
+        var pct = Math.round((done / total) * 95) + 5;
+        progBar.style.width = pct + "%";
+        statusEl.textContent = "Pulled " + done + " / " + total + " endpoints...";
+      });
+  });
+  Promise.all(promises).then(function(){
+    progBar.style.width = "100%";
+    btn.disabled = false;
+    btn.textContent = "Refresh Reports";
+    var totalRec = Object.keys(MR_RESULTS).reduce(function(s,k){ return s + (MR_RESULTS[k]||[]).length; }, 0);
+    if(errs === 0){
+      statusEl.className = "mr-status-msg ok";
+      statusEl.textContent = "All " + total + " endpoints pulled successfully -- " + totalRec.toLocaleString() + " total records";
+    } else {
+      statusEl.className = "mr-status-msg err";
+      statusEl.textContent = (total - errs) + " of " + total + " endpoints succeeded -- " + totalRec.toLocaleString() + " records. " + errs + " error(s).";
+    }
+    document.getElementById("mr-last-pulled").textContent = "Last pulled: " + new Date().toLocaleString();
+    mrRenderSummary(totalRec);
+    mrRenderDept();
+    mrRenderRaw();
+    setTimeout(function(){ progWrap.style.display="none"; }, 1500);
+  });
+}
+
+function mrRenderSummary(totalRec) {
+  var bar = document.getElementById("mr-summary-bar");
+  var depts = {};
   MR_ENDPOINTS.forEach(function(ep){
-    chain=chain.then(function(){
-      status.textContent='Pulling '+ep.label+'...';
-      return mrDoFetch(ep).then(function(rows){MR_DATA[ep.key]={ep:ep,result:rows,error:null};})
-        .catch(function(e){MR_DATA[ep.key]={ep:ep,result:[],error:e.message};errors.push(ep.label+': '+e.message);})
-        .then(function(){done++;pfill.style.width=Math.round(done/total*100)+'%';});
-    });
+    if(!depts[ep.dept]) depts[ep.dept] = 0;
+    depts[ep.dept] += (MR_RESULTS[ep.key]||[]).length;
   });
-  return chain.then(function(){
-    btn.disabled=false;btn.classList.remove('loading');
-    var lp=document.getElementById('mr-last-pull');if(lp)lp.textContent='Last pulled: '+new Date().toLocaleString();
-    if(!errors.length){status.className='mr-status ok';status.textContent='â All '+total+' endpoints pulled successfully';}
-    else{status.className='mr-status err';status.textContent=errors.length+' failed. '+errors.join('; ');}
-    mrRenderDept();mrRenderRaw();
+  var html = "";
+  Object.keys(depts).forEach(function(d){
+    html += "<div class=\"mr-summary-pill\"><strong>" + depts[d].toLocaleString() + "</strong> " + d + "</div>";
   });
+  html += "<div class=\"mr-summary-pill\" style=\"margin-left:auto\"><strong>" + totalRec.toLocaleString() + "</strong> Total Records</div>";
+  bar.innerHTML = html;
+  bar.style.display = "flex";
 }
 
-function mrFmtH(c){return c.replace(/_/g,' ').replace(/w/g,function(x){return x.toUpperCase();});}
-function mrFmtV(val,col){
-  if(val===null||val===undefined||val==='')return '<span style="color:var(--dim)">â</span>';
-  var s=String(val);
-  if(col==='status'){var m={A:'<span style="color:var(--green);font-weight:700">Active</span>',D:'<span style="color:var(--yellow);font-weight:700">Dispatched</span>',P:'<span style="color:#60A5FA;font-weight:700">Pending</span>',C:'<span style="color:var(--green)">Complete</span>'};return m[s]||s;}
-  if(/charge|pay|limit|amount|revenue/i.test(col)){var n=parseFloat(s);if(!isNaN(n))return '<span style="color:var(--gold);font-weight:700">$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span>';}
-  return s.length>40?s.slice(0,38)+'â¦':s;
-}
-function mrBuildTable(rows,key){
-  var PRI={orders_a:['id','status','bill_to_alias','origin_city','destination_city','total_charge','order_date'],orders_d:['id','status','bill_to_alias','origin_city','destination_city','total_charge'],orders_p:['id','status','bill_to_alias','origin_city','destination_city','total_charge']};
-  if(!rows.length)return '<div style="color:var(--dim);font-size:12px;padding:8px">No records returned</div>';
-  var rk=Object.keys(rows[0]).filter(function(k){return k.indexOf('__')<0;});
-  var pri=PRI[key]||[];var cols=pri.filter(function(c){return rk.indexOf(c)>=0;});
-  var rest=rk.filter(function(k){return cols.indexOf(k)<0;}).slice(0,Math.max(0,8-cols.length));
-  cols=cols.concat(rest).slice(0,8);
-  var h='<div class="dept-table-wrap"><table class="dept-table"><thead><tr>'+cols.map(function(c){return '<th>'+mrFmtH(c)+'</th>';}).join('')+'</tr></thead><tbody>';
-  rows.slice(0,100).forEach(function(row){h+='<tr>'+cols.map(function(c){return '<td>'+mrFmtV(row[c]!==undefined?row[c]:'',c)+'</td>';}).join('')+'</tr>';});
-  if(rows.length>100)h+='<tr><td colspan="'+cols.length+'" style="text-align:center;color:var(--dim);font-style:italic;padding:8px">â¦ and '+(rows.length-100)+' more</td></tr>';
-  return h+'</tbody></table></div>';
-}
-function mrRenderDept(){
-  var empty=document.getElementById('mr-dept-empty'),cont=document.getElementById('mr-dept-content');
-  var byDept={};
-  Object.keys(MR_DATA).forEach(function(k){var item=MR_DATA[k],d=item.ep.dept;if(!byDept[d])byDept[d]=[];byDept[d].push(item);});
-  var total=0,html='';
-  Object.keys(byDept).forEach(function(dName){
-    var items=byDept[dName],cfg=MR_DEPT_META[dName]||{icon:'ð',color:'gold'},dtot=0,dbody='';
-    items.forEach(function(item){
-      var rows=item.result||[];dtot+=rows.length;total+=rows.length;
-      dbody+='<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">'+item.ep.icon+' '+item.ep.label+' <span style="background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:10px;font-size:10px;margin-left:6px">'+(item.error?'â  '+item.error:rows.length+' records')+'</span></div>'+(item.error?'<div style="color:var(--red);font-size:12px;padding:8px;background:var(--red-bg);border-radius:6px">'+item.error+'</div>':mrBuildTable(rows,item.ep.key))+'</div>';
+function mrRenderDept() {
+  var depts = {};
+  MR_ENDPOINTS.forEach(function(ep){
+    if(!depts[ep.dept]) depts[ep.dept] = [];
+    depts[ep.dept].push(ep);
+  });
+  var totalRec = Object.keys(MR_RESULTS).reduce(function(s,k){ return s + (MR_RESULTS[k]||[]).length; }, 0);
+  document.getElementById("mr-cnt-dept").textContent = totalRec.toLocaleString();
+  var deptOrder = ["Dispatch / Operations","Fleet","Sales / CRM","Brokerage","Accounting"];
+  var html = "";
+  deptOrder.forEach(function(deptName){
+    if(!depts[deptName]) return;
+    var eps = depts[deptName];
+    var deptTotal = eps.reduce(function(s,ep){ return s + (MR_RESULTS[ep.key]||[]).length; },0);
+    html += "<div class=\"mr-section\">";
+    html += "<div class=\"mr-section-header\">";
+    html += "<div><span class=\"mr-dept-label\">" + deptName + "</span></div>";
+    html += "<span class=\"mr-section-count\">" + deptTotal.toLocaleString() + " records</span>";
+    html += "</div>";
+    html += "<div class=\"mr-dept-grid\">";
+    eps.forEach(function(ep){
+      var recs = MR_RESULTS[ep.key] || [];
+      var errMsg = MR_ERRORS[ep.key];
+      html += "<div class=\"mr-kpi-card\">";
+      html += "<div class=\"mr-kpi-label\">" + ep.label + "</div>";
+      if(errMsg){
+        html += "<div class=\"mr-kpi-value\" style=\"color:#ef4444;font-size:20px\">Error</div>";
+        html += "<div class=\"mr-kpi-sub\" style=\"color:#ef4444\">" + errMsg.slice(0,80) + "</div>";
+      } else {
+        html += "<div class=\"mr-kpi-value\">" + recs.length.toLocaleString() + "</div>";
+        html += "<div class=\"mr-kpi-sub\">" + (recs.length === 1 ? "record" : "records") + " retrieved</div>";
+      }
+      html += "</div>";
     });
-    var stats='<div class="dept-stat-row">'+items.map(function(it){return '<div class="dept-stat"><div class="dept-stat-lbl">'+it.ep.label+'</div><div class="dept-stat-val '+cfg.color+'">'+(it.error?'â':(it.result||[]).length)+'</div></div>';}).join('')+'</div>';
-    html+='<div class="dept-section"><div class="dept-section-header" onclick="mrToggle(this)"><span class="dept-section-icon">'+cfg.icon+'</span><span class="dept-section-title">'+dName+'</span><span class="dept-section-meta">'+dtot+' records</span><span class="dept-section-toggle open">â¶</span></div><div class="dept-section-body open">'+stats+dbody+'</div></div>';
+    html += "</div>";
+    eps.forEach(function(ep){
+      var recs = MR_RESULTS[ep.key] || [];
+      if(recs.length === 0) return;
+      html += "<div style=\"margin-bottom:20px\">";
+      html += "<div class=\"mr-section-header\" style=\"margin-bottom:10px\">";
+      html += "<span style=\"font-size:13px;font-weight:600;color:rgba(255,255,255,.6)\">" + ep.label + "</span>";
+      html += "<span class=\"mr-section-badge\">" + recs.length + " records</span>";
+      html += "</div>";
+      html += mrBuildTable(ep, recs);
+      html += "</div>";
+    });
+    html += "</div>";
   });
-  document.getElementById('mr-badge-dept').textContent=total;
-  empty.style.display='none';cont.style.display='block';cont.innerHTML=html;
+  var contentEl = document.getElementById("mr-dept-content");
+  contentEl.innerHTML = html;
+  contentEl.style.display = "block";
+  document.getElementById("mr-no-data-dept").style.display = "none";
 }
-function mrToggle(hdr){var body=hdr.nextElementSibling,tog=hdr.querySelector('.dept-section-toggle'),open=body.classList.contains('open');body.classList.toggle('open',!open);tog.classList.toggle('open',!open);}
-function mrRenderRaw(){
-  var empty=document.getElementById('mr-raw-empty'),cont=document.getElementById('mr-raw-content');
-  var tabsEl=document.getElementById('mr-raw-tabs'),panesEl=document.getElementById('mr-raw-panes');
-  var tabsH='',panesH='',first=true,n=0;
-  Object.keys(MR_DATA).forEach(function(k){
-    n++;var item=MR_DATA[k],rows=item.result||[],ac=first?'active':'';first=false;
-    tabsH+='<div class="raw-tab '+ac+'" onclick="mrRawTab(this,\'mr-rawp-'+k+'\')">'+item.ep.icon+' '+item.ep.label+' <span style="font-size:10px;opacity:.7">('+( item.error?'err':rows.length)+')</span></div>';
-    var raw=item.error?JSON.stringify({error:item.error},null,2):JSON.stringify(item.result,null,2);
-    panesH+='<div class="raw-pane '+ac+'" id="mr-rawp-'+k+'"><div class="raw-toolbar"><span class="raw-count">'+(item.error?'Error':rows.length+' records')+' Â· '+item.ep.path+'</span><button class="raw-copy-btn" onclick="mrCopy(\'mr-rawpre-'+k+'\')">ð Copy JSON</button></div><pre class="raw-pre" id="mr-rawpre-'+k+'">'+raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</pre></div>';
+
+function mrBuildTable(ep, recs) {
+  if(!recs || recs.length === 0) return "<div>No records</div>";
+  var cols = mrGetCols(ep.key, recs[0]);
+  var html = "<div class=\"mr-table-wrap\"><table class=\"mr-table\"><thead><tr>";
+  cols.forEach(function(c){ html += "<th>" + mrFmtHeader(c) + "</th>"; });
+  html += "</tr></thead><tbody>";
+  var limit = Math.min(recs.length, 200);
+  for(var i=0;i<limit;i++){
+    var row = recs[i];
+    html += "<tr>";
+    cols.forEach(function(c){ html += "<td>" + mrFmtCell(c, row[c], ep.badge) + "</td>"; });
+    html += "</tr>";
+  }
+  if(recs.length > 200) html += "<tr><td colspan=\""+cols.length+"\" style=\"text-align:center;color:rgba(255,255,255,.3);padding:12px\">+ "+(recs.length-200)+" more records</td></tr>";
+  html += "</tbody></table></div>";
+  return html;
+}
+
+function mrGetCols(key, sample) {
+  var colMap = {
+    "orders_a":    ["id","status","total_charge","bill_distance","company_id"],
+    "orders_d":    ["id","status","total_charge","bill_distance","company_id"],
+    "orders_p":    ["id","status","total_charge","bill_distance","company_id"],
+    "drivers":     ["id","name","status","city","state","phone","license_state"],
+    "tractors":    ["id","fleet_manager","status","city","state","driver_id"],
+    "trailers":    ["id","type_id","status","city","state","empty"],
+    "customers":   ["id","name","city","state","phone","credit_limit","balance"],
+    "carriers":    ["id","name","city","state","phone"],
+    "settlements": ["id","driver_id","pay_date","total_pay","accrual_type","status"]
+  };
+  var preferred = colMap[key] || [];
+  var available = preferred.filter(function(c){ return sample && sample[c] !== undefined; });
+  if(available.length < 3 && sample){
+    Object.keys(sample).forEach(function(k){
+      if(k.slice(0,2) === "__") return;
+      if(available.indexOf(k)===-1 && available.length < 7) available.push(k);
+    });
+  }
+  return available;
+}
+
+function mrFmtHeader(col) {
+  return col.replace(/_/g," ").replace(/\b\w/g,function(c){ return c.toUpperCase(); });
+}
+
+function mrFmtCell(col, val, badge) {
+  if(val === undefined || val === null) return "--";
+  if(col === "status"){
+    var cls = badge === "active" ? "mr-badge-active" : badge === "dispatched" ? "mr-badge-dispatched" : badge === "pending" ? "mr-badge-pending" : "mr-badge-default";
+    return "<span class=\""+cls+"\">"+String(val)+"</span>";
+  }
+  if(col === "total_charge" || col === "credit_limit" || col === "balance" || col === "total_pay"){
+    var n = parseFloat(val);
+    if(!isNaN(n)) return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+  if(typeof val === "boolean") return val ? "Yes" : "No";
+  var s = String(val);
+  if(s.length > 35) s = s.slice(0,35) + "...";
+  return s;
+}
+
+function mrRenderRaw() {
+  document.getElementById("mr-cnt-raw").textContent = MR_ENDPOINTS.length;
+  var html = "";
+  MR_ENDPOINTS.forEach(function(ep){
+    var recs = MR_RESULTS[ep.key];
+    var err  = MR_ERRORS[ep.key];
+    var countStr = err ? "ERROR" : ((recs||[]).length + " records");
+    html += "<div class=\"mr-raw-section\">";
+    html += "<div class=\"mr-raw-header\">";
+    html += "<div><div class=\"mr-raw-title\">" + ep.dept + " - " + ep.label + "</div><div class=\"mr-raw-meta\">" + ep.path + "  |  " + countStr + "</div></div>";
+    html += "<button class=\"mr-raw-copy\" data-key=\"" + ep.key + "\" onclick=\"mrCopyRaw(this.getAttribute('data-key'))\">Copy JSON</button>";
+    html += "</div>";
+    html += "<div class=\"mr-raw-body\"><pre id=\"mr-raw-" + ep.key + "\">";
+    if(err){ html += "ERROR: " + err; }
+    else if(!recs || recs.length === 0){ html += "No data"; }
+    else {
+      var preview = JSON.stringify(recs.slice(0,50), null, 2);
+      html += preview;
+      if(recs.length > 50) html += "\n// ... " + (recs.length-50) + " more records";
+    }
+    html += "</pre></div>";
+    html += "</div>";
   });
-  document.getElementById('mr-badge-raw').textContent=n;
-  empty.style.display='none';cont.style.display='block';tabsEl.innerHTML=tabsH;panesEl.innerHTML=panesH;
+  var rawContent = document.getElementById("mr-raw-content");
+  rawContent.innerHTML = html;
+  rawContent.style.display = "block";
+  document.getElementById("mr-no-data-raw").style.display = "none";
 }
-function mrRawTab(el,pid){
-  document.querySelectorAll('.raw-tab').forEach(function(t){t.classList.remove('active');});
-  document.querySelectorAll('.raw-pane').forEach(function(p){p.classList.remove('active');});
-  el.classList.add('active');var p=document.getElementById(pid);if(p)p.classList.add('active');
-}
-function mrCopy(preId){
-  var el=document.getElementById(preId);if(!el)return;
-  navigator.clipboard.writeText(el.textContent).then(function(){
-    var btn=el.previousElementSibling.querySelector('.raw-copy-btn');
-    if(btn){btn.textContent='â Copied!';setTimeout(function(){btn.textContent='ð Copy JSON';},1500);}
+
+function mrCopyRaw(key) {
+  var el = document.getElementById("mr-raw-" + key);
+  if(!el) return;
+  var data = MR_RESULTS[key];
+  var text = data ? JSON.stringify(data, null, 2) : el.textContent;
+  navigator.clipboard.writeText(text).then(function(){
+    var rawSec = el.parentNode.parentNode;
+    var btn = rawSec.querySelector(".mr-raw-copy");
+    if(btn){ btn.textContent = "Copied!"; setTimeout(function(){ btn.textContent="Copy JSON"; },1500); }
   });
 }
 /* ========== End McLeod Reports ========== */
-
-
 var BASE='https://tms.meiborginc.com/ws';
 var _token='';var _user='';
 var _ar=[];var _run=false;
