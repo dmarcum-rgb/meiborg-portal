@@ -109,7 +109,7 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
     <div class="lbl">McLeod Username</div>
     <input class="linp" type="text" id="lu" autocomplete="username" placeholder="username" />
     <div class="lbl">McLeod Password</div>
-    <input class="linp" type="password" id="lp" autocomplete="current-password" placeholder="••••••••" />
+    <input class="linp" type="password" id="lp" autocomplete="current-password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" />
     <div id="login-err"></div>
     <button id="login-btn" onclick="doLogin()">Sign In</button>
     <div class="login-note">Signs in to McLeod TMS (tms.meiborginc.com)</div>
@@ -119,64 +119,64 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div id="sb">
 <div id="logo"><div id="logo-text">MEIBORG</div><div id="logo-sub">Internal Portal</div></div>
 <nav id="nav"><div class="sec-lbl">Departments</div>
-<div class="dept open" id="dh-accounting" onclick="tDept('accounting')"><span class="di">💼</span><span class="dl">Accounting</span><span class="dc">&#9658;</span></div>
+<div class="dept open" id="dh-accounting" onclick="tDept('accounting')"><span class="di">ð¼</span><span class="dl">Accounting</span><span class="dc">&#9658;</span></div>
 <div class="sub open" id="ds-accounting">
-<div class="nl active" id="nl-ar" onclick="showPanel('ar','Accounting','Accounts Receivable')"><span class="ni">📥</span>Accounts Receivable</div>
-<div class="nl" id="nl-ap" onclick="showPanel('ap','Accounting','Accounts Payable')"><span class="ni">📤</span>Accounts Payable</div>
-<div class="nl" id="nl-billing" onclick="showPanel('billing','Accounting','Billing')"><span class="ni">🧾</span>Billing</div>
-<div class="nl" id="nl-reports" onclick="showPanel('reports','Accounting','Custom Reports')"><span class="ni">📊</span>Custom Reports</div>
+<div class="nl active" id="nl-ar" onclick="showPanel('ar','Accounting','Accounts Receivable')"><span class="ni">ð¥</span>Accounts Receivable</div>
+<div class="nl" id="nl-ap" onclick="showPanel('ap','Accounting','Accounts Payable')"><span class="ni">ð¤</span>Accounts Payable</div>
+<div class="nl" id="nl-billing" onclick="showPanel('billing','Accounting','Billing')"><span class="ni">ð§¾</span>Billing</div>
+<div class="nl" id="nl-reports" onclick="showPanel('reports','Accounting','Custom Reports')"><span class="ni">ð</span>Custom Reports</div>
 </div>
-<div class="dept" id="dh-hr" onclick="tDept('hr')"><span class="di">👥</span><span class="dl">HR</span><span class="dc">&#9658;</span></div>
+<div class="dept" id="dh-hr" onclick="tDept('hr')"><span class="di">ð¥</span><span class="dl">HR</span><span class="dc">&#9658;</span></div>
 <div class="sub" id="ds-hr">
-<div class="nl" id="nl-hr-emp" onclick="showPanel('hr-emp','HR','Employees')"><span class="ni">👤</span>Employees</div>
-<div class="nl" id="nl-hr-pay" onclick="showPanel('hr-pay','HR','Payroll')"><span class="ni">💵</span>Payroll</div>
-<div class="nl" id="nl-hr-ob" onclick="showPanel('hr-ob','HR','Onboarding')"><span class="ni">📋</span>Onboarding</div>
+<div class="nl" id="nl-hr-emp" onclick="showPanel('hr-emp','HR','Employees')"><span class="ni">ð¤</span>Employees</div>
+<div class="nl" id="nl-hr-pay" onclick="showPanel('hr-pay','HR','Payroll')"><span class="ni">ðµ</span>Payroll</div>
+<div class="nl" id="nl-hr-ob" onclick="showPanel('hr-ob','HR','Onboarding')"><span class="ni">ð</span>Onboarding</div>
 </div>
-<div class="dept" id="dh-sales" onclick="tDept('sales')"><span class="di">📈</span><span class="dl">Sales</span><span class="dc">&#9658;</span></div>
+<div class="dept" id="dh-sales" onclick="tDept('sales')"><span class="di">ð</span><span class="dl">Sales</span><span class="dc">&#9658;</span></div>
 <div class="sub" id="ds-sales">
-<div class="nl" id="nl-sales-pipe" onclick="showPanel('sales-pipe','Sales','Pipeline')"><span class="ni">🔄</span>Pipeline</div>
-<div class="nl" id="nl-sales-cust" onclick="showPanel('sales-cust','Sales','Customers')"><span class="ni">🏢</span>Customers</div>
-<div class="nl" id="nl-sales-rpt" onclick="showPanel('sales-rpt','Sales','Reports')"><span class="ni">📊</span>Reports</div>
+<div class="nl" id="nl-sales-pipe" onclick="showPanel('sales-pipe','Sales','Pipeline')"><span class="ni">ð</span>Pipeline</div>
+<div class="nl" id="nl-sales-cust" onclick="showPanel('sales-cust','Sales','Customers')"><span class="ni">ð¢</span>Customers</div>
+<div class="nl" id="nl-sales-rpt" onclick="showPanel('sales-rpt','Sales','Reports')"><span class="ni">ð</span>Reports</div>
 </div>
-<div class="dept" id="dh-fleet" onclick="tDept('fleet')"><span class="di">🚛</span><span class="dl">Fleet</span><span class="dc">&#9658;</span></div>
+<div class="dept" id="dh-fleet" onclick="tDept('fleet')"><span class="di">ð</span><span class="dl">Fleet</span><span class="dc">&#9658;</span></div>
 <div class="sub" id="ds-fleet">
-<div class="nl" id="nl-fleet-tr" onclick="showPanel('fleet-tr','Fleet','Trucks')"><span class="ni">🚚</span>Trucks</div>
-<div class="nl" id="nl-fleet-dr" onclick="showPanel('fleet-dr','Fleet','Drivers')"><span class="ni">🧑‍✈️</span>Drivers</div>
-<div class="nl" id="nl-fleet-mx" onclick="showPanel('fleet-mx','Fleet','Maintenance')"><span class="ni">🔧</span>Maintenance</div>
+<div class="nl" id="nl-fleet-tr" onclick="showPanel('fleet-tr','Fleet','Trucks')"><span class="ni">ð</span>Trucks</div>
+<div class="nl" id="nl-fleet-dr" onclick="showPanel('fleet-dr','Fleet','Drivers')"><span class="ni">ð§ââï¸</span>Drivers</div>
+<div class="nl" id="nl-fleet-mx" onclick="showPanel('fleet-mx','Fleet','Maintenance')"><span class="ni">ð§</span>Maintenance</div>
 </div>
-<div class="nl" id="nl-fleet-weekly" onclick="showPanel('fleet-weekly','Fleet','Weekly Revenue Report')"><span class="ni">📅</span>Weekly Report</div>
-<div class="nl" id="nl-fleet-monthly" onclick="showPanel('fleet-monthly','Fleet','Monthly Revenue Report')"><span class="ni">📆</span>Monthly Report</div>
-<div class="dept" id="dh-safety" onclick="tDept('safety')"><span class="di">🦺</span><span class="dl">Safety</span><span class="dc">&#9658;</span></div>
+<div class="nl" id="nl-fleet-weekly" onclick="showPanel('fleet-weekly','Fleet','Weekly Revenue Report')"><span class="ni">ð</span>Weekly Report</div>
+<div class="nl" id="nl-fleet-monthly" onclick="showPanel('fleet-monthly','Fleet','Monthly Revenue Report')"><span class="ni">ð</span>Monthly Report</div>
+<div class="dept" id="dh-safety" onclick="tDept('safety')"><span class="di">ð¦º</span><span class="dl">Safety</span><span class="dc">&#9658;</span></div>
 <div class="sub" id="ds-safety">
-<div class="nl" id="nl-safety-inc" onclick="showPanel('safety-inc','Safety','Incidents')"><span class="ni">⚠️</span>Incidents</div>
-<div class="nl" id="nl-safety-cmp" onclick="showPanel('safety-cmp','Safety','Compliance')"><span class="ni">✅</span>Compliance</div>
-<div class="nl" id="nl-safety-tr" onclick="showPanel('safety-tr','Safety','Training')"><span class="ni">📚</span>Training</div>
+<div class="nl" id="nl-safety-inc" onclick="showPanel('safety-inc','Safety','Incidents')"><span class="ni">â ï¸</span>Incidents</div>
+<div class="nl" id="nl-safety-cmp" onclick="showPanel('safety-cmp','Safety','Compliance')"><span class="ni">â</span>Compliance</div>
+<div class="nl" id="nl-safety-tr" onclick="showPanel('safety-tr','Safety','Training')"><span class="ni">ð</span>Training</div>
 </div>
-<div class="dept" id="dh-logs" onclick="showPanel('logs','','Logs')"><span class="di">📝</span><span class="dl">Logs</span></div>
-<div class="dept" id="dh-cs" onclick="tDept('cs')"><span class="di">🎧</span><span class="dl">Customer Service</span><span class="dc">&#9658;</span></div>
+<div class="dept" id="dh-logs" onclick="showPanel('logs','','Logs')"><span class="di">ð</span><span class="dl">Logs</span></div>
+<div class="dept" id="dh-cs" onclick="tDept('cs')"><span class="di">ð§</span><span class="dl">Customer Service</span><span class="dc">&#9658;</span></div>
 <div class="sub" id="ds-cs">
-<div class="nl" id="nl-cs-tix" onclick="showPanel('cs-tix','Customer Service','Tickets')"><span class="ni">🎫</span>Tickets</div>
-<div class="nl" id="nl-cs-con" onclick="showPanel('cs-con','Customer Service','Contacts')"><span class="ni">📞</span>Contacts</div>
+<div class="nl" id="nl-cs-tix" onclick="showPanel('cs-tix','Customer Service','Tickets')"><span class="ni">ð«</span>Tickets</div>
+<div class="nl" id="nl-cs-con" onclick="showPanel('cs-con','Customer Service','Contacts')"><span class="ni">ð</span>Contacts</div>
 </div>
-<div class="dept" id="dh-wh" onclick="tDept('wh')"><span class="di">🏭</span><span class="dl">Warehouse</span><span class="dc">&#9658;</span></div>
+<div class="dept" id="dh-wh" onclick="tDept('wh')"><span class="di">ð­</span><span class="dl">Warehouse</span><span class="dc">&#9658;</span></div>
 <div class="sub" id="ds-wh">
-<div class="nl" id="nl-wh-inv" onclick="showPanel('wh-inv','Warehouse','Inventory')"><span class="ni">📦</span>Inventory</div>
-<div class="nl" id="nl-wh-ord" onclick="showPanel('wh-ord','Warehouse','Orders')"><span class="ni">📋</span>Orders</div>
+<div class="nl" id="nl-wh-inv" onclick="showPanel('wh-inv','Warehouse','Inventory')"><span class="ni">ð¦</span>Inventory</div>
+<div class="nl" id="nl-wh-ord" onclick="showPanel('wh-ord','Warehouse','Orders')"><span class="ni">ð</span>Orders</div>
 </div>
-<div class="dept" id="dh-reception" onclick="tDept('reception')"><span class="di">🏢</span><span class="dl">Reception</span><span class="dc">&#9654;</span></div>
+<div class="dept" id="dh-reception" onclick="tDept('reception')"><span class="di">ð¢</span><span class="dl">Reception</span><span class="dc">&#9654;</span></div>
 <div class="sub" id="ds-reception">
-<div class="nl" id="nl-reception-main" onclick="showPanel('reception','Reception','Reception')"><span class="ni">🏢</span>Reception</div>
-<div class="nl" id="nl-reception-booking" onclick="showPanel('bookings','Reception','Massage Booking')"><span class="ni">📅</span>Massage Booking</div>
+<div class="nl" id="nl-reception-main" onclick="showPanel('reception','Reception','Reception')"><span class="ni">ð¢</span>Reception</div>
+<div class="nl" id="nl-reception-booking" onclick="showPanel('bookings','Reception','Massage Booking')"><span class="ni">ð</span>Massage Booking</div>
 </div>
-<div class="dept" id="dh-mkt" onclick="tDept('mkt')"><span class="di">📣</span><span class="dl">Marketing</span><span class="dc">&#9658;</span></div>
+<div class="dept" id="dh-mkt" onclick="tDept('mkt')"><span class="di">ð£</span><span class="dl">Marketing</span><span class="dc">&#9658;</span></div>
 <div class="sub" id="ds-mkt">
-<div class="nl" id="nl-mkt-camp" onclick="showPanel('mkt-camp','Marketing','Campaigns')"><span class="ni">🎯</span>Campaigns</div>
-<div class="nl" id="nl-mkt-ana" onclick="showPanel('mkt-ana','Marketing','Analytics')"><span class="ni">📊</span>Analytics</div>
+<div class="nl" id="nl-mkt-camp" onclick="showPanel('mkt-camp','Marketing','Campaigns')"><span class="ni">ð¯</span>Campaigns</div>
+<div class="nl" id="nl-mkt-ana" onclick="showPanel('mkt-ana','Marketing','Analytics')"><span class="ni">ð</span>Analytics</div>
 </div>
 
-<div class="dept" id="dh-mcleod" onclick="tDept('mcleod')"><span class="di">🔄</span><span class="dl">McLeod Reports</span><span class="dc">▶</span></div>
+<div class="dept" id="dh-mcleod" onclick="tDept('mcleod')"><span class="di">ð</span><span class="dl">McLeod Reports</span><span class="dc">â¶</span></div>
 <div class="sub" id="ds-mcleod">
-<div class="nl" id="nl-mcleod-rpt" onclick="showPanel('mcleod-rpt','McLeod','Reports')"><span class="ni">📊</span>Pull Reports</div>
+<div class="nl" id="nl-mcleod-rpt" onclick="showPanel('mcleod-rpt','McLeod','Reports')"><span class="ni">ð</span>Pull Reports</div>
 </div>
 </nav>
 <div id="sb-foot"><div class="sf-nm" id="sf-nm"><span class="dot dot-off" id="sf-dot"></span><span id="sf-user">Not signed in</span></div><div class="sf-rl">Meiborg Bros &middot; Production</div></div>
@@ -206,7 +206,7 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 </div>
 
 <div class="panel" id="panel-ap">
-<div class="stat-row"><div class="sc"><div class="sc-lbl">Carriers Scanned</div><div class="sc-val" id="ap-ss">—</div></div><div class="sc"><div class="sc-lbl">With Open AP</div><div class="sc-val vg" id="ap-ow">—</div></div><div class="sc"><div class="sc-lbl">Net AP Balance</div><div class="sc-val vy" id="ap-nb">—</div></div><div class="sc"><div class="sc-lbl">Overdue (30+ Days)</div><div class="sc-val vr" id="ap-sl">—</div></div></div>
+<div class="stat-row"><div class="sc"><div class="sc-lbl">Carriers Scanned</div><div class="sc-val" id="ap-ss">â</div></div><div class="sc"><div class="sc-lbl">With Open AP</div><div class="sc-val vg" id="ap-ow">â</div></div><div class="sc"><div class="sc-lbl">Net AP Balance</div><div class="sc-val vy" id="ap-nb">â</div></div><div class="sc"><div class="sc-lbl">Overdue (30+ Days)</div><div class="sc-val vr" id="ap-sl">â</div></div></div>
 <div class="toolbar">
 <button class="btn b-gold" id="ap-rbtn" onclick="runAP()">&#9654; Pull Aged AP</button>
 <button class="btn b-out" id="ap-ebtn" onclick="exportAP()" disabled>&#8595; Export CSV</button>
@@ -217,19 +217,19 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 </div>
 <div id="ap-list"></div>
 </div>
-<div class="panel" id="panel-billing"><div class="cs"><div class="cse">🧾</div><div class="cst">Billing</div><div class="csd">View billing history and linehaul breakdown by customer or date range.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-reports"><div class="cs"><div class="cse">📊</div><div class="cst">Custom Reports</div><div class="csd">Filter by date range, salesperson and customer category.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-hr-emp"><div class="cs"><div class="cse">👤</div><div class="cst">Employees</div><div class="csd">Employee directory, roles and department assignments.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-hr-pay"><div class="cs"><div class="cse">💵</div><div class="cst">Payroll</div><div class="csd">Payroll records and compensation details.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-hr-ob"><div class="cs"><div class="cse">📋</div><div class="cst">Onboarding</div><div class="csd">New hire checklists and document tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-sales-pipe"><div class="cs"><div class="cse">🔄</div><div class="cst">Sales Pipeline</div><div class="csd">Track active deals from prospect to close.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-sales-cust"><div class="cs"><div class="cse">🏢</div><div class="cst">Customers</div><div class="csd">Full customer list with contact info and account status.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-billing"><div class="cs"><div class="cse">ð§¾</div><div class="cst">Billing</div><div class="csd">View billing history and linehaul breakdown by customer or date range.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-reports"><div class="cs"><div class="cse">ð</div><div class="cst">Custom Reports</div><div class="csd">Filter by date range, salesperson and customer category.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-hr-emp"><div class="cs"><div class="cse">ð¤</div><div class="cst">Employees</div><div class="csd">Employee directory, roles and department assignments.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-hr-pay"><div class="cs"><div class="cse">ðµ</div><div class="cst">Payroll</div><div class="csd">Payroll records and compensation details.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-hr-ob"><div class="cs"><div class="cse">ð</div><div class="cst">Onboarding</div><div class="csd">New hire checklists and document tracking.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-sales-pipe"><div class="cs"><div class="cse">ð</div><div class="cst">Sales Pipeline</div><div class="csd">Track active deals from prospect to close.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-sales-cust"><div class="cs"><div class="cse">ð¢</div><div class="cst">Customers</div><div class="csd">Full customer list with contact info and account status.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-sales-rpt">
 <div class="stat-row">
-  <div class="sc"><div class="sc-lbl">Total Loads</div><div class="sc-val" id="sr-total">—</div></div>
-  <div class="sc"><div class="sc-lbl">Total Revenue</div><div class="sc-val vg" id="sr-rev">—</div></div>
-  <div class="sc"><div class="sc-lbl">Avg Revenue/Load</div><div class="sc-val vy" id="sr-avg">—</div></div>
-  <div class="sc"><div class="sc-lbl">Total Miles</div><div class="sc-val" id="sr-miles">—</div></div>
+  <div class="sc"><div class="sc-lbl">Total Loads</div><div class="sc-val" id="sr-total">â</div></div>
+  <div class="sc"><div class="sc-lbl">Total Revenue</div><div class="sc-val vg" id="sr-rev">â</div></div>
+  <div class="sc"><div class="sc-lbl">Avg Revenue/Load</div><div class="sc-val vy" id="sr-avg">â</div></div>
+  <div class="sc"><div class="sc-lbl">Total Miles</div><div class="sc-val" id="sr-miles">â</div></div>
 </div>
 <div class="toolbar" style="flex-wrap:wrap;gap:6px">
   <button class="btn b-gold" id="sr-rbtn" onclick="runSalesReport()">&#9654; Pull Report</button>
@@ -247,15 +247,15 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 </div>
 <div id="sr-list"></div>
 </div>
-<div class="panel" id="panel-fleet-tr"><div class="cs"><div class="cse">🚚</div><div class="cst">Trucks</div><div class="csd">Fleet inventory, status and location tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-fleet-dr"><div class="cs"><div class="cse">🧑‍✈️</div><div class="cst">Drivers</div><div class="csd">Driver roster, licenses and HOS compliance.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-fleet-mx"><div class="cs"><div class="cse">🔧</div><div class="cst">Maintenance</div><div class="csd">Service schedules and repair history.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-fleet-tr"><div class="cs"><div class="cse">ð</div><div class="cst">Trucks</div><div class="csd">Fleet inventory, status and location tracking.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-fleet-dr"><div class="cs"><div class="cse">ð§ââï¸</div><div class="cst">Drivers</div><div class="csd">Driver roster, licenses and HOS compliance.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-fleet-mx"><div class="cs"><div class="cse">ð§</div><div class="cst">Maintenance</div><div class="csd">Service schedules and repair history.</div><span class="csp">Coming Soon</span></div></div>
 <div class="panel" id="panel-fleet-weekly">
 <div class="stat-row">
-<div class="sc gold"><div class="sc-lbl">Fleet Revenue</div><div class="sc-val vg" id="fw-fleet-rev">—</div></div>
-<div class="sc gold"><div class="sc-lbl">Reefer Revenue</div><div class="sc-val vg" id="fw-reefer-rev">—</div></div>
-<div class="sc"><div class="sc-lbl">Oil Revenue</div><div class="sc-val vg" id="fw-oil-rev">—</div></div>
-<div class="sc"><div class="sc-lbl">Total Tractors</div><div class="sc-val vw" id="fw-tractors">—</div></div>
+<div class="sc gold"><div class="sc-lbl">Fleet Revenue</div><div class="sc-val vg" id="fw-fleet-rev">â</div></div>
+<div class="sc gold"><div class="sc-lbl">Reefer Revenue</div><div class="sc-val vg" id="fw-reefer-rev">â</div></div>
+<div class="sc"><div class="sc-lbl">Oil Revenue</div><div class="sc-val vg" id="fw-oil-rev">â</div></div>
+<div class="sc"><div class="sc-lbl">Total Tractors</div><div class="sc-val vw" id="fw-tractors">â</div></div>
 </div>
 <div class="toolbar" style="flex-wrap:wrap;gap:6px">
 <button class="btn b-gold" id="fw-rbtn" onclick="runFleetWeekly()">&#9654; Pull Weekly Report</button>
@@ -269,10 +269,10 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 </div>
 <div class="panel" id="panel-fleet-monthly">
 <div class="stat-row">
-<div class="sc gold"><div class="sc-lbl">Local Revenue</div><div class="sc-val vg" id="fm-local-rev">—</div></div>
-<div class="sc gold"><div class="sc-lbl">Shuttle Revenue</div><div class="sc-val vg" id="fm-shuttle-rev">—</div></div>
-<div class="sc"><div class="sc-lbl">OTR Revenue</div><div class="sc-val vg" id="fm-otr-rev">—</div></div>
-<div class="sc"><div class="sc-lbl">Total Tractors</div><div class="sc-val vw" id="fm-tractors">—</div></div>
+<div class="sc gold"><div class="sc-lbl">Local Revenue</div><div class="sc-val vg" id="fm-local-rev">â</div></div>
+<div class="sc gold"><div class="sc-lbl">Shuttle Revenue</div><div class="sc-val vg" id="fm-shuttle-rev">â</div></div>
+<div class="sc"><div class="sc-lbl">OTR Revenue</div><div class="sc-val vg" id="fm-otr-rev">â</div></div>
+<div class="sc"><div class="sc-lbl">Total Tractors</div><div class="sc-val vw" id="fm-tractors">â</div></div>
 </div>
 <div class="toolbar" style="flex-wrap:wrap;gap:6px">
 <button class="btn b-gold" id="fm-rbtn" onclick="runFleetMonthly()">&#9654; Pull Monthly Report</button>
@@ -284,20 +284,20 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 </div>
 <div id="fm-list"></div>
 </div>
-<div class="panel" id="panel-safety-inc"><div class="cs"><div class="cse">⚠️</div><div class="cst">Incidents</div><div class="csd">Incident reports and resolution tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-safety-cmp"><div class="cs"><div class="cse">✅</div><div class="cst">Compliance</div><div class="csd">DOT compliance and CSA scores.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-safety-tr"><div class="cs"><div class="cse">📚</div><div class="cst">Training</div><div class="csd">Safety certifications and training records.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-logs"><div class="cs"><div class="cse">📝</div><div class="cst">Logs</div><div class="csd">System activity and API call history.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-cs-tix"><div class="cs"><div class="cse">🎫</div><div class="cst">Tickets</div><div class="csd">Customer service tickets and resolution tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-cs-con"><div class="cs"><div class="cse">📞</div><div class="cst">Contacts</div><div class="csd">Customer contact directory.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-wh-inv"><div class="cs"><div class="cse">📦</div><div class="cst">Inventory</div><div class="csd">Warehouse inventory levels and locations.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-wh-ord"><div class="cs"><div class="cse">📋</div><div class="cst">Orders</div><div class="csd">Incoming and outgoing order fulfillment.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-reception"><div class="cs"><div class="cse">🏢</div><div class="cst">Reception</div><div class="csd">Visitor log and front desk tools.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-mkt-camp"><div class="cs"><div class="cse">🎯</div><div class="cst">Campaigns</div><div class="csd">Marketing campaigns and performance tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-mkt-ana"><div class="cs"><div class="cse">📊</div><div class="cst">Analytics</div><div class="csd">Website traffic and lead sources.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-safety-inc"><div class="cs"><div class="cse">â ï¸</div><div class="cst">Incidents</div><div class="csd">Incident reports and resolution tracking.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-safety-cmp"><div class="cs"><div class="cse">â</div><div class="cst">Compliance</div><div class="csd">DOT compliance and CSA scores.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-safety-tr"><div class="cs"><div class="cse">ð</div><div class="cst">Training</div><div class="csd">Safety certifications and training records.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-logs"><div class="cs"><div class="cse">ð</div><div class="cst">Logs</div><div class="csd">System activity and API call history.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-cs-tix"><div class="cs"><div class="cse">ð«</div><div class="cst">Tickets</div><div class="csd">Customer service tickets and resolution tracking.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-cs-con"><div class="cs"><div class="cse">ð</div><div class="cst">Contacts</div><div class="csd">Customer contact directory.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-wh-inv"><div class="cs"><div class="cse">ð¦</div><div class="cst">Inventory</div><div class="csd">Warehouse inventory levels and locations.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-wh-ord"><div class="cs"><div class="cse">ð</div><div class="cst">Orders</div><div class="csd">Incoming and outgoing order fulfillment.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-reception"><div class="cs"><div class="cse">ð¢</div><div class="cst">Reception</div><div class="csd">Visitor log and front desk tools.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-mkt-camp"><div class="cs"><div class="cse">ð¯</div><div class="cst">Campaigns</div><div class="csd">Marketing campaigns and performance tracking.</div><span class="csp">Coming Soon</span></div></div>
+<div class="panel" id="panel-mkt-ana"><div class="cs"><div class="cse">ð</div><div class="cst">Analytics</div><div class="csd">Website traffic and lead sources.</div><span class="csp">Coming Soon</span></div></div>
 </div>
 
-<div class="panel" id="panel-bookings"><div class="panel-header"><h2>📅 Massage Booking</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div>
+<div class="panel" id="panel-bookings"><div class="panel-header"><h2>ð Massage Booking</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div>
 <style>#panel-mcleod-rpt{min-width:0;width:100%}</style>
 <div class="panel" id="panel-mcleod-rpt">
 
@@ -364,8 +364,8 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 <div class="mr-hero-title">McLeod TMS Reports</div>
 <div class="mr-hero-sub">Pull live data from McLeod across all departments in one click</div>
 <button class="mr-pull-btn" id="mr-pull-btn" onclick="mrPullAll()">
-<span class="ico">🔄</span>
-<span class="spin">⏳</span>
+<span class="ico">ð</span>
+<span class="spin">â³</span>
 Pull All Reports
 </button>
 <div class="mr-progress" id="mr-progress"><div class="mr-pfill" id="mr-pfill" style="width:0%"></div></div>
@@ -377,15 +377,15 @@ Pull All Reports
 
 <!-- Main Tabs -->
 <div class="mr-tabs">
-<div class="mr-tab active" id="mr-tab-dept" onclick="mrSwitchTab('dept')">📊 By Department <span class="mr-tab-badge" id="mr-badge-dept">—</span></div>
-<div class="mr-tab" id="mr-tab-raw" onclick="mrSwitchTab('raw')">🗂️ Raw Data <span class="mr-tab-badge" id="mr-badge-raw">—</span></div>
+<div class="mr-tab active" id="mr-tab-dept" onclick="mrSwitchTab('dept')">ð By Department <span class="mr-tab-badge" id="mr-badge-dept">â</span></div>
+<div class="mr-tab" id="mr-tab-raw" onclick="mrSwitchTab('raw')">ðï¸ Raw Data <span class="mr-tab-badge" id="mr-badge-raw">â</span></div>
 </div>
 
 <!-- DEPT PANE -->
 <div class="mr-pane active" id="mr-pane-dept">
 <div id="mr-dept-empty" class="mr-empty">
-<div class="mr-empty-icon">📦</div>
-<div class="mr-empty-text">No data yet — click Pull All Reports to load</div>
+<div class="mr-empty-icon">ð¦</div>
+<div class="mr-empty-text">No data yet â click Pull All Reports to load</div>
 </div>
 <div id="mr-dept-content" style="display:none">
 <!-- Sections injected by JS -->
@@ -395,8 +395,8 @@ Pull All Reports
 <!-- RAW PANE -->
 <div class="mr-pane" id="mr-pane-raw">
 <div id="mr-raw-empty" class="mr-empty">
-<div class="mr-empty-icon">🗂️</div>
-<div class="mr-empty-text">No data yet — click Pull All Reports to load</div>
+<div class="mr-empty-icon">ðï¸</div>
+<div class="mr-empty-text">No data yet â click Pull All Reports to load</div>
 </div>
 <div id="mr-raw-content" style="display:none">
 <div class="raw-tabs" id="mr-raw-tabs"></div>
@@ -410,11 +410,11 @@ Pull All Reports
 /* ========== McLeod Reports Logic ========== */
 /* ========== McLeod Reports Logic ========== */
 var MR_ENDPOINTS = [
-  { key:'orders_a', label:'Active Orders',  icon:'📦', path:'orders/search?status=A', dept:'Dispatch / Operations' },
-  { key:'orders_d', label:'Dispatched',     icon:'🚛', path:'orders/search?status=D', dept:'Dispatch / Operations' },
-  { key:'orders_p', label:'Pending Orders', icon:'⏳', path:'orders/search?status=P', dept:'Dispatch / Operations' }
+  { key:'orders_a', label:'Active Orders',  icon:'ð¦', path:'orders/search?status=A', dept:'Dispatch / Operations' },
+  { key:'orders_d', label:'Dispatched',     icon:'ð', path:'orders/search?status=D', dept:'Dispatch / Operations' },
+  { key:'orders_p', label:'Pending Orders', icon:'â³', path:'orders/search?status=P', dept:'Dispatch / Operations' }
 ];
-var MR_DEPT_META = { 'Dispatch / Operations': { icon:'📦', color:'gold' } };
+var MR_DEPT_META = { 'Dispatch / Operations': { icon:'ð¦', color:'gold' } };
 var MR_DATA = {};
 
 function mrSwitchTab(tab){
@@ -458,7 +458,7 @@ function mrPullAll(){
   return chain.then(function(){
     btn.disabled=false;btn.classList.remove('loading');
     var lp=document.getElementById('mr-last-pull');if(lp)lp.textContent='Last pulled: '+new Date().toLocaleString();
-    if(!errors.length){status.className='mr-status ok';status.textContent='✓ All '+total+' endpoints pulled successfully';}
+    if(!errors.length){status.className='mr-status ok';status.textContent='â All '+total+' endpoints pulled successfully';}
     else{status.className='mr-status err';status.textContent=errors.length+' failed. '+errors.join('; ');}
     mrRenderDept();mrRenderRaw();
   });
@@ -466,11 +466,11 @@ function mrPullAll(){
 
 function mrFmtH(c){return c.replace(/_/g,' ').replace(/w/g,function(x){return x.toUpperCase();});}
 function mrFmtV(val,col){
-  if(val===null||val===undefined||val==='')return '<span style="color:var(--dim)">—</span>';
+  if(val===null||val===undefined||val==='')return '<span style="color:var(--dim)">â</span>';
   var s=String(val);
   if(col==='status'){var m={A:'<span style="color:var(--green);font-weight:700">Active</span>',D:'<span style="color:var(--yellow);font-weight:700">Dispatched</span>',P:'<span style="color:#60A5FA;font-weight:700">Pending</span>',C:'<span style="color:var(--green)">Complete</span>'};return m[s]||s;}
   if(/charge|pay|limit|amount|revenue/i.test(col)){var n=parseFloat(s);if(!isNaN(n))return '<span style="color:var(--gold);font-weight:700">$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span>';}
-  return s.length>40?s.slice(0,38)+'…':s;
+  return s.length>40?s.slice(0,38)+'â¦':s;
 }
 function mrBuildTable(rows,key){
   var PRI={orders_a:['id','status','bill_to_alias','origin_city','destination_city','total_charge','order_date'],orders_d:['id','status','bill_to_alias','origin_city','destination_city','total_charge'],orders_p:['id','status','bill_to_alias','origin_city','destination_city','total_charge']};
@@ -481,7 +481,7 @@ function mrBuildTable(rows,key){
   cols=cols.concat(rest).slice(0,8);
   var h='<div class="dept-table-wrap"><table class="dept-table"><thead><tr>'+cols.map(function(c){return '<th>'+mrFmtH(c)+'</th>';}).join('')+'</tr></thead><tbody>';
   rows.slice(0,100).forEach(function(row){h+='<tr>'+cols.map(function(c){return '<td>'+mrFmtV(row[c]!==undefined?row[c]:'',c)+'</td>';}).join('')+'</tr>';});
-  if(rows.length>100)h+='<tr><td colspan="'+cols.length+'" style="text-align:center;color:var(--dim);font-style:italic;padding:8px">… and '+(rows.length-100)+' more</td></tr>';
+  if(rows.length>100)h+='<tr><td colspan="'+cols.length+'" style="text-align:center;color:var(--dim);font-style:italic;padding:8px">â¦ and '+(rows.length-100)+' more</td></tr>';
   return h+'</tbody></table></div>';
 }
 function mrRenderDept(){
@@ -490,13 +490,13 @@ function mrRenderDept(){
   Object.keys(MR_DATA).forEach(function(k){var item=MR_DATA[k],d=item.ep.dept;if(!byDept[d])byDept[d]=[];byDept[d].push(item);});
   var total=0,html='';
   Object.keys(byDept).forEach(function(dName){
-    var items=byDept[dName],cfg=MR_DEPT_META[dName]||{icon:'📊',color:'gold'},dtot=0,dbody='';
+    var items=byDept[dName],cfg=MR_DEPT_META[dName]||{icon:'ð',color:'gold'},dtot=0,dbody='';
     items.forEach(function(item){
       var rows=item.result||[];dtot+=rows.length;total+=rows.length;
-      dbody+='<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">'+item.ep.icon+' '+item.ep.label+' <span style="background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:10px;font-size:10px;margin-left:6px">'+(item.error?'⚠ '+item.error:rows.length+' records')+'</span></div>'+(item.error?'<div style="color:var(--red);font-size:12px;padding:8px;background:var(--red-bg);border-radius:6px">'+item.error+'</div>':mrBuildTable(rows,item.ep.key))+'</div>';
+      dbody+='<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">'+item.ep.icon+' '+item.ep.label+' <span style="background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:10px;font-size:10px;margin-left:6px">'+(item.error?'â  '+item.error:rows.length+' records')+'</span></div>'+(item.error?'<div style="color:var(--red);font-size:12px;padding:8px;background:var(--red-bg);border-radius:6px">'+item.error+'</div>':mrBuildTable(rows,item.ep.key))+'</div>';
     });
-    var stats='<div class="dept-stat-row">'+items.map(function(it){return '<div class="dept-stat"><div class="dept-stat-lbl">'+it.ep.label+'</div><div class="dept-stat-val '+cfg.color+'">'+(it.error?'—':(it.result||[]).length)+'</div></div>';}).join('')+'</div>';
-    html+='<div class="dept-section"><div class="dept-section-header" onclick="mrToggle(this)"><span class="dept-section-icon">'+cfg.icon+'</span><span class="dept-section-title">'+dName+'</span><span class="dept-section-meta">'+dtot+' records</span><span class="dept-section-toggle open">▶</span></div><div class="dept-section-body open">'+stats+dbody+'</div></div>';
+    var stats='<div class="dept-stat-row">'+items.map(function(it){return '<div class="dept-stat"><div class="dept-stat-lbl">'+it.ep.label+'</div><div class="dept-stat-val '+cfg.color+'">'+(it.error?'â':(it.result||[]).length)+'</div></div>';}).join('')+'</div>';
+    html+='<div class="dept-section"><div class="dept-section-header" onclick="mrToggle(this)"><span class="dept-section-icon">'+cfg.icon+'</span><span class="dept-section-title">'+dName+'</span><span class="dept-section-meta">'+dtot+' records</span><span class="dept-section-toggle open">â¶</span></div><div class="dept-section-body open">'+stats+dbody+'</div></div>';
   });
   document.getElementById('mr-badge-dept').textContent=total;
   empty.style.display='none';cont.style.display='block';cont.innerHTML=html;
@@ -510,7 +510,7 @@ function mrRenderRaw(){
     n++;var item=MR_DATA[k],rows=item.result||[],ac=first?'active':'';first=false;
     tabsH+='<div class="raw-tab '+ac+'" onclick="mrRawTab(this,\'mr-rawp-'+k+'\')">'+item.ep.icon+' '+item.ep.label+' <span style="font-size:10px;opacity:.7">('+( item.error?'err':rows.length)+')</span></div>';
     var raw=item.error?JSON.stringify({error:item.error},null,2):JSON.stringify(item.result,null,2);
-    panesH+='<div class="raw-pane '+ac+'" id="mr-rawp-'+k+'"><div class="raw-toolbar"><span class="raw-count">'+(item.error?'Error':rows.length+' records')+' · '+item.ep.path+'</span><button class="raw-copy-btn" onclick="mrCopy(\'mr-rawpre-'+k+'\')">📋 Copy JSON</button></div><pre class="raw-pre" id="mr-rawpre-'+k+'">'+raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</pre></div>';
+    panesH+='<div class="raw-pane '+ac+'" id="mr-rawp-'+k+'"><div class="raw-toolbar"><span class="raw-count">'+(item.error?'Error':rows.length+' records')+' Â· '+item.ep.path+'</span><button class="raw-copy-btn" onclick="mrCopy(\'mr-rawpre-'+k+'\')">ð Copy JSON</button></div><pre class="raw-pre" id="mr-rawpre-'+k+'">'+raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</pre></div>';
   });
   document.getElementById('mr-badge-raw').textContent=n;
   empty.style.display='none';cont.style.display='block';tabsEl.innerHTML=tabsH;panesEl.innerHTML=panesH;
@@ -524,7 +524,7 @@ function mrCopy(preId){
   var el=document.getElementById(preId);if(!el)return;
   navigator.clipboard.writeText(el.textContent).then(function(){
     var btn=el.previousElementSibling.querySelector('.raw-copy-btn');
-    if(btn){btn.textContent='✓ Copied!';setTimeout(function(){btn.textContent='📋 Copy JSON';},1500);}
+    if(btn){btn.textContent='â Copied!';setTimeout(function(){btn.textContent='ð Copy JSON';},1500);}
   });
 }
 /* ========== End McLeod Reports ========== */
@@ -807,7 +807,7 @@ function parseApPdf(text) {
   
   for (var i = 0; i < lines.length; i++) {
     var l = lines[i].trim();
-    // Look for dollar amounts — invoice lines have them
+    // Look for dollar amounts â invoice lines have them
     var m = l.match(/^(\d{1,3}(?:,\d{3})*\.\d{2})$/);
     if (m) { balance += parseFloat(m[1].replace(/,/g,'')); }
   }
@@ -844,16 +844,16 @@ function runAP() {
   document.getElementById('ap-ebtn').disabled = true;
   document.getElementById('ap-rrpt').disabled = true;
   document.getElementById('ap-list').innerHTML = '';
-  document.getElementById('ap-ss').textContent = '—';
-  document.getElementById('ap-ow').textContent = '—';
-  document.getElementById('ap-nb').textContent = '—';
-  document.getElementById('ap-sl').textContent = '—';
-  setApSt('Loading carrier list…', 2);
+  document.getElementById('ap-ss').textContent = 'â';
+  document.getElementById('ap-ow').textContent = 'â';
+  document.getElementById('ap-nb').textContent = 'â';
+  document.getElementById('ap-sl').textContent = 'â';
+  setApSt('Loading carrier listâ¦', 2);
   
   var rb2 = document.getElementById('ap-rb').value;
   
   getAllApIds().then(function(ids) {
-    setApSt('Scanning ' + ids.length + ' carriers…', 5);
+    setApSt('Scanning ' + ids.length + ' carriersâ¦', 5);
     document.getElementById('ap-ss').textContent = '0';
     var scanned = 0, withAP = 0, total = 0, overdue = 0;
     var BATCH = 10;
@@ -911,7 +911,7 @@ function runAP() {
             document.getElementById('ap-ow').textContent = withAP;
           }
           var pct = Math.round(scanned / ids.length * 100);
-          setApSt('Scanning ' + scanned + '/' + ids.length + ' carriers…', pct);
+          setApSt('Scanning ' + scanned + '/' + ids.length + ' carriersâ¦', pct);
         }).catch(function(){scanned++;});
       })).then(next);
     }
@@ -933,7 +933,7 @@ function renderAP() {
     html += '<span class="ar-tog">&#9658;</span>';
     html += '<span class="ar-name">' + (r.name||r.id) + ' <span class="ar-id">(' + r.id + ')</span></span>';
     html += '<span class="ar-city">' + (r.city||'') + (r.state ? ', '+r.state : '') + '</span>';
-    var lp = r.lp || (r.lastCheck ? r.lastCheck.substring(4,6)+'/'+r.lastCheck.substring(6,8)+'/'+r.lastCheck.substring(0,4) : '—');
+    var lp = r.lp || (r.lastCheck ? r.lastCheck.substring(4,6)+'/'+r.lastCheck.substring(6,8)+'/'+r.lastCheck.substring(0,4) : 'â');
     html += '<span class="ar-avg">' + (r.avg ? 'Avg: ' + parseFloat(r.avg).toFixed(1) + 'd' : '') + '</span>';
     html += '<span class="ar-lp">Pmt: ' + lp + '</span>';
     html += '<span class="ar-bal ' + color + '">$' + r.bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</span>';
@@ -1041,11 +1041,11 @@ function runSalesReport() {
   document.getElementById('sr-ebtn').disabled=true;
   document.getElementById('sr-rrpt').disabled=true;
   document.getElementById('sr-list').innerHTML='';
-  document.getElementById('sr-total').textContent='—';
-  document.getElementById('sr-rev').textContent='—';
-  document.getElementById('sr-avg').textContent='—';
-  document.getElementById('sr-miles').textContent='—';
-  setSrSt('Fetching orders…', 5);
+  document.getElementById('sr-total').textContent='â';
+  document.getElementById('sr-rev').textContent='â';
+  document.getElementById('sr-avg').textContent='â';
+  document.getElementById('sr-miles').textContent='â';
+  setSrSt('Fetching ordersâ¦', 5);
 
   // Build status list
   var statuses = [];
@@ -1218,8 +1218,8 @@ function runFleetWeekly() {
   btn.textContent = 'Running...'; btn.disabled = true;
   document.getElementById('fw-ebtn').disabled = true;
   document.getElementById('fw-list').innerHTML = '';
-  ['fw-fleet-rev','fw-reefer-rev','fw-oil-rev','fw-tractors'].forEach(function(id){document.getElementById(id).textContent='…';});
-  setFwSt('Fetching orders for week ending ' + dateVal + '…', 5);
+  ['fw-fleet-rev','fw-reefer-rev','fw-oil-rev','fw-tractors'].forEach(function(id){document.getElementById(id).textContent='â¦';});
+  setFwSt('Fetching orders for week ending ' + dateVal + 'â¦', 5);
 
   var endDate = new Date(dateVal + 'T12:00:00');
   var startDate = new Date(endDate);
@@ -1259,17 +1259,17 @@ function runFleetWeekly() {
     document.getElementById('fw-fleet-rev').textContent = fmtMoney(fleetRev);
     document.getElementById('fw-reefer-rev').textContent = fmtMoney(reeferRev);
     document.getElementById('fw-oil-rev').textContent = fmtMoney(oilRev);
-    document.getElementById('fw-tractors').textContent = _fw.length ? (totalTractors || _fw.length) : '—';
+    document.getElementById('fw-tractors').textContent = _fw.length ? (totalTractors || _fw.length) : 'â';
 
-    setFwSt('Complete · ' + _fw.length + ' loads · ' + fmtMoney(fleetRev+reeferRev+oilRev), 100);
+    setFwSt('Complete Â· ' + _fw.length + ' loads Â· ' + fmtMoney(fleetRev+reeferRev+oilRev), 100);
     renderFleetWeekly(fleetRev, reeferRev, oilRev);
-    btn.textContent = '▶ Pull Weekly Report'; btn.disabled = false;
+    btn.textContent = 'â¶ Pull Weekly Report'; btn.disabled = false;
     document.getElementById('fw-ebtn').disabled = false;
     document.getElementById('fw-sbtn').disabled = false;
     _fwRun = false;
   }).catch(function(e){
     setFwSt('Error: ' + e.message, 0);
-    btn.textContent = '▶ Pull Weekly Report'; btn.disabled = false;
+    btn.textContent = 'â¶ Pull Weekly Report'; btn.disabled = false;
     _fwRun = false;
   });
 }
@@ -1308,13 +1308,13 @@ function renderFleetWeekly(fleetRev, reeferRev, oilRev) {
   var totalRev = fleetRev + reeferRev + oilRev;
 
   var html = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px">';
-  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Weekly Summary — By Equipment Type</div>';
+  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Weekly Summary â By Equipment Type</div>';
   html += '<div style="overflow-x:auto"><table class="itable" style="min-width:600px"><thead><tr>';
   html += '<th>Category</th><th>Total Revenue</th><th>% of Total</th><th>Rev/Mile</th></tr></thead><tbody>';
   var cats = [{name:'Fleet (Dry Van)',rev:fleetRev},{name:'Reefer',rev:reeferRev},{name:'Oil/Tank',rev:oilRev}];
   cats.forEach(function(c) {
     var pct = totalRev ? ((c.rev/totalRev)*100).toFixed(1) : '0.0';
-    html += '<tr><td><strong>' + c.name + '</strong></td><td style="color:var(--green);font-weight:700">' + fmtMoney(c.rev) + '</td><td>' + pct + '%</td><td>' + (totalMiles ? '$'+(c.rev/totalMiles).toFixed(2) : '—') + '</td></tr>';
+    html += '<tr><td><strong>' + c.name + '</strong></td><td style="color:var(--green);font-weight:700">' + fmtMoney(c.rev) + '</td><td>' + pct + '%</td><td>' + (totalMiles ? '$'+(c.rev/totalMiles).toFixed(2) : 'â') + '</td></tr>';
   });
   html += '<tr style="border-top:2px solid var(--border)"><td><strong>TOTAL</strong></td><td style="color:var(--gold);font-weight:800">' + fmtMoney(totalRev) + '</td><td>100%</td><td style="color:var(--gold);font-weight:700">$' + (totalMiles ? (totalRev/totalMiles).toFixed(2) : '0.00') + '</td></tr>';
   html += '</tbody></table></div></div>';
@@ -1366,14 +1366,14 @@ function runFleetMonthly() {
   btn.textContent = 'Running...'; btn.disabled = true;
   document.getElementById('fm-ebtn').disabled = true;
   document.getElementById('fm-list').innerHTML = '';
-  ['fm-local-rev','fm-shuttle-rev','fm-otr-rev','fm-tractors'].forEach(function(id){document.getElementById(id).textContent='…';});
+  ['fm-local-rev','fm-shuttle-rev','fm-otr-rev','fm-tractors'].forEach(function(id){document.getElementById(id).textContent='â¦';});
 
   var parts = monthVal.split('-');
   var year = parseInt(parts[0]), month = parseInt(parts[1]);
   var fromDate = monthVal.replace('-','') + '01';
   var lastDay = new Date(year, month, 0).getDate();
   var toDate = monthVal.replace('-','') + String(lastDay).padStart(2,'0');
-  setFmSt('Fetching orders for ' + new Date(year, month-1).toLocaleString('en-US',{month:'long',year:'numeric'}) + '…', 5);
+  setFmSt('Fetching orders for ' + new Date(year, month-1).toLocaleString('en-US',{month:'long',year:'numeric'}) + 'â¦', 5);
 
   var statuses = ['A','D','P'];
   var allFetches = statuses.map(function(st) {
@@ -1407,17 +1407,17 @@ function runFleetMonthly() {
     document.getElementById('fm-local-rev').textContent = fmtMoney(localRev);
     document.getElementById('fm-shuttle-rev').textContent = fmtMoney(shuttleRev);
     document.getElementById('fm-otr-rev').textContent = fmtMoney(otrRev);
-    document.getElementById('fm-tractors').textContent = totalTractors || _fm.length || '—';
+    document.getElementById('fm-tractors').textContent = totalTractors || _fm.length || 'â';
 
-    setFmSt('Complete · ' + _fm.length + ' loads · ' + fmtMoney(localRev+shuttleRev+otrRev), 100);
+    setFmSt('Complete Â· ' + _fm.length + ' loads Â· ' + fmtMoney(localRev+shuttleRev+otrRev), 100);
     renderFleetMonthly(localRev, shuttleRev, otrRev, monthVal);
-    btn.textContent = '▶ Pull Monthly Report'; btn.disabled = false;
+    btn.textContent = 'â¶ Pull Monthly Report'; btn.disabled = false;
     document.getElementById('fm-ebtn').disabled = false;
     document.getElementById('fm-sbtn').disabled = false;
     _fmRun = false;
   }).catch(function(e){
     setFmSt('Error: ' + e.message, 0);
-    btn.textContent = '▶ Pull Monthly Report'; btn.disabled = false;
+    btn.textContent = 'â¶ Pull Monthly Report'; btn.disabled = false;
     _fmRun = false;
   });
 }
@@ -1460,7 +1460,7 @@ function renderFleetMonthly(localRev, shuttleRev, otrRev, monthVal) {
   var totalTractors = allTr3.size;
 
   var html = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px">';
-  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Monthly Summary — ' + monthName + ' (Fleet / Dry Vans)</div>';
+  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Monthly Summary â ' + monthName + ' (Fleet / Dry Vans)</div>';
   html += '<div style="overflow-x:auto"><table class="itable" style="min-width:650px"><thead><tr><th>Category</th><th>Total Revenue</th><th>Total Tractors</th><th>Rev/Tractor</th><th>Rev/Mile</th></tr></thead><tbody>';
 
   var cats = [{name:'Local',rev:localRev},{name:'Shuttle',rev:shuttleRev},{name:'OTR',rev:otrRev}];
@@ -1474,9 +1474,9 @@ function renderFleetMonthly(localRev, shuttleRev, otrRev, monthVal) {
     var catTrSet = new Set(catLoads.filter(function(o){return o.tractor_id;}).map(function(o){return o.tractor_id;}));
     var catTr = catTrSet.size;
     var catMiles = catLoads.reduce(function(s,o){return s+o.miles;},0);
-    html += '<tr><td><strong>' + c.name + '</strong></td><td style="color:var(--green);font-weight:700">' + fmtMoney(c.rev) + '</td><td>' + (catTr||catLoads.length) + '</td><td>' + (catTr ? '$'+(c.rev/catTr).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—') + '</td><td>' + (catMiles ? '$'+(c.rev/catMiles).toFixed(2) : '—') + '</td></tr>';
+    html += '<tr><td><strong>' + c.name + '</strong></td><td style="color:var(--green);font-weight:700">' + fmtMoney(c.rev) + '</td><td>' + (catTr||catLoads.length) + '</td><td>' + (catTr ? '$'+(c.rev/catTr).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}) : 'â') + '</td><td>' + (catMiles ? '$'+(c.rev/catMiles).toFixed(2) : 'â') + '</td></tr>';
   });
-  html += '<tr style="border-top:2px solid var(--border)"><td><strong>TOTAL</strong></td><td style="color:var(--gold);font-weight:800">' + fmtMoney(totalRev) + '</td><td>' + totalTractors + '</td><td style="color:var(--gold);font-weight:700">' + (totalTractors ? '$'+(totalRev/totalTractors).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—') + '</td><td style="color:var(--gold);font-weight:700">' + (totalMiles ? '$'+(totalRev/totalMiles).toFixed(2) : '—') + '</td></tr>';
+  html += '<tr style="border-top:2px solid var(--border)"><td><strong>TOTAL</strong></td><td style="color:var(--gold);font-weight:800">' + fmtMoney(totalRev) + '</td><td>' + totalTractors + '</td><td style="color:var(--gold);font-weight:700">' + (totalTractors ? '$'+(totalRev/totalTractors).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}) : 'â') + '</td><td style="color:var(--gold);font-weight:700">' + (totalMiles ? '$'+(totalRev/totalMiles).toFixed(2) : 'â') + '</td></tr>';
   html += '</tbody></table></div></div>';
 
   html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px">';
@@ -1514,7 +1514,7 @@ var SHEETS_WEB_APP = 'https://script.google.com/macros/s/AKfycbzawZCoUBQF0hvw9JZ
 function pushWeeklyToSheets() {
   if (!_fw || !_fw.length) { alert('Run the weekly report first.'); return; }
   var btn = document.getElementById('fw-sbtn');
-  btn.textContent = '� Pushing...'; btn.disabled = true;
+  btn.textContent = 'ï¿½ Pushing...'; btn.disabled = true;
 
   var dateVal = document.getElementById('fw-date').value;
   var totalRev = _fw.reduce(function(s,o){return s+o.revenue;},0);
@@ -1544,14 +1544,14 @@ function pushWeeklyToSheets() {
     btn.style.color=ok?'var(--green)':'var(--yellow)';
     btn.disabled=false;
     if(!ok)console.error('Sheets push:',results);
-    setTimeout(function(){btn.textContent='� Push to Sheets';btn.style.color='#22C55E';},4000);
+    setTimeout(function(){btn.textContent='ï¿½ Push to Sheets';btn.style.color='#22C55E';},4000);
   });
 }
 
 function pushMonthlyToSheets() {
   if (!_fm || !_fm.length) { alert('Run the monthly report first.'); return; }
   var btn = document.getElementById('fm-sbtn');
-  btn.textContent = '� Pushing...'; btn.disabled = true;
+  btn.textContent = 'ï¿½ Pushing...'; btn.disabled = true;
 
   // Group orders by week-ending Saturday
   var weekMap = {};
@@ -1583,246 +1583,10 @@ function pushMonthlyToSheets() {
     btn.style.color=ok?'var(--green)':'var(--yellow)';
     btn.disabled=false;
     if(!ok)console.error('Monthly sheets push:',results);
-    setTimeout(function(){btn.textContent='� Push to Sheets';btn.style.color='#22C55E';},4000);
+    setTimeout(function(){btn.textContent='ï¿½ Push to Sheets';btn.style.color='#22C55E';},4000);
   });
 }
 
 
 
-// ========== McLeod Reports ==========
-const MR_PULLS = [
-  { key:'orders',    label:'Orders',      icon:'📦', dept:'Dispatch / Operations', endpoint:'orders/search',    params:{status:'A,D,C,P', rowCount:200} },
-  { key:'movements', label:'Movements',   icon:'🚛', dept:'Dispatch / Operations', endpoint:'movements/search', params:{rowCount:200} },
-  { key:'drivers',   label:'Drivers',     icon:'👤', dept:'Fleet',                 endpoint:'driver/search',    params:{rowCount:200} },
-  { key:'tractors',  label:'Tractors',    icon:'🚜', dept:'Fleet',                 endpoint:'tractor/search',   params:{rowCount:200} },
-  { key:'trailers',  label:'Trailers',    icon:'🔗', dept:'Fleet',                 endpoint:'trailer/search',   params:{rowCount:200} },
-  { key:'carriers',  label:'Carriers',    icon:'🏢', dept:'Carrier Management',    endpoint:'carrier/search',   params:{rowCount:200} },
-  { key:'customers', label:'Customers',   icon:'🤝', dept:'Sales / Customers',     endpoint:'customer/search',  params:{rowCount:200} },
-  { key:'settlements',label:'Settlements',icon:'💰', dept:'Accounting',            endpoint:'settlements/search',params:{rowCount:200} },
-  { key:'payroll',   label:'Payroll',     icon:'💵', dept:'Accounting',            endpoint:'payroll/deductCodes',params:{} },
-];
-
-let mrRawData = {};
-let mrToken = '';
-let mrCompany = 'TMS';
-
-function mrGetCreds() {
-  mrToken = sessionStorage.getItem('mcleod_token') || '';
-  mrCompany = sessionStorage.getItem('mcleod_company') || 'TMS';
-}
-
-async function mrFetch(endpoint, params={}) {
-  const qs = Object.keys(params).length ? '?' + new URLSearchParams(params).toString() : '';
-  const url = '/api/mcleod?path=' + endpoint + (qs ? '&' + new URLSearchParams(params).toString() : '');
-  const headers = { 'Content-Type':'application/json' };
-  if (mrToken) { headers['x-mcleod-token'] = mrToken; headers['x-mcleod-company'] = mrCompany; }
-  const resp = await fetch(url, { headers });
-  if (!resp.ok) { const t = await resp.text(); throw new Error(resp.status + ': ' + t.slice(0,120)); }
-  const ct = resp.headers.get('content-type') || '';
-  return ct.includes('json') ? resp.json() : resp.text();
-}
-
-async function mrPullAll() {
-  mrGetCreds();
-  const btn = document.getElementById('mr-pull-btn');
-  const status = document.getElementById('mr-status');
-  const prog = document.getElementById('mr-progress');
-  const pfill = document.getElementById('mr-pfill');
-  if (!btn) return;
-  btn.disabled = true;
-  btn.classList.add('loading');
-  prog.classList.add('show');
-  mrRawData = {};
-  const total = MR_PULLS.length;
-  let done = 0, errors = 0;
-  for (const pull of MR_PULLS) {
-    status.textContent = 'Pulling ' + pull.label + '...';
-    status.className = 'mr-status';
-    try {
-      const data = await mrFetch(pull.endpoint, pull.params);
-      mrRawData[pull.key] = { label:pull.label, icon:pull.icon, dept:pull.dept, data, error:null };
-    } catch(e) {
-      mrRawData[pull.key] = { label:pull.label, icon:pull.icon, dept:pull.dept, data:null, error:e.message };
-      errors++;
-    }
-    done++;
-    pfill.style.width = Math.round((done/total)*100) + '%';
-  }
-  btn.disabled = false;
-  btn.classList.remove('loading');
-  if (errors === 0) { status.textContent = 'All reports pulled successfully ✓'; status.className = 'mr-status ok'; }
-  else { status.textContent = errors + ' endpoint(s) failed — check Raw Data tab for details'; status.className = 'mr-status err'; }
-  const now = new Date();
-  const lastPull = document.getElementById('mr-last-pull');
-  if (lastPull) lastPull.textContent = 'Last pulled: ' + now.toLocaleString();
-  mrRenderDept();
-  mrRenderRaw();
-  const totalRecords = Object.values(mrRawData).reduce((acc,v) => acc + mrCountRecords(v.data), 0);
-  const dBadge = document.getElementById('mr-badge-dept');
-  const rBadge = document.getElementById('mr-badge-raw');
-  if (dBadge) dBadge.textContent = totalRecords.toLocaleString();
-  if (rBadge) rBadge.textContent = MR_PULLS.length;
-}
-
-function mrCountRecords(data) {
-  if (!data) return 0;
-  if (Array.isArray(data)) return data.length;
-  if (typeof data === 'object') {
-    const arr = data.data || data.results || data.rows || data.items || data.list || Object.values(data).find(v => Array.isArray(v));
-    if (Array.isArray(arr)) return arr.length;
-    return 1;
-  }
-  return 0;
-}
-
-function mrExtractRows(data) {
-  if (!data) return [];
-  if (Array.isArray(data)) return data;
-  if (typeof data === 'object') {
-    const arr = data.data || data.results || data.rows || data.items || data.list || Object.values(data).find(v => Array.isArray(v));
-    if (Array.isArray(arr)) return arr;
-    return [data];
-  }
-  return [];
-}
-
-function mrRenderDept() {
-  const empty = document.getElementById('mr-dept-empty');
-  const content = document.getElementById('mr-dept-content');
-  if (!empty || !content) return;
-  // Group by dept
-  const depts = {};
-  for (const [key, v] of Object.entries(mrRawData)) {
-    if (!depts[v.dept]) depts[v.dept] = [];
-    depts[v.dept].push({ key, ...v });
-  }
-  const deptIcons = {
-    'Dispatch / Operations':'🚚', 'Fleet':'🚛', 'Carrier Management':'🏢',
-    'Sales / Customers':'📈', 'Accounting':'💰'
-  };
-  let html = '';
-  for (const [deptName, items] of Object.entries(depts)) {
-    const icon = deptIcons[deptName] || '📋';
-    const totalRecs = items.reduce((a,v) => a + mrCountRecords(v.data), 0);
-    const hasError = items.some(v => v.error);
-    html += '<div class="dept-section">';
-    html += '<div class="dept-section-header" onclick="mrToggleDeptSection(this)">';
-    html += '<span class="dept-section-icon">' + icon + '</span>';
-    html += '<span class="dept-section-title">' + deptName + '</span>';
-    html += '<span class="dept-section-meta">' + totalRecs.toLocaleString() + ' records</span>';
-    if (hasError) html += '<span style="color:var(--red);font-size:11px;margin-right:8px">⚠ some errors</span>';
-    html += '<span class="dept-section-toggle">▶</span>';
-    html += '</div>';
-    html += '<div class="dept-section-body">';
-    // Summary stats
-    html += '<div class="dept-stat-row">';
-    for (const item of items) {
-      const cnt = mrCountRecords(item.data);
-      html += '<div class="dept-stat">';
-      html += '<div class="dept-stat-lbl">' + item.icon + ' ' + item.label + '</div>';
-      html += '<div class="dept-stat-val ' + (item.error ? 'red' : cnt > 0 ? 'grn' : '') + '">' + (item.error ? 'Error' : cnt.toLocaleString()) + '</div>';
-      html += '</div>';
-    }
-    html += '</div>';
-    // Tables for each item
-    for (const item of items) {
-      html += '<div style="margin-bottom:16px">';
-      html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">' + item.icon + ' ' + item.label + '</div>';
-      if (item.error) {
-        html += '<div style="background:var(--red-bg);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red)">' + item.error + '</div>';
-      } else {
-        const rows = mrExtractRows(item.data);
-        if (rows.length === 0) {
-          html += '<div style="color:var(--dim);font-size:12px;padding:8px 0">No records returned</div>';
-        } else {
-          const cols = Object.keys(rows[0]).filter(k => !k.startsWith('__')).slice(0, 8);
-          html += '<div class="dept-table-wrap"><table class="dept-table"><thead><tr>';
-          for (const col of cols) html += '<th>' + col + '</th>';
-          html += '</tr></thead><tbody>';
-          for (const row of rows.slice(0, 50)) {
-            html += '<tr>';
-            for (const col of cols) {
-              const val = row[col] != null ? String(row[col]).slice(0,40) : '';
-              html += '<td>' + val.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</td>';
-            }
-            html += '</tr>';
-          }
-          html += '</tbody></table></div>';
-          if (rows.length > 50) html += '<div style="font-size:11px;color:var(--dim);margin-top:6px">Showing 50 of ' + rows.length + ' records — see Raw Data tab for full set</div>';
-        }
-      }
-      html += '</div>';
-    }
-    html += '</div></div>';
-  }
-  content.innerHTML = html;
-  empty.style.display = 'none';
-  content.style.display = 'block';
-}
-
-function mrToggleDeptSection(header) {
-  const body = header.nextElementSibling;
-  const toggle = header.querySelector('.dept-section-toggle');
-  if (!body) return;
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  if (toggle) toggle.classList.toggle('open', !isOpen);
-}
-
-function mrRenderRaw() {
-  const empty = document.getElementById('mr-raw-empty');
-  const content = document.getElementById('mr-raw-content');
-  const tabsEl = document.getElementById('mr-raw-tabs');
-  const panesEl = document.getElementById('mr-raw-panes');
-  if (!empty || !content || !tabsEl || !panesEl) return;
-  const keys = Object.keys(mrRawData);
-  if (keys.length === 0) return;
-  let tabsHTML = '', panesHTML = '';
-  keys.forEach((key, i) => {
-    const v = mrRawData[key];
-    const isActive = i === 0;
-    tabsHTML += '<div class="raw-tab' + (isActive ? ' active' : '') + '" id="raw-tab-' + key + '" onclick="mrSwitchRawTab(\'' + key + '\')">' + v.icon + ' ' + v.label + '</div>';
-    const cnt = mrCountRecords(v.data);
-    const jsonStr = v.error ? ('ERROR: ' + v.error) : JSON.stringify(v.data, null, 2);
-    panesHTML += '<div class="raw-pane' + (isActive ? ' active' : '') + '" id="raw-pane-' + key + '">';
-    panesHTML += '<div class="raw-toolbar">';
-    panesHTML += '<span class="raw-count">' + (v.error ? '<span style="color:var(--red)">⚠ Error</span>' : cnt.toLocaleString() + ' records') + '</span>';
-    panesHTML += '<button class="raw-copy-btn" onclick="mrCopyRaw(\'' + key + '\')">📋 Copy JSON</button>';
-    panesHTML += '</div>';
-    panesHTML += '<pre class="raw-pre" id="raw-json-' + key + '">' + jsonStr.replace(/</g,'&lt;').replace(/>/g,'&gt;').slice(0, 60000) + '</pre>';
-    panesHTML += '</div>';
-  });
-  tabsEl.innerHTML = tabsHTML;
-  panesEl.innerHTML = panesHTML;
-  empty.style.display = 'none';
-  content.style.display = 'block';
-}
-
-function mrSwitchRawTab(key) {
-  document.querySelectorAll('.raw-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.raw-pane').forEach(p => p.classList.remove('active'));
-  const tab = document.getElementById('raw-tab-' + key);
-  const pane = document.getElementById('raw-pane-' + key);
-  if (tab) tab.classList.add('active');
-  if (pane) pane.classList.add('active');
-}
-
-function mrCopyRaw(key) {
-  const pre = document.getElementById('raw-json-' + key);
-  if (!pre) return;
-  navigator.clipboard.writeText(pre.textContent).then(() => {
-    const btn = pre.previousElementSibling ? pre.previousElementSibling.querySelector('.raw-copy-btn') : null;
-    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = '📋 Copy JSON', 1500); }
-  });
-}
-
-function mrSwitchTab(tab) {
-  document.querySelectorAll('.mr-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.mr-pane').forEach(p => p.classList.remove('active'));
-  const tabEl = document.getElementById('mr-tab-' + tab);
-  const paneEl = document.getElementById('mr-pane-' + tab);
-  if (tabEl) tabEl.classList.add('active');
-  if (paneEl) paneEl.classList.add('active');
-}
-// ========== End McLeod Reports ==========
 </script></body></html>
