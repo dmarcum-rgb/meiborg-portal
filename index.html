@@ -298,6 +298,7 @@ body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);displ
 </div>
 
 <div class="panel" id="panel-bookings"><div class="panel-header"><h2>📅 Massage Booking</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div>
+<style>#panel-mcleod-rpt{min-width:0;width:100%}</style>
 <div class="panel" id="panel-mcleod-rpt">
 
 <!-- ===== STYLES for McLeod Reports ===== -->
@@ -411,22 +412,23 @@ const MR = {
   data: {},
   lastPull: null,
   ENDPOINTS: [
-    { key:'orders',     label:'Orders',      icon:'📦', path:'orders/search',       params:'?limit=200',  dept:'Operations' },
-    { key:'drivers',    label:'Drivers',     icon:'🚗', path:'drivers/search',      params:'?limit=200',  dept:'Fleet'      },
-    { key:'tractors',   label:'Tractors',    icon:'🚛', path:'tractors/search',     params:'?limit=200',  dept:'Fleet'      },
-    { key:'trailers',   label:'Trailers',    icon:'🚚', path:'trailers/search',     params:'?limit=200',  dept:'Fleet'      },
-    { key:'carriers',   label:'Carriers',    icon:'🤝', path:'carriers/search',     params:'?limit=200',  dept:'Sales'      },
-    { key:'customers',  label:'Customers',   icon:'👥', path:'customers/search',    params:'?limit=200',  dept:'Sales'      },
-    { key:'settlements',label:'Settlements', icon:'💰', path:'settlements/search',  params:'?limit=200',  dept:'Accounting' },
-    { key:'payees',     label:'Payees',      icon:'💵', path:'payees/search',       params:'?limit=200',  dept:'Accounting' },
+    { key:'orders',     label:'Orders',      icon:'📦', path:'orders/search', params:'?status=A',  dept:'Dispatch / Operations' },
+    { key:'orders_d',   label:'Dispatched',  icon:'🚛', path:'orders/search', params:'?status=D',  dept:'Dispatch / Operations' },
+    { key:'drivers',    label:'Drivers',     icon:'🧑', path:'drivers',       params:'?limit=200', dept:'Fleet'       },
+    { key:'tractors',   label:'Tractors',    icon:'🚚', path:'tractors',      params:'?limit=200', dept:'Fleet'       },
+    { key:'trailers',   label:'Trailers',    icon:'🚛', path:'trailers',      params:'?limit=200', dept:'Fleet'       },
+    { key:'carriers',   label:'Carriers',    icon:'🤝', path:'carriers',      params:'?limit=200', dept:'Carrier Management' },
+    { key:'customers',  label:'Customers',   icon:'👥', path:'customers',     params:'?limit=200', dept:'Sales / Customers'   },
+    { key:'settlements',label:'Settlements', icon:'💰', path:'settlements',   params:'?limit=200', dept:'Accounting'  },
+    { key:'payees',     label:'Payees',      icon:'💵', path:'payees',        params:'?limit=200', dept:'Accounting'  },
   ],
   DEPT_META: {
-    'Operations': { icon:'📦', color:'gold'  },
+    'Dispatch / Operations': { icon:'📦', color:'gold'  },
     'Fleet':      { icon:'🚛', color:'blue'  },
-    'Sales':      { icon:'📈', color:'green' },
+    'Carrier Management': { icon:'🤝', color:'green' },
+    'Sales / Customers':  { icon:'📈', color:'green' },
     'Accounting': { icon:'💼', color:'gold'  },
-  }
-};
+  };
 
 function mrSwitchTab(tab){
   document.querySelectorAll('.mr-tab').forEach(t=>t.classList.remove('active'));
@@ -436,16 +438,27 @@ function mrSwitchTab(tab){
 }
 
 async function mrFetch(ep){
-  const token=window._mcToken||'';
-  const company=window._mcCompany||'TMS';
-  const qs=ep.params.startsWith('?')?ep.params.slice(1):ep.params;
-  const url='/api/mcleod?path='+ep.path+(qs?'&'+qs:'');
-  const resp=await fetch(url,{headers:{'Accept':'application/json','x-mcleod-token':token,'x-mcleod-company':company}});
+  const url=BASE+'/'+ep.path+(ep.params||'');
+  const resp=await fetch(url,{headers:{'Authorization':_token,'CompanyID':'TMS','Accept':'application/json'}});
   if(!resp.ok) throw new Error('HTTP '+resp.status);
   const txt=await resp.text();
-  try{return JSON.parse(txt);}catch(e){return {_raw:txt};}
+  if(!txt||!txt.trim()) return [];
+  try{
+    const j=JSON.parse(txt);
+    if(Array.isArray(j)) return j;
+    for(const k of Object.keys(j)){ if(Array.isArray(j[k])) return j[k]; }
+    return [j];
+  }catch(e){
+    // Try XML parse
+    try{
+      const parser=new DOMParser();
+      const xml=parser.parseFromString(txt,'application/xml');
+      const rows=xml.querySelectorAll('[id]');
+      if(rows.length){ return Array.from(rows).map(r=>{ const o={}; for(const a of r.attributes) o[a.name]=a.value; return o; }); }
+    }catch(xe){}
+    return [];
+  }
 }
-
 async function mrPullAll(){
   const btn=document.getElementById('mr-pull-btn');
   const status=document.getElementById('mr-status');
