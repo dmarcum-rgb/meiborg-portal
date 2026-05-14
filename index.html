@@ -405,6 +405,188 @@ Pull All Reports
 
 </div><!-- end panel-mcleod-rpt -->
 <script>
+
+/* ========== McLeod Reports Logic ========== */
+const MR = {
+  data: {},
+  lastPull: null,
+  ENDPOINTS: [
+    { key:'orders',     label:'Orders',      icon:'📦', path:'orders/search',       params:'?limit=200',  dept:'Operations' },
+    { key:'drivers',    label:'Drivers',     icon:'🚗', path:'drivers/search',      params:'?limit=200',  dept:'Fleet'      },
+    { key:'tractors',   label:'Tractors',    icon:'🚛', path:'tractors/search',     params:'?limit=200',  dept:'Fleet'      },
+    { key:'trailers',   label:'Trailers',    icon:'🚚', path:'trailers/search',     params:'?limit=200',  dept:'Fleet'      },
+    { key:'carriers',   label:'Carriers',    icon:'🤝', path:'carriers/search',     params:'?limit=200',  dept:'Sales'      },
+    { key:'customers',  label:'Customers',   icon:'👥', path:'customers/search',    params:'?limit=200',  dept:'Sales'      },
+    { key:'settlements',label:'Settlements', icon:'💰', path:'settlements/search',  params:'?limit=200',  dept:'Accounting' },
+    { key:'payees',     label:'Payees',      icon:'💵', path:'payees/search',       params:'?limit=200',  dept:'Accounting' },
+  ],
+  DEPT_META: {
+    'Operations': { icon:'📦', color:'gold'  },
+    'Fleet':      { icon:'🚛', color:'blue'  },
+    'Sales':      { icon:'📈', color:'green' },
+    'Accounting': { icon:'💼', color:'gold'  },
+  }
+};
+
+function mrSwitchTab(tab){
+  document.querySelectorAll('.mr-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.mr-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('mr-tab-'+tab).classList.add('active');
+  document.getElementById('mr-pane-'+tab).classList.add('active');
+}
+
+async function mrFetch(ep){
+  const token=window._mcToken||'';
+  const company=window._mcCompany||'TMS';
+  const qs=ep.params.startsWith('?')?ep.params.slice(1):ep.params;
+  const url='/api/mcleod?path='+ep.path+(qs?'&'+qs:'');
+  const resp=await fetch(url,{headers:{'Accept':'application/json','x-mcleod-token':token,'x-mcleod-company':company}});
+  if(!resp.ok) throw new Error('HTTP '+resp.status);
+  const txt=await resp.text();
+  try{return JSON.parse(txt);}catch(e){return {_raw:txt};}
+}
+
+async function mrPullAll(){
+  const btn=document.getElementById('mr-pull-btn');
+  const status=document.getElementById('mr-status');
+  const progress=document.getElementById('mr-progress');
+  const pfill=document.getElementById('mr-pfill');
+  btn.disabled=true; btn.classList.add('loading');
+  progress.classList.add('show'); pfill.style.width='0%';
+  status.className='mr-status'; status.textContent='Connecting to McLeod...';
+  MR.data={};
+  const total=MR.ENDPOINTS.length; let done=0; const errors=[];
+  for(const ep of MR.ENDPOINTS){
+    status.textContent='Pulling '+ep.label+'...';
+    try{ MR.data[ep.key]={ep,result:await mrFetch(ep),error:null}; }
+    catch(e){ MR.data[ep.key]={ep,result:null,error:e.message}; errors.push(ep.label+': '+e.message); }
+    done++; pfill.style.width=Math.round(done/total*100)+'%';
+  }
+  MR.lastPull=new Date();
+  btn.disabled=false; btn.classList.remove('loading');
+  if(!errors.length){ status.className='mr-status ok'; status.textContent='✓ All '+total+' endpoints pulled successfully'; }
+  else if(errors.length<total){ status.className='mr-status'; status.textContent='⚠ '+(total-errors.length)+'/'+total+' pulled'; }
+  else{ status.className='mr-status err'; status.textContent='✗ All pulls failed — check McLeod session'; }
+  const lp=document.getElementById('mr-last-pull');
+  if(lp) lp.textContent='Last pulled: '+MR.lastPull.toLocaleString();
+  mrRenderDept(); mrRenderRaw();
+}
+
+function mrRows(r){
+  if(!r) return [];
+  if(Array.isArray(r)) return r;
+  for(const k of Object.keys(r)){ if(Array.isArray(r[k])) return r[k]; }
+  if(typeof r==='object'&&!r._raw) return [r];
+  return [];
+}
+
+function mrCols(row,key){
+  const PRI={
+    orders:['id','status','bill_to_alias','origin_city','destination_city','total_charge','order_date'],
+    drivers:['id','name','status','driver_type','home_terminal'],
+    tractors:['id','status','make','model','year'],
+    trailers:['id','status','trailer_type','length'],
+    carriers:['id','name','status','city','state'],
+    customers:['id','name','status','city','state','credit_limit'],
+    settlements:['id','payee_id','pay_date','gross_pay','net_pay'],
+    payees:['id','name','type','city','state'],
+  };
+  const p=PRI[key]||[]; const rk=Object.keys(row).filter(k=>!k.startsWith('__'));
+  const ex=p.filter(c=>rk.includes(c));
+  const rest=rk.filter(k=>!ex.includes(k)).slice(0,Math.max(0,8-ex.length));
+  return [...ex,...rest].slice(0,8);
+}
+
+function mrFmtH(col){ return col.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); }
+
+function mrFmtV(val,col){
+  if(val===null||val===undefined||val==='') return '<span style="color:var(--dim)">—</span>';
+  const s=String(val);
+  if(col==='status'){
+    const m={'A':'<span style="color:var(--green);font-weight:700">Active</span>','I':'<span style="color:var(--dim)">Inactive</span>','D':'<span style="color:var(--yellow);font-weight:700">Dispatched</span>','C':'<span style="color:var(--green);font-weight:700">Complete</span>','P':'<span style="color:#60A5FA;font-weight:700">Pending</span>'};
+    return m[s]||s;
+  }
+  if(/charge|pay|limit|amount/i.test(col)){ const n=parseFloat(s); if(!isNaN(n)) return '<span style="color:var(--gold);font-weight:700">$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span>'; }
+  return s.length>40?s.slice(0,38)+'…':s;
+}
+
+function mrRenderDept(){
+  const empty=document.getElementById('mr-dept-empty');
+  const cont=document.getElementById('mr-dept-content');
+  const byDept={};
+  for(const [k,item] of Object.entries(MR.data)){
+    const d=item.ep.dept;
+    if(!byDept[d]) byDept[d]=[];
+    byDept[d].push(item);
+  }
+  let total=0; let html='';
+  for(const [dName,items] of Object.entries(byDept)){
+    const cfg=MR.DEPT_META[dName]||{icon:'📋',color:'gold'};
+    let dtot=0; let dbody='';
+    for(const item of items){
+      const rows=mrRows(item.result); dtot+=rows.length; total+=rows.length;
+      dbody+='<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">'+item.ep.icon+' '+item.ep.label+' <span style="background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:10px;font-size:10px;margin-left:6px">'+(item.error?'✗ Error':rows.length+' records')+'</span></div>';
+      if(item.error){ dbody+='<div style="color:var(--red);font-size:12px;padding:8px 12px;background:var(--red-bg);border:1px solid rgba(239,68,68,.2);border-radius:6px">⚠ '+item.error+'</div>'; }
+      else if(!rows.length){ dbody+='<div style="color:var(--dim);font-size:12px;padding:8px">No records returned</div>'; }
+      else{
+        const cols=mrCols(rows[0],item.ep.key);
+        dbody+='<div class="dept-table-wrap"><table class="dept-table"><thead><tr>'+cols.map(c=>'<th>'+mrFmtH(c)+'</th>').join('')+'</tr></thead><tbody>';
+        rows.slice(0,100).forEach(row=>{ dbody+='<tr>'+cols.map(c=>'<td>'+mrFmtV(row[c]!==undefined?row[c]:'',c)+'</td>').join('')+'</tr>'; });
+        if(rows.length>100) dbody+='<tr><td colspan="'+cols.length+'" style="text-align:center;color:var(--dim);font-style:italic;padding:8px">… and '+(rows.length-100)+' more</td></tr>';
+        dbody+='</tbody></table></div>';
+      }
+      dbody+='</div>';
+    }
+    const stats='<div class="dept-stat-row">'+items.map(it=>'<div class="dept-stat"><div class="dept-stat-lbl">'+it.ep.label+'</div><div class="dept-stat-val '+cfg.color+'">'+(it.error?'—':mrRows(it.result).length)+'</div></div>').join('')+'</div>';
+    html+='<div class="dept-section"><div class="dept-section-header" onclick="mrToggle(this)"><span class="dept-section-icon">'+cfg.icon+'</span><span class="dept-section-title">'+dName+'</span><span class="dept-section-meta">'+dtot+' records</span><span class="dept-section-toggle open">▶</span></div><div class="dept-section-body open">'+stats+dbody+'</div></div>';
+  }
+  document.getElementById('mr-badge-dept').textContent=total;
+  empty.style.display='none'; cont.style.display='block'; cont.innerHTML=html;
+}
+
+function mrToggle(hdr){
+  const body=hdr.nextElementSibling;
+  const tog=hdr.querySelector('.dept-section-toggle');
+  const open=body.classList.contains('open');
+  body.classList.toggle('open',!open); tog.classList.toggle('open',!open);
+}
+
+function mrRenderRaw(){
+  const empty=document.getElementById('mr-raw-empty');
+  const cont=document.getElementById('mr-raw-content');
+  const tabsEl=document.getElementById('mr-raw-tabs');
+  const panesEl=document.getElementById('mr-raw-panes');
+  let tabsH=''; let panesH=''; let first=true; let n=0;
+  for(const [k,item] of Object.entries(MR.data)){
+    n++;
+    const rows=mrRows(item.result);
+    const ac=first?'active':''; first=false;
+    tabsH+='<div class="raw-tab '+ac+'" onclick="mrRawTab(this,\'mr-rawp-'+k+'\')">'+item.ep.icon+' '+item.ep.label+' <span style="font-size:10px;opacity:.7">('+( item.error?'err':rows.length)+')</span></div>';
+    const raw=item.error?JSON.stringify({error:item.error},null,2):JSON.stringify(item.result,null,2);
+    panesH+='<div class="raw-pane '+ac+'" id="mr-rawp-'+k+'"><div class="raw-toolbar"><span class="raw-count">'+(item.error?'Error':rows.length+' records')+' · '+item.ep.path+'</span><button class="raw-copy-btn" onclick="mrCopy(\'mr-rawpre-'+k+'\')">📋 Copy JSON</button></div><pre class="raw-pre" id="mr-rawpre-'+k+'">'+raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</pre></div>';
+  }
+  document.getElementById('mr-badge-raw').textContent=n;
+  empty.style.display='none'; cont.style.display='block';
+  tabsEl.innerHTML=tabsH; panesEl.innerHTML=panesH;
+}
+
+function mrRawTab(el,pid){
+  document.querySelectorAll('.raw-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.raw-pane').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  const p=document.getElementById(pid); if(p) p.classList.add('active');
+}
+
+function mrCopy(preId){
+  const el=document.getElementById(preId); if(!el) return;
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    const btn=el.previousElementSibling.querySelector('.raw-copy-btn');
+    if(btn){ btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent='📋 Copy JSON',1500); }
+  });
+}
+/* ========== End McLeod Reports ========== */
+
+
 var BASE='https://tms.meiborginc.com/ws';
 var _token='';var _user='';
 var _ar=[];var _run=false;
