@@ -3,1711 +3,442 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Meiborg Internal Portal</title>
+<title>Meiborg TMS Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#F5B800;--gold-dark:#C99200;--gold-light:#FFD740;--navy:#0D1B6E;--navy-dark:#081244;--navy-mid:#152060;--bg:#070B18;--bg2:#0D1328;--bg3:#131B35;--border:#1E2A50;--text:#E8ECF4;--dim:#7B8DB0;--green:#22C55E;--green-bg:#0F2E1A;--red:#EF4444;--red-bg:#2A0F0F;--yellow:#EAB308;--yellow-bg:#2A2200;}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden}
-#sb{width:228px;min-width:228px;background:var(--navy-dark);border-right:2px solid var(--navy-mid);display:flex;flex-direction:column;overflow-y:auto}
-#sb::-webkit-scrollbar{width:4px}#sb::-webkit-scrollbar-thumb{background:var(--navy-mid)}
-#logo{padding:18px 16px 14px;border-bottom:2px solid var(--navy-mid)}
-#logo-text{font-family:"Barlow Condensed",sans-serif;font-style:italic;font-weight:900;font-size:34px;color:var(--gold);text-shadow:-2px -2px 0 var(--navy),-2px 2px 0 var(--navy),2px -2px 0 var(--navy),2px 2px 0 var(--navy),0 0 20px rgba(245,184,0,.3);letter-spacing:1px;line-height:1}
-#logo-sub{font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:2px;margin-top:3px}
-#nav{flex:1;padding:10px 0}
-.sec-lbl{font-size:9px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:1.5px;padding:14px 16px 4px;opacity:.7}
-.dept{display:flex;align-items:center;gap:9px;padding:10px 14px;cursor:pointer;margin:1px 6px;border-radius:7px;transition:all .15s;color:var(--dim)}
-.dept:hover{background:var(--navy-mid);color:var(--text)}.dept.open{color:var(--text)}
-.di{font-size:15px;width:20px;text-align:center;flex-shrink:0}.dl{font-size:13px;font-weight:600;flex:1}.dc{font-size:9px;transition:transform .2s;color:var(--dim)}
-.dept.open .dc{transform:rotate(90deg);color:var(--gold)}
-.sub{display:none;padding:0}.sub.open{display:block}
-.nl{display:flex;align-items:center;gap:8px;padding:8px 14px 8px 30px;cursor:pointer;margin:1px 6px 1px 14px;border-radius:0 6px 6px 0;transition:all .15s;color:var(--dim);font-size:12px;font-weight:500;border-left:3px solid transparent}
-.nl:hover{background:rgba(245,184,0,.07);color:var(--text)}.nl.active{background:rgba(245,184,0,.12);color:var(--gold);border-left-color:var(--gold);font-weight:600}
-.ni{font-size:13px;width:16px;text-align:center;flex-shrink:0}
-#sb-foot{padding:12px 16px;border-top:2px solid var(--navy-mid)}
-.sf-nm{font-size:12px;font-weight:700;color:var(--text)}.sf-rl{font-size:10px;color:var(--dim);margin-top:2px}
-.dot{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:4px;box-shadow:0 0 6px var(--green)}
-.dot-off{background:var(--red);box-shadow:0 0 6px var(--red)}
-#main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-#topbar{background:var(--navy-dark);border-bottom:2px solid var(--navy-mid);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.tb-br{font-size:11px;color:var(--dim);font-weight:500;text-transform:uppercase;letter-spacing:.5px}.tb-ti{font-size:18px;font-weight:800;color:var(--text)}
-.tb-rt{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--dim)}
-.tb-st{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
-.tb-st:hover{border-color:var(--gold)}
-#content{flex:1;overflow-y:auto;padding:24px}
-#content::-webkit-scrollbar{width:6px}#content::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.panel{display:none}.panel.active{display:block}
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
-.sc{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden}
-.sc::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--navy),var(--navy-mid))}
-.sc.gold::before{background:linear-gradient(90deg,var(--gold-dark),var(--gold-light))}.sc.grn::before{background:linear-gradient(90deg,#16A34A,var(--green))}.sc.red::before{background:linear-gradient(90deg,#B91C1C,var(--red))}
-.sc-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:8px}
-.sc-val{font-size:30px;font-weight:800;line-height:1}
-.vg{color:var(--gold)}.vgr{color:var(--green)}.vr{color:var(--red)}.vw{color:var(--text)}.vb{color:#60A5FA}
-.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
-.btn{border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .15s;font-family:"Inter",sans-serif}
-.b-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;box-shadow:0 2px 12px rgba(245,184,0,.3)}
-.b-gold:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(245,184,0,.4)}.b-gold:disabled{background:var(--bg3);color:var(--dim);box-shadow:none;transform:none;cursor:not-allowed}
-.b-out{background:transparent;color:var(--dim);border:1px solid var(--border)}.b-out:hover{background:var(--bg3);color:var(--text)}.b-out:disabled{opacity:.35;cursor:not-allowed}
-.chk{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);cursor:pointer}
-.chk input{accent-color:var(--gold);width:14px;height:14px}
-.fsel{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:"Inter",sans-serif}
-.fsel:focus{outline:none;border-color:var(--gold)}
-.spc{flex:1}.smsg{font-size:12px;color:var(--dim)}
-.pbar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:5px;width:100%;max-width:280px}
-.pfill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));transition:width .4s;border-radius:2px}
-.rmeta{font-size:12px;color:var(--dim);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.rmeta span{background:var(--bg3);border:1px solid var(--border);padding:2px 8px;border-radius:10px;font-size:11px}
-.crow{background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;transition:border-color .15s}
-.crow:hover{border-color:var(--gold);box-shadow:0 2px 12px rgba(245,184,0,.08)}
-.crh{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;user-select:none}
-.cra{color:var(--dim);font-size:11px;width:14px;flex-shrink:0;transition:transform .2s}.cra.open{transform:rotate(90deg);color:var(--gold)}
-.cri{flex:1;min-width:0}.crn{font-weight:700;font-size:14px;color:var(--text)}.crid{font-size:11px;color:var(--dim);font-weight:400;margin-left:6px}
-.crloc{font-size:12px;color:var(--dim);min-width:120px}
-.crbad{display:flex;align-items:center;gap:7px;flex-shrink:0}
-.badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
-.bg{background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,.3)}.by{background:var(--yellow-bg);color:var(--yellow);border:1px solid rgba(234,179,8,.3)}.br{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.3)}
-.crbal{font-size:15px;font-weight:800;padding:5px 14px;border-radius:8px;min-width:120px;text-align:right}
-.bok{color:var(--green);background:var(--green-bg)}.bwn{color:var(--yellow);background:var(--yellow-bg)}.blt{color:var(--red);background:var(--red-bg)}
-.crd{display:none;border-top:1px solid var(--border);padding:18px 20px;background:var(--bg)}.crd.open{display:block}
-.dcards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
-.dc{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:14px 16px}
-.dclbl{font-size:10px;text-transform:uppercase;color:var(--dim);letter-spacing:.8px;font-weight:600;margin-bottom:5px}
-.dcval{font-size:22px;font-weight:800}
-.itit{font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
-.iwrap{max-height:340px;overflow-y:auto;border:1px solid var(--border);border-radius:8px}
-.iwrap::-webkit-scrollbar{width:5px}.iwrap::-webkit-scrollbar-thumb{background:var(--border)}
-.itable{width:100%;border-collapse:collapse;font-size:12px}
-.itable th{background:var(--bg3);color:var(--dim);padding:8px 10px;text-align:left;font-weight:600;font-size:10px;text-transform:uppercase;border-bottom:1px solid var(--border);position:sticky;top:0;letter-spacing:.5px}
-.itable td{padding:7px 10px;border-bottom:1px solid rgba(30,42,80,.6);color:var(--text)}.itable tr:hover td{background:var(--bg2)}
-.ar{color:var(--red);font-weight:700}.ay{color:var(--yellow);font-weight:600}.ag{color:var(--green)}
-.darow{display:flex;gap:8px;margin-top:14px}
-.cs{display:flex;flex-direction:column;align-items:center;justify-content:center;height:420px;text-align:center;color:var(--dim)}
-.cse{font-size:56px;margin-bottom:18px;opacity:.5}.cst{font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px}.csd{font-size:14px;max-width:420px;line-height:1.7;margin-bottom:16px}
-.csp{background:rgba(245,184,0,.12);color:var(--gold);font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:1px solid rgba(245,184,0,.3);display:inline-block}
-/* Login modal */
-#login-overlay{position:fixed;inset:0;background:rgba(7,11,24,.92);display:flex;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
-#login-overlay.hidden{display:none}
-#login-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:360px;box-shadow:0 24px 80px rgba(0,0,0,.6)}
-#login-logo{font-family:"Barlow Condensed",sans-serif;font-style:italic;font-weight:900;font-size:40px;color:var(--gold);text-shadow:-2px -2px 0 var(--navy),-2px 2px 0 var(--navy),2px -2px 0 var(--navy),2px 2px 0 var(--navy),0 0 20px rgba(245,184,0,.3);letter-spacing:1px;margin-bottom:4px}
-#login-sub{font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:28px}
-.lbl{font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
-.linp{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:14px;font-family:"Inter",sans-serif;margin-bottom:16px;outline:none;transition:border-color .15s}
-.linp:focus{border-color:var(--gold)}
-#login-err{font-size:12px;color:var(--red);margin-bottom:12px;min-height:16px;text-align:center}
-#login-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:"Inter",sans-serif;transition:all .15s;margin-top:4px}
-#login-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(245,184,0,.4)}
-#login-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.login-note{font-size:11px;color:var(--dim);text-align:center;margin-top:14px}
-</style></head><body>
-<!-- Login overlay -->
-<div id="login-overlay">
-  <div id="login-box">
-    <div id="login-logo">MEIBORG</div>
-    <div id="login-sub">Internal Portal</div>
-    <div class="lbl">McLeod Username</div>
-    <input class="linp" type="text" id="lu" autocomplete="username" placeholder="username" />
-    <div class="lbl">McLeod Password</div>
-    <input class="linp" type="password" id="lp" autocomplete="current-password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" />
-    <div id="login-err"></div>
-    <button id="login-btn" onclick="doLogin()">Sign In</button>
-    <div class="login-note">Signs in to McLeod TMS (tms.meiborginc.com)</div>
-  </div>
-</div>
-
-<div id="sb">
-<div id="logo"><div id="logo-text">MEIBORG</div><div id="logo-sub">Internal Portal</div></div>
-<nav id="nav"><div class="sec-lbl">Departments</div>
-<div class="dept open" id="dh-accounting" onclick="tDept('accounting')"><span class="di">ð¼</span><span class="dl">Accounting</span><span class="dc">&#9658;</span></div>
-<div class="sub open" id="ds-accounting">
-<div class="nl active" id="nl-ar" onclick="showPanel('ar','Accounting','Accounts Receivable')"><span class="ni">ð¥</span>Accounts Receivable</div>
-<div class="nl" id="nl-ap" onclick="showPanel('ap','Accounting','Accounts Payable')"><span class="ni">ð¤</span>Accounts Payable</div>
-<div class="nl" id="nl-billing" onclick="showPanel('billing','Accounting','Billing')"><span class="ni">ð§¾</span>Billing</div>
-<div class="nl" id="nl-reports" onclick="showPanel('reports','Accounting','Custom Reports')"><span class="ni">ð</span>Custom Reports</div>
-</div>
-<div class="dept" id="dh-hr" onclick="tDept('hr')"><span class="di">ð¥</span><span class="dl">HR</span><span class="dc">&#9658;</span></div>
-<div class="sub" id="ds-hr">
-<div class="nl" id="nl-hr-emp" onclick="showPanel('hr-emp','HR','Employees')"><span class="ni">ð¤</span>Employees</div>
-<div class="nl" id="nl-hr-pay" onclick="showPanel('hr-pay','HR','Payroll')"><span class="ni">ðµ</span>Payroll</div>
-<div class="nl" id="nl-hr-ob" onclick="showPanel('hr-ob','HR','Onboarding')"><span class="ni">ð</span>Onboarding</div>
-</div>
-<div class="dept" id="dh-sales" onclick="tDept('sales')"><span class="di">ð</span><span class="dl">Sales</span><span class="dc">&#9658;</span></div>
-<div class="sub" id="ds-sales">
-<div class="nl" id="nl-sales-pipe" onclick="showPanel('sales-pipe','Sales','Pipeline')"><span class="ni">ð</span>Pipeline</div>
-<div class="nl" id="nl-sales-cust" onclick="showPanel('sales-cust','Sales','Customers')"><span class="ni">ð¢</span>Customers</div>
-<div class="nl" id="nl-sales-rpt" onclick="showPanel('sales-rpt','Sales','Reports')"><span class="ni">ð</span>Reports</div>
-</div>
-<div class="dept" id="dh-fleet" onclick="tDept('fleet')"><span class="di">ð</span><span class="dl">Fleet</span><span class="dc">&#9658;</span></div>
-<div class="sub" id="ds-fleet">
-<div class="nl" id="nl-fleet-tr" onclick="showPanel('fleet-tr','Fleet','Trucks')"><span class="ni">ð</span>Trucks</div>
-<div class="nl" id="nl-fleet-dr" onclick="showPanel('fleet-dr','Fleet','Drivers')"><span class="ni">ð§ââï¸</span>Drivers</div>
-<div class="nl" id="nl-fleet-mx" onclick="showPanel('fleet-mx','Fleet','Maintenance')"><span class="ni">ð§</span>Maintenance</div>
-</div>
-<div class="nl" id="nl-fleet-weekly" onclick="showPanel('fleet-weekly','Fleet','Weekly Revenue Report')"><span class="ni">ð</span>Weekly Report</div>
-<div class="nl" id="nl-fleet-monthly" onclick="showPanel('fleet-monthly','Fleet','Monthly Revenue Report')"><span class="ni">ð</span>Monthly Report</div>
-<div class="dept" id="dh-safety" onclick="tDept('safety')"><span class="di">ð¦º</span><span class="dl">Safety</span><span class="dc">&#9658;</span></div>
-<div class="sub" id="ds-safety">
-<div class="nl" id="nl-safety-inc" onclick="showPanel('safety-inc','Safety','Incidents')"><span class="ni">â ï¸</span>Incidents</div>
-<div class="nl" id="nl-safety-cmp" onclick="showPanel('safety-cmp','Safety','Compliance')"><span class="ni">â</span>Compliance</div>
-<div class="nl" id="nl-safety-tr" onclick="showPanel('safety-tr','Safety','Training')"><span class="ni">ð</span>Training</div>
-</div>
-<div class="dept" id="dh-logs" onclick="showPanel('logs','','Logs')"><span class="di">ð</span><span class="dl">Logs</span></div>
-<div class="dept" id="dh-cs" onclick="tDept('cs')"><span class="di">ð§</span><span class="dl">Customer Service</span><span class="dc">&#9658;</span></div>
-<div class="sub" id="ds-cs">
-<div class="nl" id="nl-cs-tix" onclick="showPanel('cs-tix','Customer Service','Tickets')"><span class="ni">ð«</span>Tickets</div>
-<div class="nl" id="nl-cs-con" onclick="showPanel('cs-con','Customer Service','Contacts')"><span class="ni">ð</span>Contacts</div>
-</div>
-<div class="dept" id="dh-wh" onclick="tDept('wh')"><span class="di">ð­</span><span class="dl">Warehouse</span><span class="dc">&#9658;</span></div>
-<div class="sub" id="ds-wh">
-<div class="nl" id="nl-wh-inv" onclick="showPanel('wh-inv','Warehouse','Inventory')"><span class="ni">ð¦</span>Inventory</div>
-<div class="nl" id="nl-wh-ord" onclick="showPanel('wh-ord','Warehouse','Orders')"><span class="ni">ð</span>Orders</div>
-</div>
-<div class="dept" id="dh-reception" onclick="tDept('reception')"><span class="di">ð¢</span><span class="dl">Reception</span><span class="dc">&#9654;</span></div>
-<div class="sub" id="ds-reception">
-<div class="nl" id="nl-reception-main" onclick="showPanel('reception','Reception','Reception')"><span class="ni">ð¢</span>Reception</div>
-<div class="nl" id="nl-reception-booking" onclick="showPanel('bookings','Reception','Massage Booking')"><span class="ni">ð</span>Massage Booking</div>
-</div>
-<div class="dept" id="dh-mkt" onclick="tDept('mkt')"><span class="di">ð£</span><span class="dl">Marketing</span><span class="dc">&#9658;</span></div>
-<div class="sub" id="ds-mkt">
-<div class="nl" id="nl-mkt-camp" onclick="showPanel('mkt-camp','Marketing','Campaigns')"><span class="ni">ð¯</span>Campaigns</div>
-<div class="nl" id="nl-mkt-ana" onclick="showPanel('mkt-ana','Marketing','Analytics')"><span class="ni">ð</span>Analytics</div>
-</div>
-
-<div class="dept" id="dh-mcleod" onclick="tDept('mcleod')"><span class="di" style="font-size:14px;opacity:.8">TMS</span><span class="dl">McLeod Reports</span><span class="dc" style="font-family:sans-serif">&#x25BE;</span></div>
-<div class="sub" id="ds-mcleod">
-<div class="nl" id="nl-mcleod-rpt" onclick="showPanel('mcleod-rpt','McLeod','Reports')"><span class="ni" style="font-size:11px;font-weight:700;color:var(--gold)">&#x25B6;</span>Pull Reports</div>
-</div></nav>
-<div id="sb-foot"><div class="sf-nm" id="sf-nm"><span class="dot dot-off" id="sf-dot"></span><span id="sf-user">Not signed in</span></div><div class="sf-rl">Meiborg Bros &middot; Production</div></div>
-</div>
-<div id="main">
-<div id="topbar"><div><div class="tb-br" id="tbr">Accounting</div><div class="tb-ti" id="tbt">Accounts Receivable</div></div>
-<div class="tb-rt"><div id="tbclock" style="font-size:12px"></div><div class="tb-st" id="tms-status" onclick="doLogout()"><span class="dot dot-off" id="tms-dot"></span><span id="tms-lbl">Not connected</span></div></div></div>
-<div id="content">
-
-<div class="panel active" id="panel-ar">
-<div class="stat-row"><div class="sc"><div class="sc-lbl">Customers Scanned</div><div class="sc-val vb" id="ss">&mdash;</div></div>
-<div class="sc grn"><div class="sc-lbl">With Open AR</div><div class="sc-val vgr" id="so">&mdash;</div></div>
-<div class="sc gold"><div class="sc-lbl">Net AR Balance</div><div class="sc-val vg" id="st">&mdash;</div></div>
-<div class="sc red"><div class="sc-lbl">Slow Payers (60+ Days)</div><div class="sc-val vr" id="sl">&mdash;</div></div></div>
-<div class="toolbar">
-<button class="btn b-gold" id="rbtn" onclick="runAR()">&#9654; Pull Aged AR</button>
-<button class="btn b-out" id="ebtn" disabled onclick="exportCSV()">&#8595; Export CSV</button>
-<button class="btn b-out" id="rrpt" onclick="rawReport()">&#128196; Raw Report</button>
-<label class="chk"><input type="checkbox" id="pd"> Past due only</label>
-<label class="chk"><input type="checkbox" id="oc" checked> Open credits</label>
-<label class="chk">Report by: <select class="fsel" id="rb" style="margin-left:6px"><option value="gl_date">GL Date</option><option value="bill_date">Bill Date</option><option value="ship_date">Ship Date</option></select></label>
-<div class="spc"></div>
-<div><div class="smsg" id="smsg"></div></div>
-</div>
-<div class="rmeta" id="rmeta"></div>
-<div id="alist"></div>
-</div>
-
-<div class="panel" id="panel-ap">
-<div class="stat-row"><div class="sc"><div class="sc-lbl">Carriers Scanned</div><div class="sc-val" id="ap-ss">â</div></div><div class="sc"><div class="sc-lbl">With Open AP</div><div class="sc-val vg" id="ap-ow">â</div></div><div class="sc"><div class="sc-lbl">Net AP Balance</div><div class="sc-val vy" id="ap-nb">â</div></div><div class="sc"><div class="sc-lbl">Overdue (30+ Days)</div><div class="sc-val vr" id="ap-sl">â</div></div></div>
-<div class="toolbar">
-<button class="btn b-gold" id="ap-rbtn" onclick="runAP()">&#9654; Pull Aged AP</button>
-<button class="btn b-out" id="ap-ebtn" onclick="exportAP()" disabled>&#8595; Export CSV</button>
-<button class="btn b-out" id="ap-rrpt" onclick="rawReportAP()" disabled>&#128196; Raw Report</button>
-<label class="chk">Report by: <select class="fsel" id="ap-rb" style="margin-left:6px"><option value="gl_date">GL Date</option><option value="bill_date">Bill Date</option><option value="ship_date">Ship Date</option></select></label>
-<div class="spc"></div>
-<div><div class="smsg" id="ap-smsg"><div class="pbar"><div class="pfill" id="ap-pfill" style="width:0%"></div></div></div></div>
-</div>
-<div id="ap-list"></div>
-</div>
-<div class="panel" id="panel-billing"><div class="cs"><div class="cse">ð§¾</div><div class="cst">Billing</div><div class="csd">View billing history and linehaul breakdown by customer or date range.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-reports"><div class="cs"><div class="cse">ð</div><div class="cst">Custom Reports</div><div class="csd">Filter by date range, salesperson and customer category.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-hr-emp"><div class="cs"><div class="cse">ð¤</div><div class="cst">Employees</div><div class="csd">Employee directory, roles and department assignments.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-hr-pay"><div class="cs"><div class="cse">ðµ</div><div class="cst">Payroll</div><div class="csd">Payroll records and compensation details.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-hr-ob"><div class="cs"><div class="cse">ð</div><div class="cst">Onboarding</div><div class="csd">New hire checklists and document tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-sales-pipe"><div class="cs"><div class="cse">ð</div><div class="cst">Sales Pipeline</div><div class="csd">Track active deals from prospect to close.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-sales-cust"><div class="cs"><div class="cse">ð¢</div><div class="cst">Customers</div><div class="csd">Full customer list with contact info and account status.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-sales-rpt">
-<div class="stat-row">
-  <div class="sc"><div class="sc-lbl">Total Loads</div><div class="sc-val" id="sr-total">â</div></div>
-  <div class="sc"><div class="sc-lbl">Total Revenue</div><div class="sc-val vg" id="sr-rev">â</div></div>
-  <div class="sc"><div class="sc-lbl">Avg Revenue/Load</div><div class="sc-val vy" id="sr-avg">â</div></div>
-  <div class="sc"><div class="sc-lbl">Total Miles</div><div class="sc-val" id="sr-miles">â</div></div>
-</div>
-<div class="toolbar" style="flex-wrap:wrap;gap:6px">
-  <button class="btn b-gold" id="sr-rbtn" onclick="runSalesReport()">&#9654; Pull Report</button>
-  <button class="btn b-out" id="sr-ebtn" onclick="exportSales()" disabled>&#8595; Export CSV</button>
-  <button class="btn b-out" id="sr-rrpt" onclick="rawReportSales()" disabled>&#128196; Raw Report</button>
-  <label class="chk">Status:
-    <label class="chk" style="margin-left:6px"><input type="checkbox" id="sr-sa" checked> Available</label>
-    <label class="chk" style="margin-left:6px"><input type="checkbox" id="sr-sd" checked> Delivered</label>
-    <label class="chk" style="margin-left:6px"><input type="checkbox" id="sr-sp" checked> In Progress</label>
-  </label>
-  <label class="chk" style="margin-left:8px">From: <input type="date" id="sr-from" class="fsel" style="margin-left:4px;padding:3px 6px;background:var(--navy-mid);color:var(--text);border:1px solid var(--navy-mid);border-radius:4px"></label>
-  <label class="chk" style="margin-left:8px">To: <input type="date" id="sr-to" class="fsel" style="margin-left:4px;padding:3px 6px;background:var(--navy-mid);color:var(--text);border:1px solid var(--navy-mid);border-radius:4px"></label>
-  <div class="spc"></div>
-  <div><div class="smsg" id="sr-smsg"><div class="pbar"><div class="pfill" id="sr-pfill" style="width:0%"></div></div></div></div>
-</div>
-<div id="sr-list"></div>
-</div>
-<div class="panel" id="panel-fleet-tr"><div class="cs"><div class="cse">ð</div><div class="cst">Trucks</div><div class="csd">Fleet inventory, status and location tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-fleet-dr"><div class="cs"><div class="cse">ð§ââï¸</div><div class="cst">Drivers</div><div class="csd">Driver roster, licenses and HOS compliance.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-fleet-mx"><div class="cs"><div class="cse">ð§</div><div class="cst">Maintenance</div><div class="csd">Service schedules and repair history.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-fleet-weekly">
-<div class="stat-row">
-<div class="sc gold"><div class="sc-lbl">Fleet Revenue</div><div class="sc-val vg" id="fw-fleet-rev">â</div></div>
-<div class="sc gold"><div class="sc-lbl">Reefer Revenue</div><div class="sc-val vg" id="fw-reefer-rev">â</div></div>
-<div class="sc"><div class="sc-lbl">Oil Revenue</div><div class="sc-val vg" id="fw-oil-rev">â</div></div>
-<div class="sc"><div class="sc-lbl">Total Tractors</div><div class="sc-val vw" id="fw-tractors">â</div></div>
-</div>
-<div class="toolbar" style="flex-wrap:wrap;gap:6px">
-<button class="btn b-gold" id="fw-rbtn" onclick="runFleetWeekly()">&#9654; Pull Weekly Report</button>
-<button class="btn b-out" id="fw-ebtn" onclick="exportFleetWeekly()" disabled>&#8595; Export CSV</button>
-<button class="btn b-out" id="fw-sbtn" onclick="pushWeeklyToSheets()" disabled style="border-color:rgba(34,197,94,.4);color:#22C55E">&#9654; Push to Sheets</button>
-<label class="chk" style="margin-left:8px">Week Ending: <input type="date" id="fw-date" class="fsel" style="margin-left:4px;padding:3px 6px;background:var(--navy-mid);color:var(--text);border:1px solid var(--navy-mid);border-radius:4px"></label>
-<div class="spc"></div>
-<div><div class="smsg" id="fw-smsg"><div class="pbar"><div class="pfill" id="fw-pfill" style="width:0%"></div></div></div></div>
-</div>
-<div id="fw-list"></div>
-</div>
-<div class="panel" id="panel-fleet-monthly">
-<div class="stat-row">
-<div class="sc gold"><div class="sc-lbl">Local Revenue</div><div class="sc-val vg" id="fm-local-rev">â</div></div>
-<div class="sc gold"><div class="sc-lbl">Shuttle Revenue</div><div class="sc-val vg" id="fm-shuttle-rev">â</div></div>
-<div class="sc"><div class="sc-lbl">OTR Revenue</div><div class="sc-val vg" id="fm-otr-rev">â</div></div>
-<div class="sc"><div class="sc-lbl">Total Tractors</div><div class="sc-val vw" id="fm-tractors">â</div></div>
-</div>
-<div class="toolbar" style="flex-wrap:wrap;gap:6px">
-<button class="btn b-gold" id="fm-rbtn" onclick="runFleetMonthly()">&#9654; Pull Monthly Report</button>
-<button class="btn b-out" id="fm-ebtn" onclick="exportFleetMonthly()" disabled>&#8595; Export CSV</button>
-<button class="btn b-out" id="fm-sbtn" onclick="pushMonthlyToSheets()" disabled style="border-color:rgba(34,197,94,.4);color:#22C55E">&#9654; Push to Sheets</button>
-<label class="chk" style="margin-left:8px">Month: <input type="month" id="fm-month" class="fsel" style="margin-left:4px;padding:3px 6px;background:var(--navy-mid);color:var(--text);border:1px solid var(--navy-mid);border-radius:4px"></label>
-<div class="spc"></div>
-<div><div class="smsg" id="fm-smsg"><div class="pbar"><div class="pfill" id="fm-pfill" style="width:0%"></div></div></div></div>
-</div>
-<div id="fm-list"></div>
-</div>
-<div class="panel" id="panel-safety-inc"><div class="cs"><div class="cse">â ï¸</div><div class="cst">Incidents</div><div class="csd">Incident reports and resolution tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-safety-cmp"><div class="cs"><div class="cse">â</div><div class="cst">Compliance</div><div class="csd">DOT compliance and CSA scores.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-safety-tr"><div class="cs"><div class="cse">ð</div><div class="cst">Training</div><div class="csd">Safety certifications and training records.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-logs"><div class="cs"><div class="cse">ð</div><div class="cst">Logs</div><div class="csd">System activity and API call history.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-cs-tix"><div class="cs"><div class="cse">ð«</div><div class="cst">Tickets</div><div class="csd">Customer service tickets and resolution tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-cs-con"><div class="cs"><div class="cse">ð</div><div class="cst">Contacts</div><div class="csd">Customer contact directory.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-wh-inv"><div class="cs"><div class="cse">ð¦</div><div class="cst">Inventory</div><div class="csd">Warehouse inventory levels and locations.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-wh-ord"><div class="cs"><div class="cse">ð</div><div class="cst">Orders</div><div class="csd">Incoming and outgoing order fulfillment.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-reception"><div class="cs"><div class="cse">ð¢</div><div class="cst">Reception</div><div class="csd">Visitor log and front desk tools.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-mkt-camp"><div class="cs"><div class="cse">ð¯</div><div class="cst">Campaigns</div><div class="csd">Marketing campaigns and performance tracking.</div><span class="csp">Coming Soon</span></div></div>
-<div class="panel" id="panel-mkt-ana"><div class="cs"><div class="cse">ð</div><div class="cst">Analytics</div><div class="csd">Website traffic and lead sources.</div><span class="csp">Coming Soon</span></div></div>
-</div>
-
-<div class="panel" id="panel-bookings"><div class="panel-header"><h2>ð Massage Booking</h2></div><div class="panel-body" style="padding:0;height:calc(100vh - 120px);"><iframe src="https://outlook.office.com/book/Massage@Meiborginc.onmicrosoft.com/?ismsaljsauthenabled" style="width:100%;height:100%;border:none;" allow="camera;microphone" title="Meiborg Bookings"></iframe></div></div></div>
-<style>
-#panel-mcleod-rpt{min-width:0;width:100%}
-.mr-wrap{padding:28px 32px;font-family:"Inter",sans-serif;color:var(--text)}
-.mr-hero-bar{background:linear-gradient(135deg,#0a1628 0%,#0d1f3c 50%,#132947 100%);border-radius:16px;padding:32px 40px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:24px;border:1px solid rgba(245,184,0,.18);box-shadow:0 4px 32px rgba(0,0,0,.4)}
-.mr-hero-left h1{font-size:28px;font-weight:700;color:#fff;margin:0 0 6px 0;letter-spacing:-.3px}
-.mr-hero-left p{font-size:13px;color:rgba(255,255,255,.55);margin:0}
-.mr-pull-btn{background:linear-gradient(135deg,#F5B800,#FFD740);color:#0a1628;font-weight:700;font-size:15px;padding:14px 32px;border:none;border-radius:10px;cursor:pointer;letter-spacing:.3px;transition:all .2s;white-space:nowrap;box-shadow:0 4px 16px rgba(245,184,0,.3)}
-.mr-pull-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(245,184,0,.45)}
-.mr-pull-btn:active{transform:translateY(0);box-shadow:none}
-.mr-pull-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.mr-progress-wrap{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:16px;overflow:hidden;display:none}
-.mr-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#F5B800,#FFD740);border-radius:2px;transition:width .3s}
-.mr-status-msg{font-size:12px;margin-top:8px;color:rgba(255,255,255,.55);display:none}
-.mr-status-msg.ok{color:#22c55e}
-.mr-status-msg.err{color:#ef4444}
-.mr-tabs{display:flex;gap:6px;margin-bottom:24px;border-bottom:2px solid rgba(255,255,255,.07);padding-bottom:0}
-.mr-tab{padding:10px 20px;font-size:13px;font-weight:600;color:rgba(255,255,255,.45);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;border-radius:6px 6px 0 0;letter-spacing:.2px}
-.mr-tab:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.04)}
-.mr-tab.active{color:#F5B800;border-bottom-color:#F5B800;background:rgba(245,184,0,.06)}
-.mr-tab-cnt{display:inline-block;background:rgba(245,184,0,.15);color:#F5B800;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:6px;vertical-align:middle}
-.mr-pane{display:none}
-.mr-pane.active{display:block}
-.mr-dept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:28px}
-.mr-kpi-card{background:#0d1f3c;border:1px solid rgba(245,184,0,.12);border-radius:12px;padding:20px 24px;transition:border-color .2s}
-.mr-kpi-card:hover{border-color:rgba(245,184,0,.3)}
-.mr-kpi-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px}
-.mr-kpi-value{font-size:36px;font-weight:700;color:#F5B800;line-height:1;margin-bottom:4px}
-.mr-kpi-sub{font-size:12px;color:rgba(255,255,255,.35)}
-.mr-section{margin-bottom:32px}
-.mr-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.07)}
-.mr-section-badge{background:rgba(245,184,0,.12);color:#F5B800;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:.5px}
-.mr-section-count{font-size:12px;color:rgba(255,255,255,.35)}
-.mr-dept-label{display:inline-flex;align-items:center;gap:6px;background:rgba(245,184,0,.08);border:1px solid rgba(245,184,0,.15);color:#FFD740;font-size:12px;font-weight:600;padding:4px 12px;border-radius:6px;text-transform:uppercase;letter-spacing:.8px}
-.mr-table-wrap{background:#0a1628;border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden;overflow-x:auto}
-.mr-table{width:100%;border-collapse:collapse;font-size:12px}
-.mr-table thead tr{background:rgba(245,184,0,.07);border-bottom:1px solid rgba(245,184,0,.15)}
-.mr-table thead th{padding:10px 14px;text-align:left;color:#F5B800;font-weight:600;font-size:11px;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap}
-.mr-table tbody tr{border-bottom:1px solid rgba(255,255,255,.03);transition:background .1s}
-.mr-table tbody tr:hover{background:rgba(255,255,255,.03)}
-.mr-table tbody td{padding:9px 14px;color:rgba(255,255,255,.75);white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
-.mr-badge-active{background:rgba(34,197,94,.12);color:#22c55e;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
-.mr-badge-dispatched{background:rgba(59,130,246,.12);color:#60a5fa;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
-.mr-badge-pending{background:rgba(245,184,0,.12);color:#F5B800;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
-.mr-badge-default{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
-.mr-no-data{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;color:rgba(255,255,255,.25);text-align:center}
-.mr-no-data p{margin:12px 0 0;font-size:13px}
-.mr-raw-section{margin-bottom:24px;background:#0a1628;border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden}
-.mr-raw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);background:#0d1f3c}
-.mr-raw-title{font-size:13px;font-weight:600;color:#fff}
-.mr-raw-meta{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
-.mr-raw-copy{background:rgba(245,184,0,.1);border:1px solid rgba(245,184,0,.2);color:#F5B800;font-size:11px;padding:4px 12px;border-radius:5px;cursor:pointer;transition:all .15s}
-.mr-raw-copy:hover{background:rgba(245,184,0,.2)}
-.mr-raw-body{padding:16px 20px;overflow-x:auto;max-height:400px;overflow-y:auto}
-.mr-raw-body pre{margin:0;font-family:"Courier New",monospace;font-size:11px;color:rgba(255,255,255,.6);line-height:1.5;white-space:pre-wrap;word-break:break-all}
-.mr-summary-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.mr-summary-pill{background:#0d1f3c;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px 18px;font-size:12px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:8px}
-.mr-summary-pill strong{color:#F5B800;font-size:18px;font-weight:700}
+:root{--gold:#F5B800;--gold2:#FFD740;--navy:#060F1E;--navy2:#0A1628;--navy3:#0D1F3C;--navy4:#132947;--border:rgba(255,255,255,.07);--border2:rgba(245,184,0,.18);--text:#E8ECF4;--dim:rgba(255,255,255,.45);--dim2:rgba(255,255,255,.25);--green:#22c55e;--blue:#60a5fa;--red:#ef4444;--sidebar-w:220px;}
+html,body{height:100%;overflow:hidden;font-family:"Inter",sans-serif;background:var(--navy);color:var(--text)}
+#login-screen{position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,#060F1E 0%,#0A1628 40%,#0D1F3C 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+#login-screen.hidden{display:none}
+.ls-logo{font-family:"Barlow Condensed",sans-serif;font-style:italic;font-weight:900;font-size:56px;color:var(--gold);letter-spacing:-1px;text-shadow:-3px -3px 0 var(--navy2),3px 3px 0 var(--navy2);margin-bottom:6px;}
+.ls-sub{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:40px}
+.ls-card{background:var(--navy3);border:1px solid var(--border2);border-radius:16px;padding:36px 40px;width:360px;box-shadow:0 24px 80px rgba(0,0,0,.5);}
+.ls-field{margin-bottom:18px}
+.ls-label{font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:7px;display:block}
+.ls-input{width:100%;background:#0A1628;border:1.5px solid rgba(255,255,255,.1);border-radius:8px;padding:12px 14px;font-size:14px;color:var(--text);font-family:"Inter",sans-serif;transition:border-color .15s;outline:none;}
+.ls-input:focus{border-color:var(--gold)}
+.ls-btn{width:100%;background:linear-gradient(135deg,#F5B800,#FFD740);color:#0A1628;font-weight:700;font-size:15px;padding:14px;border:none;border-radius:10px;cursor:pointer;letter-spacing:.3px;margin-top:8px;transition:all .2s;font-family:"Inter",sans-serif;}
+.ls-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(245,184,0,.4)}
+.ls-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.ls-err{font-size:12px;color:var(--red);margin-top:10px;text-align:center;min-height:18px}
+.ls-note{font-size:11px;color:var(--dim2);text-align:center;margin-top:16px}
+#app{display:flex;height:100vh;overflow:hidden}
+#app.hidden{display:none}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.sb-logo-area{padding:20px 18px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sb-logo{font-family:"Barlow Condensed",sans-serif;font-style:italic;font-weight:900;font-size:28px;color:var(--gold);letter-spacing:-.5px;line-height:1;}
+.sb-logo-sub{font-size:9px;font-weight:600;color:var(--dim2);letter-spacing:2.5px;text-transform:uppercase;margin-top:2px}
+.sb-conn{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:var(--dim2);font-weight:500;}
+.sb-dot{width:7px;height:7px;border-radius:50%;background:#374151;flex-shrink:0}
+.sb-dot.on{background:var(--green);box-shadow:0 0 6px var(--green)}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 8px}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--dim);transition:all .15s;margin-bottom:2px;border:1px solid transparent;}
+.sb-item:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.sb-item.active{background:rgba(245,184,0,.08);color:var(--gold);border-color:rgba(245,184,0,.2);}
+.sb-item-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.15);}
+.sb-item.active .sb-item-dot{background:var(--gold)}
+.sb-cnt{margin-left:auto;background:rgba(245,184,0,.12);color:var(--gold);font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;}
+.sb-section{font-size:9px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:1.5px;text-transform:uppercase;padding:14px 12px 6px;}
+.sb-footer{padding:12px 14px;border-top:1px solid var(--border);flex-shrink:0;}
+.sb-user{font-size:12px;font-weight:600;color:var(--dim);margin-bottom:4px}
+.sb-signout{font-size:11px;color:rgba(255,255,255,.25);cursor:pointer;background:none;border:none;padding:0;font-family:"Inter",sans-serif;}
+.sb-signout:hover{color:var(--red)}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--navy)}
+#topbar{height:54px;background:var(--navy2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:16px;flex-shrink:0;}
+.tb-title{font-size:18px;font-weight:700;color:var(--text)}
+.tb-sub{font-size:12px;color:var(--dim2)}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+.tb-clock{font-size:12px;color:var(--dim2);font-weight:500}
+.tb-pull-btn{background:linear-gradient(135deg,#F5B800,#FFD740);color:#0A1628;font-weight:700;font-size:13px;padding:9px 22px;border:none;border-radius:8px;cursor:pointer;letter-spacing:.3px;transition:all .2s;font-family:"Inter",sans-serif;display:flex;align-items:center;gap:7px;}
+.tb-pull-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(245,184,0,.35)}
+.tb-pull-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+#content{flex:1;overflow-y:auto;padding:0}
+#content::-webkit-scrollbar{width:5px}
+#content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+#home-view{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;padding:40px;}
+#home-view.hidden{display:none}
+.hv-hero{background:linear-gradient(135deg,#0A1628 0%,#0D1F3C 60%,#132947 100%);border:1px solid var(--border2);border-radius:20px;padding:60px 80px;text-align:center;max-width:640px;width:100%;box-shadow:0 8px 48px rgba(0,0,0,.4);}
+.hv-icon{margin:0 auto 24px;opacity:.25}
+.hv-title{font-size:32px;font-weight:800;color:#fff;margin-bottom:10px;letter-spacing:-.5px}
+.hv-sub{font-size:14px;color:var(--dim);margin-bottom:36px;line-height:1.6}
+.hv-pull-btn{background:linear-gradient(135deg,#F5B800,#FFD740);color:#0A1628;font-weight:800;font-size:18px;padding:18px 52px;border:none;border-radius:12px;cursor:pointer;letter-spacing:.5px;transition:all .2s;font-family:"Inter",sans-serif;display:inline-flex;align-items:center;gap:10px;box-shadow:0 6px 32px rgba(245,184,0,.3);}
+.hv-pull-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(245,184,0,.45)}
+.hv-pull-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+.hv-prog-wrap{height:4px;background:rgba(255,255,255,.07);border-radius:2px;margin-top:28px;overflow:hidden;display:none}
+.hv-prog-bar{height:100%;width:0%;background:linear-gradient(90deg,#F5B800,#FFD740);border-radius:2px;transition:width .3s}
+.hv-status{font-size:13px;margin-top:14px;color:var(--dim);min-height:20px;display:none}
+.hv-status.ok{color:var(--green)}
+.hv-status.err{color:var(--red)}
+.dv-kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.dv-kpi{background:var(--navy3);border:1px solid rgba(245,184,0,.1);border-radius:12px;padding:18px 20px;transition:border-color .2s,transform .15s;}
+.dv-kpi:hover{border-color:rgba(245,184,0,.25);transform:translateY(-1px)}
+.dv-kpi-label{font-size:10px;font-weight:700;color:var(--dim2);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px}
+.dv-kpi-val{font-size:38px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:4px}
+.dv-kpi-sub{font-size:11px;color:var(--dim2)}
+.dv-kpi.err .dv-kpi-val{font-size:20px;color:var(--red)}
+.dv-kpi.err .dv-kpi-sub{color:var(--red);font-size:10px}
+.dv-tbl-section{margin-bottom:24px}
+.dv-tbl-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.dv-tbl-name{font-size:13px;font-weight:600;color:var(--dim)}
+.dv-tbl-badge{background:rgba(245,184,0,.1);color:var(--gold);font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;letter-spacing:.5px;}
+.dv-tbl-wrap{background:var(--navy2);border:1px solid var(--border);border-radius:10px;overflow:hidden;overflow-x:auto}
+.dv-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.dv-tbl thead tr{background:rgba(245,184,0,.05);border-bottom:1px solid rgba(245,184,0,.12)}
+.dv-tbl thead th{padding:10px 14px;text-align:left;color:var(--gold);font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
+.dv-tbl tbody tr{border-bottom:1px solid rgba(255,255,255,.03);transition:background .1s}
+.dv-tbl tbody tr:last-child{border-bottom:none}
+.dv-tbl tbody tr:hover{background:rgba(255,255,255,.025)}
+.dv-tbl tbody td{padding:9px 14px;color:rgba(255,255,255,.75);white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.badge-a{background:rgba(34,197,94,.12);color:#22c55e;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700}
+.badge-d{background:rgba(96,165,250,.12);color:#60a5fa;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700}
+.badge-p{background:rgba(245,184,0,.12);color:var(--gold);padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700}
+.badge-x{background:rgba(255,255,255,.07);color:var(--dim);padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600}
+.rv-block{background:var(--navy2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.rv-block-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--navy3);border-bottom:1px solid var(--border);}
+.rv-block-title{font-size:13px;font-weight:700;color:#fff}
+.rv-block-meta{font-size:11px;color:var(--dim2);margin-top:2px}
+.rv-copy{background:rgba(245,184,0,.1);border:1px solid rgba(245,184,0,.2);color:var(--gold);font-size:11px;padding:5px 14px;border-radius:6px;cursor:pointer;font-family:"Inter",sans-serif;font-weight:600;transition:all .15s;}
+.rv-copy:hover{background:rgba(245,184,0,.2)}
+.rv-pre-wrap{padding:16px 20px;max-height:360px;overflow-y:auto;overflow-x:auto}
+.rv-pre-wrap::-webkit-scrollbar{width:4px;height:4px}
+.rv-pre-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.rv-pre{font-family:"Courier New",monospace;font-size:11px;color:rgba(255,255,255,.55);line-height:1.6;white-space:pre;}
+#global-prog{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));position:fixed;top:0;left:0;z-index:999;transition:width .3s;width:0%;display:none;}
+#toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:#1e2d45;border:1px solid var(--border2);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:600;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.4);opacity:0;transition:opacity .3s;pointer-events:none;display:flex;align-items:center;gap:10px;}
+#toast.show{opacity:1}
+#toast .t-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+#toast.err .t-dot{background:var(--red)}
+.sect-pad{padding:28px 32px}
+.hidden{display:none!important}
+.dv-sect-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.dv-sect-title{font-size:20px;font-weight:700;color:#fff}
+.dv-sect-cnt{font-size:12px;color:var(--dim2)}
 </style>
-<div class="panel" id="panel-mcleod-rpt">
-<div class="mr-wrap">
-  <div class="mr-hero-bar">
-    <div class="mr-hero-left">
-      <h1>McLeod TMS Reports</h1>
-      <p>Live data across all departments &mdash; Orders, Fleet, Sales, Brokerage &amp; Accounting</p>
-      <div class="mr-progress-wrap" id="mr-progress-wrap"><div class="mr-progress-bar" id="mr-progress-bar"></div></div>
-      <div class="mr-status-msg" id="mr-status-msg"></div>
-    </div>
-    <button class="mr-pull-btn" id="mr-pull-btn" onclick="mrPullAll()">Pull All Reports</button>
+</head>
+<body>
+<div id="global-prog"></div>
+<div id="toast"><span class="t-dot"></span><span id="toast-msg"></span></div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="ls-logo">MEIBORG</div>
+  <div class="ls-sub">TMS Dashboard</div>
+  <div class="ls-card">
+    <div class="ls-field"><label class="ls-label" for="lu">McLeod Username</label><input class="ls-input" type="text" id="lu" autocomplete="username" placeholder="username"></div>
+    <div class="ls-field"><label class="ls-label" for="lp">McLeod Password</label><input class="ls-input" type="password" id="lp" autocomplete="current-password" placeholder="password"></div>
+    <button class="ls-btn" id="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="ls-err" id="login-err"></div>
+    <div class="ls-note">Signs in to McLeod TMS (tms.meiborginc.com)</div>
   </div>
-  <div class="mr-summary-bar" id="mr-summary-bar" style="display:none"></div>
-  <div class="mr-tabs">
-    <div class="mr-tab active" id="mr-tab-dept" onclick="mrTab('dept')">By Department <span class="mr-tab-cnt" id="mr-cnt-dept">0</span></div>
-    <div class="mr-tab" id="mr-tab-raw" onclick="mrTab('raw')">Raw Data <span class="mr-tab-cnt" id="mr-cnt-raw">0</span></div>
-  </div>
-  <div class="mr-pane active" id="mr-pane-dept">
-    <div class="mr-no-data" id="mr-no-data-dept">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="12" width="32" height="24" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="8" y1="20" x2="40" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="28" x2="24" y2="28" stroke="currentColor" stroke-width="1.5"/></svg>
-      <p>Click "Pull All Reports" to load live data from McLeod TMS</p>
-    </div>
-    <div id="mr-dept-content" style="display:none"></div>
-  </div>
-  <div class="mr-pane" id="mr-pane-raw">
-    <div class="mr-no-data" id="mr-no-data-raw">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="12" width="32" height="24" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="8" y1="20" x2="40" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="28" x2="24" y2="28" stroke="currentColor" stroke-width="1.5"/></svg>
-      <p>Click "Pull All Reports" to load raw API responses</p>
-    </div>
-    <div id="mr-raw-content" style="display:none"></div>
-  </div>
-  <div style="text-align:right;font-size:11px;color:rgba(255,255,255,.2);margin-top:24px" id="mr-last-pulled"></div>
 </div>
-</div><!-- end panel-mcleod-rpt -->
+
+<!-- APP -->
+<div id="app" class="hidden">
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div class="sb-logo-area">
+      <div class="sb-logo">MEIBORG</div>
+      <div class="sb-logo-sub">TMS Dashboard</div>
+      <div class="sb-conn"><span class="sb-dot" id="sb-dot"></span><span id="sb-conn-lbl">Not connected</span></div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-section">Reports</div>
+      <div class="sb-item active" id="nav-overview" onclick="showView('overview')"><span class="sb-item-dot"></span>Overview</div>
+      <div class="sb-section">Departments</div>
+      <div class="sb-item" id="nav-dispatch" onclick="showView('dispatch')"><span class="sb-item-dot"></span>Dispatch / Ops<span class="sb-cnt hidden" id="cnt-dispatch"></span></div>
+      <div class="sb-item" id="nav-fleet" onclick="showView('fleet')"><span class="sb-item-dot"></span>Fleet<span class="sb-cnt hidden" id="cnt-fleet"></span></div>
+      <div class="sb-item" id="nav-sales" onclick="showView('sales')"><span class="sb-item-dot"></span>Sales / CRM<span class="sb-cnt hidden" id="cnt-sales"></span></div>
+      <div class="sb-item" id="nav-brokerage" onclick="showView('brokerage')"><span class="sb-item-dot"></span>Brokerage<span class="sb-cnt hidden" id="cnt-brokerage"></span></div>
+      <div class="sb-item" id="nav-accounting" onclick="showView('accounting')"><span class="sb-item-dot"></span>Accounting<span class="sb-cnt hidden" id="cnt-accounting"></span></div>
+      <div class="sb-section">Tools</div>
+      <div class="sb-item" id="nav-raw" onclick="showView('raw')"><span class="sb-item-dot"></span>Raw Data<span class="sb-cnt hidden" id="cnt-raw"></span></div>
+    </div>
+    <div class="sb-footer">
+      <div class="sb-user" id="sb-user"></div>
+      <button class="sb-signout" onclick="doLogout()">Sign out</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div id="topbar">
+      <div><div class="tb-title" id="tb-title">Dashboard</div><div class="tb-sub" id="tb-sub"></div></div>
+      <div class="tb-right">
+        <div class="tb-clock" id="tb-clock"></div>
+        <button class="tb-pull-btn" id="tb-pull-btn" onclick="pullAll()">Pull All Reports</button>
+      </div>
+    </div>
+    <div id="content">
+      <div id="home-view"><div class="hv-hero">
+        <svg class="hv-icon" width="72" height="72" viewBox="0 0 72 72" fill="none"><rect x="8" y="16" width="56" height="42" rx="5" stroke="white" stroke-width="2"/><line x1="8" y1="30" x2="64" y2="30" stroke="white" stroke-width="2"/><rect x="16" y="40" width="10" height="10" rx="2" fill="white" opacity=".35"/><rect x="31" y="40" width="10" height="10" rx="2" fill="white" opacity=".35"/><rect x="46" y="40" width="10" height="10" rx="2" fill="white" opacity=".35"/></svg>
+        <div class="hv-title">McLeod TMS Reports</div>
+        <div class="hv-sub">Pull live data from all departments in one click.<br>Dispatch, Fleet, Sales, Brokerage &amp; Accounting.</div>
+        <button class="hv-pull-btn" id="hv-pull-btn" onclick="pullAll()">Pull All Reports</button>
+        <div class="hv-prog-wrap" id="hv-prog-wrap"><div class="hv-prog-bar" id="hv-prog-bar"></div></div>
+        <div class="hv-status" id="hv-status"></div>
+      </div></div>
+      <div id="overview-view" class="sect-pad hidden"><div id="overview-content"></div></div>
+      <div id="dispatch-view" class="sect-pad hidden"><div id="dispatch-content"></div></div>
+      <div id="fleet-view"    class="sect-pad hidden"><div id="fleet-content"></div></div>
+      <div id="sales-view"    class="sect-pad hidden"><div id="sales-content"></div></div>
+      <div id="brokerage-view" class="sect-pad hidden"><div id="brokerage-content"></div></div>
+      <div id="accounting-view" class="sect-pad hidden"><div id="accounting-content"></div></div>
+      <div id="raw-view" class="sect-pad hidden"><div id="raw-content"></div></div>
+    </div>
+  </div>
+</div>
 <script>
-/* ========== McLeod Reports Logic ========== */
-var MR_ENDPOINTS = [
-  { key:"orders_a",    label:"Active Orders",      path:"orders/search?status=A",    dept:"Dispatch / Operations", badge:"active" },
-  { key:"orders_d",    label:"Dispatched Orders",  path:"orders/search?status=D",    dept:"Dispatch / Operations", badge:"dispatched" },
-  { key:"orders_p",    label:"Pending Orders",     path:"orders/search?status=P",    dept:"Dispatch / Operations", badge:"pending" },
-  { key:"drivers",     label:"Drivers",            path:"drivers/search?id=%25",     dept:"Fleet", badge:"default" },
-  { key:"tractors",    label:"Tractors",           path:"tractors/search?id=%25",    dept:"Fleet", badge:"default" },
-  { key:"trailers",    label:"Trailers",           path:"trailers/search?id=%25",    dept:"Fleet", badge:"default" },
-  { key:"customers",   label:"Customers",          path:"customers/search?id=%25",   dept:"Sales / CRM", badge:"default" },
-  { key:"carriers",    label:"Carriers",           path:"carriers/search?id=%25",    dept:"Brokerage", badge:"default" },
-  { key:"settlements", label:"Settlements",        path:"settlements/search?driver_id=%25", dept:"Accounting", badge:"default" }
-];
-var MR_RESULTS = {};
-var MR_ERRORS  = {};
+var BASE = "https://tms.meiborginc.com/ws";
+var _token = "", _user = "";
+var MR = {}, MR_ERRORS = {}, MR_PULLED = false;
 
-function mrTab(t) {
-  document.querySelectorAll(".mr-tab").forEach(function(el){ el.classList.remove("active"); });
-  document.querySelectorAll(".mr-pane").forEach(function(el){ el.classList.remove("active"); });
-  document.getElementById("mr-tab-"+t).classList.add("active");
-  document.getElementById("mr-pane-"+t).classList.add("active");
-}
-
-function mrDoFetch(ep) {
-  var url = window.BASE + "/" + ep.path;
-  return fetch(url, {
-    headers: {
-      "Authorization": window._token,
-      "CompanyID": "TMS",
-      "Accept": "application/json"
-    }
-  }).then(function(r){
-    if(!r.ok) return r.text().then(function(t){ throw new Error("HTTP "+r.status+" on "+ep.label+": "+t.slice(0,120)); });
-    return r.json().then(function(data){
-      MR_RESULTS[ep.key] = Array.isArray(data) ? data : (data.results || data.items || [data]);
-      return MR_RESULTS[ep.key];
-    });
-  }).catch(function(e){
-    MR_ERRORS[ep.key] = e.message;
-    MR_RESULTS[ep.key] = [];
-    throw e;
-  });
-}
-
-function mrPullAll() {
-  MR_RESULTS = {};
-  MR_ERRORS  = {};
-  var btn = document.getElementById("mr-pull-btn");
-  var progWrap = document.getElementById("mr-progress-wrap");
-  var progBar  = document.getElementById("mr-progress-bar");
-  var statusEl = document.getElementById("mr-status-msg");
-  btn.disabled = true;
-  btn.textContent = "Pulling...";
-  progWrap.style.display = "block";
-  progBar.style.width = "5%";
-  statusEl.style.display = "block";
-  statusEl.className = "mr-status-msg";
-  statusEl.textContent = "Connecting to McLeod TMS...";
-  var total = MR_ENDPOINTS.length;
-  var done  = 0;
-  var errs  = 0;
-  var promises = MR_ENDPOINTS.map(function(ep){
-    return mrDoFetch(ep)
-      .then(function(){ done++; })
-      .catch(function(){ done++; errs++; })
-      .then(function(){
-        var pct = Math.round((done / total) * 95) + 5;
-        progBar.style.width = pct + "%";
-        statusEl.textContent = "Pulled " + done + " / " + total + " endpoints...";
-      });
-  });
-  Promise.all(promises).then(function(){
-    progBar.style.width = "100%";
-    btn.disabled = false;
-    btn.textContent = "Refresh Reports";
-    var totalRec = Object.keys(MR_RESULTS).reduce(function(s,k){ return s + (MR_RESULTS[k]||[]).length; }, 0);
-    if(errs === 0){
-      statusEl.className = "mr-status-msg ok";
-      statusEl.textContent = "All " + total + " endpoints pulled successfully -- " + totalRec.toLocaleString() + " total records";
-    } else {
-      statusEl.className = "mr-status-msg err";
-      statusEl.textContent = (total - errs) + " of " + total + " endpoints succeeded -- " + totalRec.toLocaleString() + " records. " + errs + " error(s).";
-    }
-    document.getElementById("mr-last-pulled").textContent = "Last pulled: " + new Date().toLocaleString();
-    mrRenderSummary(totalRec);
-    mrRenderDept();
-    mrRenderRaw();
-    setTimeout(function(){ progWrap.style.display="none"; }, 1500);
-  });
-}
-
-function mrRenderSummary(totalRec) {
-  var bar = document.getElementById("mr-summary-bar");
-  var depts = {};
-  MR_ENDPOINTS.forEach(function(ep){
-    if(!depts[ep.dept]) depts[ep.dept] = 0;
-    depts[ep.dept] += (MR_RESULTS[ep.key]||[]).length;
-  });
-  var html = "";
-  Object.keys(depts).forEach(function(d){
-    html += "<div class=\"mr-summary-pill\"><strong>" + depts[d].toLocaleString() + "</strong> " + d + "</div>";
-  });
-  html += "<div class=\"mr-summary-pill\" style=\"margin-left:auto\"><strong>" + totalRec.toLocaleString() + "</strong> Total Records</div>";
-  bar.innerHTML = html;
-  bar.style.display = "flex";
-}
-
-function mrRenderDept() {
-  var depts = {};
-  MR_ENDPOINTS.forEach(function(ep){
-    if(!depts[ep.dept]) depts[ep.dept] = [];
-    depts[ep.dept].push(ep);
-  });
-  var totalRec = Object.keys(MR_RESULTS).reduce(function(s,k){ return s + (MR_RESULTS[k]||[]).length; }, 0);
-  document.getElementById("mr-cnt-dept").textContent = totalRec.toLocaleString();
-  var deptOrder = ["Dispatch / Operations","Fleet","Sales / CRM","Brokerage","Accounting"];
-  var html = "";
-  deptOrder.forEach(function(deptName){
-    if(!depts[deptName]) return;
-    var eps = depts[deptName];
-    var deptTotal = eps.reduce(function(s,ep){ return s + (MR_RESULTS[ep.key]||[]).length; },0);
-    html += "<div class=\"mr-section\">";
-    html += "<div class=\"mr-section-header\">";
-    html += "<div><span class=\"mr-dept-label\">" + deptName + "</span></div>";
-    html += "<span class=\"mr-section-count\">" + deptTotal.toLocaleString() + " records</span>";
-    html += "</div>";
-    html += "<div class=\"mr-dept-grid\">";
-    eps.forEach(function(ep){
-      var recs = MR_RESULTS[ep.key] || [];
-      var errMsg = MR_ERRORS[ep.key];
-      html += "<div class=\"mr-kpi-card\">";
-      html += "<div class=\"mr-kpi-label\">" + ep.label + "</div>";
-      if(errMsg){
-        html += "<div class=\"mr-kpi-value\" style=\"color:#ef4444;font-size:20px\">Error</div>";
-        html += "<div class=\"mr-kpi-sub\" style=\"color:#ef4444\">" + errMsg.slice(0,80) + "</div>";
-      } else {
-        html += "<div class=\"mr-kpi-value\">" + recs.length.toLocaleString() + "</div>";
-        html += "<div class=\"mr-kpi-sub\">" + (recs.length === 1 ? "record" : "records") + " retrieved</div>";
-      }
-      html += "</div>";
-    });
-    html += "</div>";
-    eps.forEach(function(ep){
-      var recs = MR_RESULTS[ep.key] || [];
-      if(recs.length === 0) return;
-      html += "<div style=\"margin-bottom:20px\">";
-      html += "<div class=\"mr-section-header\" style=\"margin-bottom:10px\">";
-      html += "<span style=\"font-size:13px;font-weight:600;color:rgba(255,255,255,.6)\">" + ep.label + "</span>";
-      html += "<span class=\"mr-section-badge\">" + recs.length + " records</span>";
-      html += "</div>";
-      html += mrBuildTable(ep, recs);
-      html += "</div>";
-    });
-    html += "</div>";
-  });
-  var contentEl = document.getElementById("mr-dept-content");
-  contentEl.innerHTML = html;
-  contentEl.style.display = "block";
-  document.getElementById("mr-no-data-dept").style.display = "none";
-}
-
-function mrBuildTable(ep, recs) {
-  if(!recs || recs.length === 0) return "<div>No records</div>";
-  var cols = mrGetCols(ep.key, recs[0]);
-  var html = "<div class=\"mr-table-wrap\"><table class=\"mr-table\"><thead><tr>";
-  cols.forEach(function(c){ html += "<th>" + mrFmtHeader(c) + "</th>"; });
-  html += "</tr></thead><tbody>";
-  var limit = Math.min(recs.length, 200);
-  for(var i=0;i<limit;i++){
-    var row = recs[i];
-    html += "<tr>";
-    cols.forEach(function(c){ html += "<td>" + mrFmtCell(c, row[c], ep.badge) + "</td>"; });
-    html += "</tr>";
-  }
-  if(recs.length > 200) html += "<tr><td colspan=\""+cols.length+"\" style=\"text-align:center;color:rgba(255,255,255,.3);padding:12px\">+ "+(recs.length-200)+" more records</td></tr>";
-  html += "</tbody></table></div>";
-  return html;
-}
-
-function mrGetCols(key, sample) {
-  var colMap = {
-    "orders_a":    ["id","status","total_charge","bill_distance","company_id"],
-    "orders_d":    ["id","status","total_charge","bill_distance","company_id"],
-    "orders_p":    ["id","status","total_charge","bill_distance","company_id"],
-    "drivers":     ["id","name","status","city","state","phone","license_state"],
-    "tractors":    ["id","fleet_manager","status","city","state","driver_id"],
-    "trailers":    ["id","type_id","status","city","state","empty"],
-    "customers":   ["id","name","city","state","phone","credit_limit","balance"],
-    "carriers":    ["id","name","city","state","phone"],
-    "settlements": ["id","driver_id","pay_date","total_pay","accrual_type","status"]
-  };
-  var preferred = colMap[key] || [];
-  var available = preferred.filter(function(c){ return sample && sample[c] !== undefined; });
-  if(available.length < 3 && sample){
-    Object.keys(sample).forEach(function(k){
-      if(k.slice(0,2) === "__") return;
-      if(available.indexOf(k)===-1 && available.length < 7) available.push(k);
-    });
-  }
-  return available;
-}
-
-function mrFmtHeader(col) {
-  return col.replace(/_/g," ").replace(/\b\w/g,function(c){ return c.toUpperCase(); });
-}
-
-function mrFmtCell(col, val, badge) {
-  if(val === undefined || val === null) return "--";
-  if(col === "status"){
-    var cls = badge === "active" ? "mr-badge-active" : badge === "dispatched" ? "mr-badge-dispatched" : badge === "pending" ? "mr-badge-pending" : "mr-badge-default";
-    return "<span class=\""+cls+"\">"+String(val)+"</span>";
-  }
-  if(col === "total_charge" || col === "credit_limit" || col === "balance" || col === "total_pay"){
-    var n = parseFloat(val);
-    if(!isNaN(n)) return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
-  }
-  if(typeof val === "boolean") return val ? "Yes" : "No";
-  var s = String(val);
-  if(s.length > 35) s = s.slice(0,35) + "...";
-  return s;
-}
-
-function mrRenderRaw() {
-  document.getElementById("mr-cnt-raw").textContent = MR_ENDPOINTS.length;
-  var html = "";
-  MR_ENDPOINTS.forEach(function(ep){
-    var recs = MR_RESULTS[ep.key];
-    var err  = MR_ERRORS[ep.key];
-    var countStr = err ? "ERROR" : ((recs||[]).length + " records");
-    html += "<div class=\"mr-raw-section\">";
-    html += "<div class=\"mr-raw-header\">";
-    html += "<div><div class=\"mr-raw-title\">" + ep.dept + " - " + ep.label + "</div><div class=\"mr-raw-meta\">" + ep.path + "  |  " + countStr + "</div></div>";
-    html += "<button class=\"mr-raw-copy\" data-key=\"" + ep.key + "\" onclick=\"mrCopyRaw(this.getAttribute('data-key'))\">Copy JSON</button>";
-    html += "</div>";
-    html += "<div class=\"mr-raw-body\"><pre id=\"mr-raw-" + ep.key + "\">";
-    if(err){ html += "ERROR: " + err; }
-    else if(!recs || recs.length === 0){ html += "No data"; }
-    else {
-      var preview = JSON.stringify(recs.slice(0,50), null, 2);
-      html += preview;
-      if(recs.length > 50) html += "\n// ... " + (recs.length-50) + " more records";
-    }
-    html += "</pre></div>";
-    html += "</div>";
-  });
-  var rawContent = document.getElementById("mr-raw-content");
-  rawContent.innerHTML = html;
-  rawContent.style.display = "block";
-  document.getElementById("mr-no-data-raw").style.display = "none";
-}
-
-function mrCopyRaw(key) {
-  var el = document.getElementById("mr-raw-" + key);
-  if(!el) return;
-  var data = MR_RESULTS[key];
-  var text = data ? JSON.stringify(data, null, 2) : el.textContent;
-  navigator.clipboard.writeText(text).then(function(){
-    var rawSec = el.parentNode.parentNode;
-    var btn = rawSec.querySelector(".mr-raw-copy");
-    if(btn){ btn.textContent = "Copied!"; setTimeout(function(){ btn.textContent="Copy JSON"; },1500); }
-  });
-}
-/* ========== End McLeod Reports ========== */
-var BASE='https://tms.meiborginc.com/ws';
-var _token='';var _user='';
-var _ar=[];var _run=false;
-
-// Clock
-function tick(){var n=new Date();document.getElementById('tbclock').textContent=n.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+' '+n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+function tick(){var n=new Date(),el=document.getElementById("tb-clock");if(el)el.textContent=n.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})+"  "+n.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});}
 setInterval(tick,1000);tick();
 
-// Nav
-function tDept(id){var h=document.getElementById('dh-'+id);var s=document.getElementById('ds-'+id);if(!s)return;var o=s.classList.contains('open');s.classList.toggle('open',!o);h.classList.toggle('open',!o);}
-function showPanel(id,dept,title){document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});var p=document.getElementById('panel-'+id);if(p)p.classList.add('active');document.getElementById('tbr').textContent=dept;document.getElementById('tbt').textContent=title;document.querySelectorAll('.nl').forEach(function(n){n.classList.remove('active');});var nl=document.getElementById('nl-'+id);if(nl)nl.classList.add('active');}
-
-// Auth
-function setConnected(user){
-  _user=user;
-  document.getElementById('sf-dot').className='dot';
-  document.getElementById('sf-user').textContent=user;
-  document.getElementById('tms-dot').className='dot';
-  document.getElementById('tms-lbl').textContent='Connected \u00B7 TMS';
-  document.getElementById('tms-status').title='Click to sign out';
-  document.getElementById('login-overlay').classList.add('hidden');
-}
-function doLogout(){
-  if(!_token)return;
-  if(!confirm('Sign out of McLeod TMS?'))return;
-  _token='';_user='';_ar=[];
-  document.getElementById('sf-dot').className='dot dot-off';
-  document.getElementById('sf-user').textContent='Not signed in';
-  document.getElementById('tms-dot').className='dot dot-off';
-  document.getElementById('tms-lbl').textContent='Not connected';
-  document.getElementById('login-overlay').classList.remove('hidden');
-  document.getElementById('lu').value='';
-  document.getElementById('lp').value='';
-  document.getElementById('login-err').textContent='';
-  document.getElementById('alist').innerHTML='';
-  document.getElementById('rmeta').innerHTML='';
-  ['ss','so','st','sl'].forEach(function(id){document.getElementById(id).textContent='\u2014';});
-  document.getElementById('ebtn').disabled=true;
-  document.getElementById('rbtn').textContent='\u25B6 Pull Aged AR';
-}
 function doLogin(){
-  var u=document.getElementById('lu').value.trim();
-  var p=document.getElementById('lp').value;
-  if(!u||!p){document.getElementById('login-err').textContent='Enter username and password.';return;}
-  var btn=document.getElementById('login-btn');
-  btn.disabled=true;btn.textContent='Signing in\u2026';
-  document.getElementById('login-err').textContent='';
-  var tok='Basic '+btoa(u+':'+p);
-  // Verify credentials by making a quick test call
-  fetch(BASE+'/customers/search?name=A*',{headers:{'Authorization':tok,'CompanyID':'TMS'}})
+  var u=document.getElementById("lu").value.trim(),p=document.getElementById("lp").value;
+  if(!u||!p){document.getElementById("login-err").textContent="Enter username and password.";return;}
+  var btn=document.getElementById("login-btn");
+  btn.disabled=true;btn.textContent="Signing in...";
+  document.getElementById("login-err").textContent="";
+  var tok="Basic "+btoa(u+":"+p);
+  fetch(BASE+"/customers/search?name=A*",{headers:{"Authorization":tok,"CompanyID":"TMS"}})
     .then(function(r){
-      if(r.status===401||r.status===403){throw new Error('Invalid username or password.');}
-      if(!r.ok&&r.status!==404&&r.status!==200){throw new Error('Server error ('+r.status+'). Try again.');}
-      _token=tok;
-      setConnected(u);
+      if(r.status===401||r.status===403)throw new Error("Invalid username or password.");
+      if(!r.ok&&r.status!==404&&r.status!==200)throw new Error("Server error ("+r.status+"). Check VPN.");
+      _token=tok; _user=u;
+      document.getElementById("login-screen").classList.add("hidden");
+      document.getElementById("app").classList.remove("hidden");
+      document.getElementById("sb-dot").classList.add("on");
+      document.getElementById("sb-conn-lbl").textContent="Connected \u00B7 TMS";
+      document.getElementById("sb-user").textContent=u;
     })
-    .catch(function(e){
-      document.getElementById('login-err').textContent=e.message||'Connection failed. Check VPN.';
-    })
-    .finally(function(){
-      btn.disabled=false;btn.textContent='Sign In';
-    });
+    .catch(function(e){document.getElementById("login-err").textContent=e.message||"Connection failed.";})
+    .finally(function(){btn.disabled=false;btn.textContent="Sign In";});
 }
-// Allow Enter key in login form
-document.getElementById('lp').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
-document.getElementById('lu').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('lp').focus();});
+document.addEventListener("DOMContentLoaded",function(){
+  var lp=document.getElementById("lp"),lu=document.getElementById("lu");
+  if(lp)lp.addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
+  if(lu)lu.addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("lp").focus();});
+});
 
-// API proxy helper
-function api(path){
-  var pts=path.split('?');
-  var p=pts[0].replace(/^\/ws\//,'').replace(/^\//,'');
-  var qs=pts[1]?('?'+pts[1]):'';
-  return fetch(BASE+'/'+p+qs,{headers:{'Authorization':_token,'CompanyID':'TMS'}});
-}
-
-// XML parser helper
-function parseXmlCustomers(text){
-  var parser=new DOMParser();
-  var xml=parser.parseFromString(text,'text/xml');
-  var nodes=xml.querySelectorAll('customer');
-  var arr=[];
-  nodes.forEach(function(n){arr.push({id:n.getAttribute('id'),name:n.getAttribute('name'),city:n.getAttribute('city'),state:n.getAttribute('state')});});
-  return arr;
-}
-
-// Customer ID discovery
-function getAllIds(){
-  var ch='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'.split('');
-  var ids=new Set();var caps=[];
-  var p1=ch.map(function(c){return api('/ws/customers/search?name='+encodeURIComponent(c+'*')).then(function(r){return r.ok?r.text().then(parseXmlCustomers):[];}).then(function(a){if(!Array.isArray(a))return;a.forEach(function(x){if(x.id)ids.add(x.id);});if(a.length>=100)caps.push(c);}).catch(function(){});});
-  return Promise.all(p1).then(function(){
-    var p2=[];
-    caps.forEach(function(c){ch.forEach(function(c2){p2.push(api('/ws/customers/search?name='+encodeURIComponent(c+c2+'*')).then(function(r){return r.ok?r.text().then(parseXmlCustomers):[];}).then(function(a){if(Array.isArray(a))a.forEach(function(x){if(x.id)ids.add(x.id);});}).catch(function(){}));});});
-    return Promise.all(p2);
-  }).then(function(){return Array.from(ids);});
+function doLogout(){
+  if(!confirm("Sign out of McLeod TMS?"))return;
+  _token="";_user="";MR={};MR_ERRORS={};MR_PULLED=false;
+  document.getElementById("app").classList.add("hidden");
+  document.getElementById("login-screen").classList.remove("hidden");
+  document.getElementById("lu").value="";document.getElementById("lp").value="";
+  document.getElementById("login-err").textContent="";
+  document.getElementById("sb-dot").classList.remove("on");
+  ["overview","dispatch","fleet","sales","brokerage","accounting","raw"].forEach(function(v){
+    var el=document.getElementById(v+"-view");
+    if(el){el.classList.add("hidden");var c=document.getElementById(v+"-content");if(c)c.innerHTML="";}
+  });
+  document.getElementById("home-view").classList.remove("hidden");
+  document.getElementById("hv-prog-bar").style.width="0%";
+  document.getElementById("hv-prog-wrap").style.display="none";
+  document.getElementById("hv-status").style.display="none";
+  var hvb=document.getElementById("hv-pull-btn");if(hvb){hvb.disabled=false;hvb.textContent="Pull All Reports";}
+  ["dispatch","fleet","sales","brokerage","accounting","raw"].forEach(function(k){
+    var c=document.getElementById("cnt-"+k);if(c)c.classList.add("hidden");
+  });
+  _currentView="overview";
+  document.querySelectorAll(".sb-item").forEach(function(el){el.classList.remove("active");});
+  document.getElementById("nav-overview").classList.add("active");
 }
 
-// PDF.js loader
-function loadPDF(){return new Promise(function(res){if(window.pdfjsLib){res();return;}var sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';sc.onload=function(){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';res();};document.head.appendChild(sc);});}
+var _currentView="overview";
+var VL={"overview":["Dashboard","Live data from McLeod TMS"],"dispatch":["Dispatch / Operations","Active, dispatched & pending orders"],"fleet":["Fleet","Drivers, tractors & trailers"],"sales":["Sales / CRM","Customer accounts"],"brokerage":["Brokerage","Carrier directory"],"accounting":["Accounting","Driver settlements"],"raw":["Raw Data","Full API responses for verification"]};
+function showView(v){
+  _currentView=v;
+  ["home","overview","dispatch","fleet","sales","brokerage","accounting","raw"].forEach(function(x){
+    var el=document.getElementById(x+"-view");if(el)el.classList.add("hidden");
+  });
+  var t=document.getElementById(v+"-view");if(t)t.classList.remove("hidden");
+  document.querySelectorAll(".sb-item").forEach(function(el){el.classList.remove("active");});
+  var ne=document.getElementById("nav-"+v);if(ne)ne.classList.add("active");
+  var lbl=VL[v]||[v,""];
+  document.getElementById("tb-title").textContent=lbl[0];
+  document.getElementById("tb-sub").textContent=lbl[1];
+  document.getElementById("content").scrollTop=0;
+}
 
-// PDF parser
-function parsePDF(ab){return pdfjsLib.getDocument({data:ab}).promise.then(function(pdf){var pgs=[];for(var i=1;i<=pdf.numPages;i++)pgs.push(i);return Promise.all(pgs.map(function(n){return pdf.getPage(n).then(function(pg){return pg.getTextContent();});}));}).then(function(all){var items=[];all.forEach(function(tc){items=items.concat(tc.items);});var ap='',lp='',ct=0;for(var i=0;i<items.length;i++){if(items[i].str==='Avg Pay Days:'){for(var j=i+1;j<Math.min(i+5,items.length);j++){if(items[j].str.trim()){ap=items[j].str.trim();break;}}}if(items[i].str==='Last Pmt Date:'){for(var j=i+1;j<Math.min(i+5,items.length);j++){if(items[j].str.trim()){lp=items[j].str.trim();break;}}}}var T=18;var C={s:25,b:65,g:102,o:141,a:178,am:200,bl:241,cu:289,t30:334,t45:381,t60:427,t90:476};var dr=/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;var rm={};items.forEach(function(it){var y=Math.round(it.transform[5]);if(!rm[y])rm[y]=[];rm[y].push({t:it.str,x:it.transform[4]});});var invs=[];var tr=/Customer\s+[A-Z0-9\-]+\s+totals:/;Object.keys(rm).forEach(function(y){var ri=rm[y];var real=ri.filter(function(i){return i.t.trim()!='';});var rt=real.map(function(i){return i.t;}).join(' ');if(tr.test(rt)){var nums=real.filter(function(i){return /^-?[\$]?[0-9,]+\.[0-9]{2}$/.test(i.t.replace(/,/g,'').replace(/\$/,''));});if(nums.length>0){var s=nums.slice().sort(function(a,b){return a.x-b.x;});ct=parseFloat(s[0].t.replace(/[$,]/g,''));}}var hd=real.some(function(i){return dr.test(i.t)&&Math.abs(i.x-C.s)<T;});var ih=real.some(function(i){return i.t=='Ship Date';});if(!hd||ih)return;function gc(cx){var best=null,bd=9999;real.forEach(function(i){var d=Math.abs(i.x-cx);if(d<T&&d<bd){bd=d;best=i.t;}});return best||'--';}invs.push({s:gc(C.s),b:gc(C.b),g:gc(C.g),o:gc(C.o),a:parseInt(gc(C.a))||0,am:gc(C.am),bl:gc(C.bl),cu:gc(C.cu),t30:gc(C.t30),t45:gc(C.t45),t60:gc(C.t60),t90:gc(C.t90)});});return{avgPay:ap,lastPmt:lp,tot:ct,invs:invs};});}
+function showToast(msg,isErr){
+  var el=document.getElementById("toast"),ml=document.getElementById("toast-msg");
+  el.className=isErr?"err":"";ml.textContent=msg;el.classList.add("show");
+  setTimeout(function(){el.classList.remove("show");},3200);
+}
 
-// Batch runner
-function batch(arr,n,fn){var i=0;function nx(){if(i>=arr.length)return Promise.resolve();var c=arr.slice(i,i+n);i+=n;return Promise.all(c.map(fn)).then(nx);}return nx();}
+var MR_ENDPOINTS=[
+  {key:"orders_a",  label:"Active Orders",     path:"orders/search?status=A",           dept:"dispatch", badge:"a"},
+  {key:"orders_d",  label:"Dispatched Orders", path:"orders/search?status=D",           dept:"dispatch", badge:"d"},
+  {key:"orders_p",  label:"Pending Orders",    path:"orders/search?status=P",           dept:"dispatch", badge:"p"},
+  {key:"drivers",   label:"Drivers",           path:"drivers/search?id=%25",            dept:"fleet",    badge:"x"},
+  {key:"tractors",  label:"Tractors",          path:"tractors/search?id=%25",           dept:"fleet",    badge:"x"},
+  {key:"trailers",  label:"Trailers",          path:"trailers/search?id=%25",           dept:"fleet",    badge:"x"},
+  {key:"customers", label:"Customers",         path:"customers/search?id=%25",          dept:"sales",    badge:"x"},
+  {key:"carriers",  label:"Carriers",          path:"carriers/search?id=%25",           dept:"brokerage",badge:"x"},
+  {key:"settlements",label:"Settlements",      path:"settlements/search?driver_id=%25", dept:"accounting",badge:"x"}
+];
 
-// Formatters
-function fmt(n){return'$'+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
-function setSt(msg,pct){document.getElementById('smsg').innerHTML=msg+(pct!=null?'<div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div>':'');}
+function mrFetch(ep){
+  return fetch(BASE+"/"+ep.path,{headers:{"Authorization":_token,"CompanyID":"TMS","Accept":"application/json"}})
+    .then(function(r){
+      if(!r.ok)return r.text().then(function(t){throw new Error("HTTP "+r.status+" - "+ep.label);});
+      return r.json().then(function(data){MR[ep.key]=Array.isArray(data)?data:(data.results||data.items||[data]);return MR[ep.key];});
+    }).catch(function(e){MR_ERRORS[ep.key]=e.message;MR[ep.key]=[];throw e;});
+}
 
-// Main AR pull
-function runAR(){
-  if(_run)return;
-  if(!_token){document.getElementById('login-overlay').classList.remove('hidden');return;}
-  _run=true;_ar=[];
-  var rb=document.getElementById('rbtn');var eb=document.getElementById('ebtn');
-  rb.disabled=true;rb.textContent='Running\u2026';eb.disabled=true;
-  document.getElementById('alist').innerHTML='';document.getElementById('rmeta').innerHTML='';
-  ['ss','so','st','sl'].forEach(function(id){document.getElementById(id).textContent='\u2026';});
-  var pd=document.getElementById('pd').checked;var oc=document.getElementById('oc').checked;var rb2=document.getElementById('rb').value;
-  var t0=Date.now();var sc=0,wa=0,na=0,sl=0;
-  setSt('Loading PDF engine\u2026',0);
-  loadPDF().then(function(){
-    setSt('Discovering customers\u2026',2);
-    return getAllIds();
-  }).then(function(ids){
-    document.getElementById('ss').textContent=ids.length;
-    setSt('Scanning '+ids.length+' customers\u2026',5);
-    var abase='/ws/customers/{id}/agedARReport?reportBy='+rb2+'&reportType=detailed&pastDueOnly='+(pd?'true':'false')+'&includeOpenCredits='+(oc?'true':'false')+'&invoiceCutoffDate=t&ageDate=t';
-    return batch(ids,10,function(cid){
-      return api(abase.replace('{id}',cid)).then(function(r){return r.ok?r.arrayBuffer():null;}).then(function(ab){
-        if(!ab||ab.byteLength<=2620)return;
-        sc++;wa++;
-        return parsePDF(ab).then(function(p){
-          var bal=p.tot||0;
-          if(bal===0&&p.invs.length>0){var s=0;p.invs.forEach(function(inv){s+=parseFloat(inv.bl.replace(/[$,]/g,''))||0;});bal=s;}
-          na+=bal;
-          var avgD=parseFloat(p.avgPay)||0;
-          if(avgD>60)sl++;
-          _ar.push({id:cid,bal:bal,avg:avgD,lp:p.lastPmt,invs:p.invs,buf:ab});
-          document.getElementById('so').textContent=wa;
-          document.getElementById('st').textContent=fmt(na);
-          document.getElementById('sl').textContent=sl;
-          setSt('Scanned '+sc+'/'+ids.length+' \u00B7 '+wa+' with AR',Math.round(5+sc/ids.length*88));
-        });
-      }).catch(function(){});
-    });
-  }).then(function(){
-    setSt('Loading names\u2026',96);
-    return batch(_ar,10,function(r){
-      return api('/ws/customers/search?id='+r.id).then(function(resp){return resp.ok?resp.text().then(parseXmlCustomers):[];}).then(function(arr){
-        if(Array.isArray(arr)&&arr.length>0){r.name=arr[0].name||r.id;r.city=arr[0].city||'';r.state=arr[0].state||'';}
-        else{r.name=r.id;r.city='';r.state='';}
-      }).catch(function(){r.name=r.id;r.city='';r.state='';});
-    });
-  }).then(function(){
-    var el=((Date.now()-t0)/1000).toFixed(1);
-    _ar.sort(function(a,b){return b.bal-a.bal;});
-    var fN=0,fS=0;_ar.forEach(function(r){fN+=r.bal;if(r.avg>60)fS++;});
-    document.getElementById('ss').textContent=sc||_ar.length;
-    document.getElementById('so').textContent=_ar.length;
-    document.getElementById('st').textContent=fmt(fN);
-    document.getElementById('sl').textContent=fS;
-    setSt('Complete \u00B7 '+_ar.length+' customers \u00B7 '+fmt(fN),100);
-    var now=new Date();
-    document.getElementById('rmeta').innerHTML='<span>'+_ar.length+' customers</span><span>Sorted by balance</span><span>'+now.toLocaleDateString()+' '+now.toLocaleTimeString()+'</span><span>'+el+'s</span>';
-    renderList();
-    rb.disabled=false;rb.textContent='\u25B6 Pull Aged AR';eb.disabled=false;_run=false;
-  }).catch(function(e){
-    setSt('Error: '+e.message,0);
-    rb.disabled=false;rb.textContent='\u25B6 Pull Aged AR';_run=false;
+function pullAll(){
+  MR={};MR_ERRORS={};
+  var total=MR_ENDPOINTS.length,done=0,errs=0;
+  ["hv-pull-btn","tb-pull-btn"].forEach(function(id){var el=document.getElementById(id);if(el){el.disabled=true;el.textContent="Pulling...";}});
+  var pw=document.getElementById("hv-prog-wrap"),pb=document.getElementById("hv-prog-bar"),st=document.getElementById("hv-status");
+  pw.style.display="block";pb.style.width="5%";st.style.display="block";st.className="hv-status";st.textContent="Connecting to McLeod TMS...";
+  var gp=document.getElementById("global-prog");gp.style.display="block";gp.style.width="5%";
+  var promises=MR_ENDPOINTS.map(function(ep){
+    return mrFetch(ep)
+      .then(function(){done++;}).catch(function(){done++;errs++;})
+      .then(function(){var pct=Math.round((done/total)*90)+5;pb.style.width=pct+"%";gp.style.width=pct+"%";st.textContent="Pulling "+done+" of "+total+" endpoints...";});
+  });
+  Promise.all(promises).then(function(){
+    gp.style.width="100%";pb.style.width="100%";MR_PULLED=true;
+    var totalRec=Object.keys(MR).reduce(function(s,k){return s+(MR[k]||[]).length;},0);
+    if(errs===0){st.className="hv-status ok";st.textContent="All "+total+" endpoints pulled \u2014 "+totalRec.toLocaleString()+" records loaded";}
+    else{st.className="hv-status err";st.textContent=(total-errs)+"/"+total+" succeeded \u2014 "+totalRec.toLocaleString()+" records";}
+    var tbBtn=document.getElementById("tb-pull-btn");if(tbBtn){tbBtn.disabled=false;tbBtn.textContent="Refresh Reports";}
+    var hvBtn=document.getElementById("hv-pull-btn");if(hvBtn){hvBtn.disabled=false;hvBtn.textContent="Refresh Reports";}
+    buildAll();
+    var dm={dispatch:["orders_a","orders_d","orders_p"],fleet:["drivers","tractors","trailers"],sales:["customers"],brokerage:["carriers"],accounting:["settlements"]};
+    Object.keys(dm).forEach(function(d){var n=dm[d].reduce(function(s,k){return s+(MR[k]||[]).length;},0);var c=document.getElementById("cnt-"+d);if(c){c.textContent=n;c.classList.remove("hidden");}});
+    var rc=document.getElementById("cnt-raw");if(rc){rc.textContent=MR_ENDPOINTS.length;rc.classList.remove("hidden");}
+    setTimeout(function(){gp.style.display="none";gp.style.width="0%";showView("overview");showToast(""+totalRec.toLocaleString()+" records loaded across all departments");},700);
   });
 }
 
-function renderList(){
-  var el=document.getElementById('alist');el.innerHTML='';
-  _ar.forEach(function(r,i){
-    var ad=r.avg||0;var bc=ad>60?'br':ad>30?'by':'bg';var bc2=ad>60?'blt':ad>30?'bwn':'bok';
-    var loc=r.city?(r.city+(r.state?', '+r.state:'')):'';
-    var d=document.createElement('div');d.className='crow';d.id='cr-'+i;
-    d.innerHTML='<div class="crh" onclick="tRow('+i+')"><span class="cra" id="ca-'+i+'">&#9658;</span><div class="cri"><span class="crn">'+r.name+'</span><span class="crid">('+r.id+')</span></div><div class="crloc">'+loc+'</div><div class="crbad"><span class="badge '+bc+'">Avg: '+(ad>0?ad.toFixed(1)+'d':'N/A')+'</span><span style="font-size:11px;color:var(--dim)">Pmt: '+(r.lp||'N/A')+'</span></div><div class="crbal '+bc2+'">'+fmt(r.bal)+'</div></div><div class="crd" id="cd-'+i+'"></div>';
-    el.appendChild(d);
-  });
+function fmtMoney(v){var n=parseFloat(v);if(isNaN(n))return v||"--";return "$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtVal(col,val,badge){
+  if(val===undefined||val===null||val==="")return "--";
+  if(col==="status"){var cls=badge==="a"?"badge-a":badge==="d"?"badge-d":badge==="p"?"badge-p":"badge-x";return "<span class=\""+cls+"\">"+String(val)+"</span>";}
+  if(["total_charge","credit_limit","balance","total_pay"].indexOf(col)!==-1)return fmtMoney(val);
+  if(typeof val==="boolean")return val?"Yes":"No";
+  var s=String(val);return s.length>40?s.slice(0,40)+"...":s;
+}
+function fmtHdr(col){return col.replace(/_/g," ").replace(/\b\w/g,function(c){return c.toUpperCase();});}
+var COL_MAP={
+  "orders_a":["id","status","total_charge","bill_distance","company_id"],
+  "orders_d":["id","status","total_charge","bill_distance","company_id"],
+  "orders_p":["id","status","total_charge","bill_distance","company_id"],
+  "drivers":["id","name","city","state","phone","license_state"],
+  "tractors":["id","fleet_manager","status","city","state","driver_id"],
+  "trailers":["id","type_id","status","city","state","empty"],
+  "customers":["id","name","city","state","phone","credit_limit"],
+  "carriers":["id","name","city","state","phone"],
+  "settlements":["id","driver_id","pay_date","total_pay","accrual_type","status"]
+};
+function getCols(key,sample){
+  var preferred=(COL_MAP[key]||[]).filter(function(c){return sample&&sample[c]!==undefined;});
+  if(preferred.length<3&&sample){Object.keys(sample).forEach(function(k){if(k.slice(0,2)==="__")return;if(preferred.indexOf(k)===-1&&preferred.length<6)preferred.push(k);});}
+  return preferred;
+}
+function buildTable(key,recs,badge){
+  if(!recs||!recs.length)return "<div style=\"padding:20px;text-align:center;color:var(--dim2);font-size:12px\">No data</div>";
+  var cols=getCols(key,recs[0]);
+  var h="<div class=\"dv-tbl-wrap\"><table class=\"dv-tbl\"><thead><tr>";
+  cols.forEach(function(c){h+="<th>"+fmtHdr(c)+"</th>";});
+  h+="</tr></thead><tbody>";
+  var lim=Math.min(recs.length,150);
+  for(var i=0;i<lim;i++){h+="<tr>";cols.forEach(function(c){h+="<td>"+fmtVal(c,recs[i][c],badge)+"</td>";});h+="</tr>";}
+  if(recs.length>150)h+="<tr style=\"background:none\"><td colspan=\""+cols.length+"\" style=\"text-align:center;color:var(--dim2);font-style:italic;padding:10px;font-size:11px\">+ "+(recs.length-150)+" more records</td></tr>";
+  h+="</tbody></table></div>";return h;
 }
 
-function tRow(i){
-  var det=document.getElementById('cd-'+i);var arr=document.getElementById('ca-'+i);if(!det)return;
-  var open=det.classList.contains('open');det.classList.toggle('open',!open);arr.classList.toggle('open',!open);
-  if(!open&&det.innerHTML===''){
-    var r=_ar[i];var ad=r.avg||0;var bc=ad>60?'br':ad>30?'by':'bg';
-    var h='<div class="dcards"><div class="dc"><div class="dclbl">Total Balance</div><div class="dcval vg">'+fmt(r.bal)+'</div></div><div class="dc"><div class="dclbl">Avg Pay Days</div><div class="dcval '+bc+'">'+(ad>0?ad.toFixed(1)+' days':'N/A')+'</div></div><div class="dc"><div class="dclbl">Last Payment</div><div class="dcval vw">'+(r.lp||'N/A')+'</div></div></div>';
-    if(r.invs&&r.invs.length>0){
-      h+='<div class="itit">'+r.invs.length+' Open Invoices</div><div class="iwrap"><table class="itable"><thead><tr><th>Ship Date</th><th>Bill Date</th><th>GL Date</th><th>Order #</th><th>Age</th><th>Amount</th><th>Balance</th><th>Current</th><th>Over 30</th><th>Over 45</th><th>Over 60</th><th>Over 90</th></tr></thead><tbody>';
-      r.invs.forEach(function(inv){var ac=inv.a>60?'ar':inv.a>30?'ay':'ag';h+='<tr><td>'+inv.s+'</td><td>'+inv.b+'</td><td>'+inv.g+'</td><td><strong>'+inv.o+'</strong></td><td class="'+ac+'">'+inv.a+'</td><td>'+inv.am+'</td><td>'+inv.bl+'</td><td>'+inv.cu+'</td><td>'+inv.t30+'</td><td>'+inv.t45+'</td><td>'+inv.t60+'</td><td>'+inv.t90+'</td></tr>';});
-      h+='</tbody></table></div>';
-    }else{h+='<p style="color:var(--dim);font-size:13px;padding:8px">No open invoice rows found.</p>';}
-    h+='<div class="darow"><button class="btn b-out" onclick="vPDF('+i+')">&#128196; View PDF</button><button class="btn b-out" onclick="dPDF('+i+')">&#8595; Download PDF</button></div>';
-    det.innerHTML=h;
+function buildAll(){
+  buildOverview();
+  buildDept("dispatch",["orders_a","orders_d","orders_p"]);
+  buildDept("fleet",["drivers","tractors","trailers"]);
+  buildDept("sales",["customers"]);
+  buildDept("brokerage",["carriers"]);
+  buildDept("accounting",["settlements"]);
+  buildRaw();
+}
+
+function buildOverview(){
+  var totalRec=Object.keys(MR).reduce(function(s,k){return s+(MR[k]||[]).length;},0);
+  var depts=[
+    {id:"dispatch",label:"Dispatch / Operations",keys:["orders_a","orders_d","orders_p"],color:"#22c55e"},
+    {id:"fleet",label:"Fleet",keys:["drivers","tractors","trailers"],color:"#60a5fa"},
+    {id:"sales",label:"Sales / CRM",keys:["customers"],color:"#a78bfa"},
+    {id:"brokerage",label:"Brokerage",keys:["carriers"],color:"#fb923c"},
+    {id:"accounting",label:"Accounting",keys:["settlements"],color:"#f472b6"}
+  ];
+  var h="<div class=\"dv-kpi-grid\">";
+  h+="<div class=\"dv-kpi\" style=\"background:linear-gradient(135deg,#0D1F3C,#132947);border-color:rgba(245,184,0,.25)\">";
+  h+="<div class=\"dv-kpi-label\">Total Records</div><div class=\"dv-kpi-val\" style=\"font-size:44px\">"+totalRec.toLocaleString()+"</div>";
+  h+="<div class=\"dv-kpi-sub\">across all departments</div></div>";
+  depts.forEach(function(d){
+    var n=d.keys.reduce(function(s,k){return s+(MR[k]||[]).length;},0);
+    h+="<div class=\"dv-kpi\" style=\"cursor:pointer\" onclick=\"showView('"+d.id+"')\">";
+    h+="<div class=\"dv-kpi-label\">"+d.label+"</div>";
+    h+="<div class=\"dv-kpi-val\" style=\"color:"+d.color+"\">"+n.toLocaleString()+"</div>";
+    h+="<div class=\"dv-kpi-sub\">click to view</div></div>";
+  });
+  h+="</div>";
+  var ao=MR["orders_a"]||[];
+  if(ao.length){
+    h+="<div class=\"dv-tbl-section\">";
+    h+="<div class=\"dv-tbl-head\"><span style=\"font-size:15px;font-weight:700;color:#fff\">Recent Active Orders</span><span class=\"dv-tbl-badge\">"+ao.length+" records</span></div>";
+    h+=buildTable("orders_a",ao.slice(0,25),"a");
+    h+="</div>";
   }
+  document.getElementById("overview-content").innerHTML=h;
 }
 
-function vPDF(i){var r=_ar[i];if(!r||!r.buf)return;window.open(URL.createObjectURL(new Blob([r.buf],{type:'application/pdf'})),'_blank');}
-function dPDF(i){var r=_ar[i];if(!r||!r.buf)return;var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([r.buf],{type:'application/pdf'}));a.download=(r.name||r.id).replace(/[^a-z0-9]/gi,'_')+'.pdf';a.click();}
-
-function exportCSV(){
-  if(!_ar.length)return;
-  var rows=[['ID','Name','City','State','Balance','Avg Pay Days','Last Payment','Invoice Count']];
-  _ar.forEach(function(r){rows.push([r.id,r.name||'',r.city||'',r.state||'',r.bal.toFixed(2),r.avg||'',r.lp||'',r.invs?r.invs.length:0]);});
-  var csv=rows.map(function(r){return r.map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='Meiborg_AR_'+(new Date().toISOString().slice(0,10))+'.csv';a.click();
-}
-
-function rawReport(){
-  if(!_ar.length)return;
-  var now=new Date();
-  var dateStr=now.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
-  var total=_ar.reduce(function(s,r){return s+r.bal;},0);
-  var rows=[];
-  rows.push(['Customer ID','Customer Name','City','State','Balance','Avg Pay Days','Last Payment','Order#','Ship Date','Bill Date','GL Date','Days Old','Amount','Balance','Current','1-30','31-45','46-60','61-90','90+']);
-  _ar.forEach(function(r){
-    var n=r.name||'';
-    var ci=r.city||'';
-    var st=r.state||'';
-    if(r.invs&&r.invs.length){
-      r.invs.forEach(function(inv){
-        rows.push([r.id,n,ci,st,r.bal.toFixed(2),r.avg||'',r.lp||'',inv.o||'',inv.s||'',inv.b||'',inv.g||'',inv.a||'',inv.am||'',inv.bl||'',inv.cu||'',inv.t30||'',inv.t45||'',inv.t60||'',inv.t90||'',inv.t91||'']);
-      });
-    } else {
-      rows.push([r.id,n,ci,st,r.bal.toFixed(2),r.avg||'',r.lp||'','','','','','','','','','','','','','']);
-    }
+function buildDept(deptId,keys){
+  var h="<div class=\"dv-kpi-grid\">";
+  keys.forEach(function(k){
+    var ep=MR_ENDPOINTS.filter(function(e){return e.key===k;})[0];
+    var recs=MR[k]||[],err=MR_ERRORS[k];
+    h+="<div class=\"dv-kpi"+(err?" err":"")+"\">"; 
+    h+="<div class=\"dv-kpi-label\">"+(ep?ep.label:k)+"</div>";
+    if(err){h+="<div class=\"dv-kpi-val\">Error</div><div class=\"dv-kpi-sub\">"+err.slice(0,60)+"</div>";}
+    else{h+="<div class=\"dv-kpi-val\">"+recs.length.toLocaleString()+"</div><div class=\"dv-kpi-sub\">records retrieved</div>";}
+    h+="</div>";
   });
-  var csv=rows.map(function(r){return r.map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var blob=new Blob([csv],{type:'text/csv'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');
-  a.href=url;
-  a.download='Meiborg_AR_Raw_'+now.toISOString().slice(0,10)+'.csv';
-  a.click();
-  setTimeout(function(){URL.revokeObjectURL(url);},5000);
-}
-
-// ===== ACCOUNTS PAYABLE =====
-var _ap = [], _apRun = false;
-
-function parseXmlCarriers(text) {
-  var parser = new DOMParser();
-  var xml = parser.parseFromString(text, 'application/xml');
-  var items = xml.querySelectorAll('payee');
-  var result = [];
-  items.forEach(function(el) {
-    var id = el.getAttribute('id');
-    if (id) result.push({
-      id: id,
-      name: el.getAttribute('name') || el.getAttribute('check_name') || '',
-      city: el.getAttribute('city') || el.getAttribute('check_city') || '',
-      state: el.getAttribute('state') || el.getAttribute('check_st') || '',
-      lastCheck: el.getAttribute('check_date') || '',
-      payMethod: el.getAttribute('payment_method') || ''
-    });
+  h+="</div>";
+  keys.forEach(function(k){
+    var ep=MR_ENDPOINTS.filter(function(e){return e.key===k;})[0];
+    var recs=MR[k]||[];if(!recs.length)return;
+    h+="<div class=\"dv-tbl-section\">";
+    h+="<div class=\"dv-tbl-head\"><span class=\"dv-tbl-name\">"+(ep?ep.label:k)+"</span><span class=\"dv-tbl-badge\">"+recs.length+" records</span></div>";
+    h+=buildTable(k,recs,ep?ep.badge:"x");
+    h+="</div>";
   });
-  // Deduplicate by id
-  var seen = {};
-  return result.filter(function(c) { if(seen[c.id]) return false; seen[c.id]=true; return true; });
+  document.getElementById(deptId+"-content").innerHTML=h;
 }
 
-function parseApPdf(text) {
-  // Parse the aged AR report PDF text for AP balance data
-  // Same structure as AR: look for balance amounts in columns
-  var items = [];
-  var lines = text.split('\n');
-  var balance = 0;
-  var current = '--', t30 = '--', t45 = '--', t60 = '--', t90 = '--';
-  var orderNo = '', shipDate = '', billDate = '', glDate = '', days = '';
-  var amt = '';
-  
-  for (var i = 0; i < lines.length; i++) {
-    var l = lines[i].trim();
-    // Look for dollar amounts â invoice lines have them
-    var m = l.match(/^(\d{1,3}(?:,\d{3})*\.\d{2})$/);
-    if (m) { balance += parseFloat(m[1].replace(/,/g,'')); }
-  }
-  return { bal: balance };
-}
-
-function getAllApIds() {
-  var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
-  var fetches = letters.map(function(l) {
-    return fetch(BASE + '/carriers/search?name=' + encodeURIComponent(l + '*'), {
-      headers: { 'Authorization': _token, 'CompanyID': 'TMS', 'Accept': 'application/xml' }
-    }).then(function(r) { return r.text(); }).then(parseXmlCarriers).catch(function() { return []; });
+function buildRaw(){
+  var h="";
+  MR_ENDPOINTS.forEach(function(ep){
+    var recs=MR[ep.key],err=MR_ERRORS[ep.key];
+    var cnt=err?"ERROR":((recs||[]).length+" records");
+    h+="<div class=\"rv-block\">";
+    h+="<div class=\"rv-block-header\">";
+    h+="<div><div class=\"rv-block-title\">"+ep.label+"</div><div class=\"rv-block-meta\">"+ep.path+" | "+cnt+"</div></div>";
+    h+="<button class=\"rv-copy\" data-key=\""+ep.key+"\" onclick=\"rvCopy(this.getAttribute('data-key'))\">Copy JSON</button>";
+    h+="</div><div class=\"rv-pre-wrap\"><pre class=\"rv-pre\" id=\"rv-"+ep.key+"\">";
+    if(err)h+="ERROR: "+err;
+    else if(!recs||!recs.length)h+="No data";
+    else{h+=JSON.stringify(recs.slice(0,30),null,2);if(recs.length>30)h+="\n// ...+"+(recs.length-30)+" more records";}
+    h+="</pre></div></div>";
   });
-  return Promise.all(fetches).then(function(results) {
-    var all = [];
-    results.forEach(function(r) { all = all.concat(r); });
-    // Deduplicate
-    var seen = {};
-    return all.filter(function(c) { if(seen[c.id]) return false; seen[c.id]=true; return true; });
-  });
+  document.getElementById("raw-content").innerHTML=h;
 }
-
-function setApSt(msg, pct) {
-  var el = document.getElementById('ap-smsg');
-  if (el) { el.innerHTML = msg + '<div class="pbar"><div class="pfill" style="width:' + (pct||0) + '%"></div></div>'; }
-}
-
-function runAP() {
-  if (_apRun) return;
-  _apRun = true;
-  _ap = [];
-  var btn = document.getElementById('ap-rbtn');
-  if (btn) { btn.textContent = 'Running...'; btn.disabled = true; }
-  document.getElementById('ap-ebtn').disabled = true;
-  document.getElementById('ap-rrpt').disabled = true;
-  document.getElementById('ap-list').innerHTML = '';
-  document.getElementById('ap-ss').textContent = 'â';
-  document.getElementById('ap-ow').textContent = 'â';
-  document.getElementById('ap-nb').textContent = 'â';
-  document.getElementById('ap-sl').textContent = 'â';
-  setApSt('Loading carrier listâ¦', 2);
-  
-  var rb2 = document.getElementById('ap-rb').value;
-  
-  getAllApIds().then(function(ids) {
-    setApSt('Scanning ' + ids.length + ' carriersâ¦', 5);
-    document.getElementById('ap-ss').textContent = '0';
-    var scanned = 0, withAP = 0, total = 0, overdue = 0;
-    var BATCH = 10;
-    var idx = 0;
-    
-    function next() {
-      if (idx >= ids.length) {
-        // Done
-        _ap.sort(function(a,b){return b.bal-a.bal;});
-        renderAP();
-        if(btn){btn.textContent='\u25ba Pull Aged AP';btn.disabled=false;}
-        document.getElementById('ap-ebtn').disabled = false;
-        document.getElementById('ap-rrpt').disabled = false;
-        _apRun = false;
-        var elapsed = Math.round((Date.now()-window._apStart)/1000);
-        setApSt('Complete \u00b7 ' + _ap.length + ' carriers \u00b7 $' + total.toFixed(2), 100);
-        document.getElementById('ap-nb').textContent = '$' + total.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
-        document.getElementById('ap-ow').textContent = withAP;
-        document.getElementById('ap-sl').textContent = overdue;
-        return;
-      }
-      var batch = ids.slice(idx, idx + BATCH);
-      idx += BATCH;
-      
-      Promise.all(batch.map(function(carrier) {
-        return fetch(BASE + '/customers/' + encodeURIComponent(carrier.id) + '/agedARReport?reportType=detailed&reportBy=' + rb2 + '&pastDueOnly=false&includeOpenCredits=false&invoiceCutoffDate=t&ageDate=t', {
-          headers: { 'Authorization': _token, 'CompanyID': 'TMS' }
-        }).then(function(r) {
-          if (!r.ok) return null;
-          return r.arrayBuffer();
-        }).then(function(buf) {
-          if (!buf) return null;
-          var pdfjsLib = window['pdfjs-dist/build/pdf'];
-          if (!pdfjsLib) return null;
-          return pdfjsLib.getDocument({data: new Uint8Array(buf)}).promise.then(function(pdf) {
-            var pagePromises = [];
-            for (var p = 1; p <= pdf.numPages; p++) {
-              pagePromises.push(pdf.getPage(p).then(function(page) { return page.getTextContent(); }));
-            }
-            return Promise.all(pagePromises).then(function(pages) {
-              var allItems = [];
-              pages.forEach(function(tc) { allItems = allItems.concat(tc.items); });
-              return parsePDF(allItems, carrier.id);
-            });
-          });
-        }).then(function(parsed) {
-          scanned++;
-          document.getElementById('ap-ss').textContent = scanned;
-          if (parsed && parsed.bal > 0) {
-            withAP++;
-            total += parsed.bal;
-            overdue += parsed.slowPay || 0;
-            _ap.push({ id: carrier.id, name: carrier.name, city: carrier.city, state: carrier.state, lastCheck: carrier.lastCheck, bal: parsed.bal, avg: parsed.avg, lp: parsed.lp, invs: parsed.invs });
-            document.getElementById('ap-nb').textContent = '$' + total.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
-            document.getElementById('ap-ow').textContent = withAP;
-          }
-          var pct = Math.round(scanned / ids.length * 100);
-          setApSt('Scanning ' + scanned + '/' + ids.length + ' carriersâ¦', pct);
-        }).catch(function(){scanned++;});
-      })).then(next);
-    }
-    
-    window._apStart = Date.now();
-    next();
-  });
-}
-
-function renderAP() {
-  var el = document.getElementById('ap-list');
-  if (!el) return;
-  if (!_ap.length) { el.innerHTML = '<div style="padding:20px;color:var(--dim)">No open AP balances found.</div>'; return; }
-  var html = '<div class="ar-meta"><span>' + _ap.length + ' carriers</span><span>Sorted by balance</span><span>' + new Date().toLocaleString() + '</span></div>';
-  _ap.forEach(function(r, i) {
-    var color = r.bal > 50000 ? 'vr' : r.bal > 10000 ? 'vy' : 'vg';
-    html += '<div class="ar-row" id="ap-row-' + i + '">';
-    html += '<div class="ar-hdr" onclick="toggleApRow(' + i + ')">';
-    html += '<span class="ar-tog">&#9658;</span>';
-    html += '<span class="ar-name">' + (r.name||r.id) + ' <span class="ar-id">(' + r.id + ')</span></span>';
-    html += '<span class="ar-city">' + (r.city||'') + (r.state ? ', '+r.state : '') + '</span>';
-    var lp = r.lp || (r.lastCheck ? r.lastCheck.substring(4,6)+'/'+r.lastCheck.substring(6,8)+'/'+r.lastCheck.substring(0,4) : 'â');
-    html += '<span class="ar-avg">' + (r.avg ? 'Avg: ' + parseFloat(r.avg).toFixed(1) + 'd' : '') + '</span>';
-    html += '<span class="ar-lp">Pmt: ' + lp + '</span>';
-    html += '<span class="ar-bal ' + color + '">$' + r.bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</span>';
-    html += '</div>';
-    // Invoice rows
-    if (r.invs && r.invs.length) {
-      html += '<div class="ar-detail" id="ap-detail-' + i + '" style="display:none">';
-      html += '<table class="ar-tbl"><thead><tr><th>Order#</th><th>Ship</th><th>Bill</th><th>GL</th><th>Days</th><th>Amount</th><th>Balance</th><th>Current</th><th>1-30</th><th>31-45</th><th>46-60</th><th>61-90</th></tr></thead><tbody>';
-      r.invs.forEach(function(inv) {
-        html += '<tr><td>' + (inv.o||'') + '</td><td>' + (inv.s||'') + '</td><td>' + (inv.b||'') + '</td><td>' + (inv.g||'') + '</td><td>' + (inv.a||'') + '</td><td>' + (inv.am||'') + '</td><td>' + (inv.bl||'') + '</td><td>' + (inv.cu||'') + '</td><td>' + (inv.t30||'') + '</td><td>' + (inv.t45||'') + '</td><td>' + (inv.t60||'') + '</td><td>' + (inv.t90||'') + '</td></tr>';
-      });
-      html += '</tbody></table></div>';
-    }
-    html += '</div>';
-  });
-  el.innerHTML = html;
-}
-
-function toggleApRow(i) {
-  var det = document.getElementById('ap-detail-' + i);
-  var tog = document.querySelector('#ap-row-' + i + ' .ar-tog');
-  if (!det) return;
-  var open = det.style.display !== 'none';
-  det.style.display = open ? 'none' : 'block';
-  if (tog) tog.innerHTML = open ? '&#9658;' : '&#9660;';
-}
-
-function exportAP() {
-  if (!_ap.length) return;
-  var rows = [['ID','Name','City','State','Balance','Avg Pay Days','Last Payment','Invoice Count']];
-  _ap.forEach(function(r) {
-    rows.push([r.id, r.name||'', r.city||'', r.state||'', r.bal.toFixed(2), r.avg||'', r.lp||'', r.invs ? r.invs.length : 0]);
-  });
-  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download = 'Meiborg_AP_' + new Date().toISOString().slice(0,10) + '.csv'; a.click();
-}
-
-function rawReportAP() {
-  if (!_ap.length) return;
-  var now = new Date();
-  var rows = [['Carrier ID','Carrier Name','City','State','Balance','Avg Pay Days','Last Payment','Order#','Ship Date','Bill Date','GL Date','Days Old','Amount','Balance','Current','1-30','31-45','46-60','61-90','90+']];
-  _ap.forEach(function(r) {
-    if (r.invs && r.invs.length) {
-      r.invs.forEach(function(inv) {
-        rows.push([r.id,r.name||'',r.city||'',r.state||'',r.bal.toFixed(2),r.avg||'',r.lp||'',inv.o||'',inv.s||'',inv.b||'',inv.g||'',inv.a||'',inv.am||'',inv.bl||'',inv.cu||'',inv.t30||'',inv.t45||'',inv.t60||'',inv.t90||'',inv.t91||'']);
-      });
-    } else {
-      rows.push([r.id,r.name||'',r.city||'',r.state||'',r.bal.toFixed(2),r.avg||'',r.lp||'','','','','','','','','','','','','','']);
-    }
-  });
-  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download = 'Meiborg_AP_Raw_' + now.toISOString().slice(0,10) + '.csv'; a.click();
-  setTimeout(function(){},5000);
-}
-
-
-// ===== SALES REPORT =====
-var _sr = [], _srRun = false;
-
-function srDefaultDates() {
-  // Default to last full week Sun-Sat
-  var today = new Date();
-  var day = today.getDay(); // 0=Sun
-  var lastSat = new Date(today);
-  lastSat.setDate(today.getDate() - day - 1);
-  var lastSun = new Date(lastSat);
-  lastSun.setDate(lastSat.getDate() - 6);
-  var fmt = function(d) { return d.toISOString().slice(0,10); };
-  var fromEl = document.getElementById('sr-from');
-  var toEl   = document.getElementById('sr-to');
-  if(fromEl && !fromEl.value) fromEl.value = fmt(lastSun);
-  if(toEl   && !toEl.value)   toEl.value   = fmt(lastSat);
-}
-
-function setSrSt(msg, pct) {
-  var el = document.getElementById('sr-smsg');
-  if(el) el.innerHTML = msg + '<div class="pbar"><div class="pfill" style="width:'+(pct||0)+'%"></div></div>';
-}
-
-function mcleodDate(d) {
-  // Convert YYYY-MM-DD to McLeod timestamp prefix YYYYMMDD
-  return d.replace(/-/g,'');
-}
-
-function parseSrDate(ts) {
-  // Parse McLeod date "20260507143500-0500" -> "05/07/2026"
-  if(!ts || ts.length < 8) return '';
-  return ts.substring(4,6)+'/'+ts.substring(6,8)+'/'+ts.substring(0,4);
-}
-
-function runSalesReport() {
-  if(_srRun) return;
-  // Set defaults if empty
-  srDefaultDates();
-  var fromVal = document.getElementById('sr-from').value;
-  var toVal   = document.getElementById('sr-to').value;
-  if(!fromVal || !toVal) { alert('Please select a date range.'); return; }
-
-  _srRun = true;
-  _sr = [];
-  var btn = document.getElementById('sr-rbtn');
-  if(btn) { btn.textContent='Running...'; btn.disabled=true; }
-  document.getElementById('sr-ebtn').disabled=true;
-  document.getElementById('sr-rrpt').disabled=true;
-  document.getElementById('sr-list').innerHTML='';
-  document.getElementById('sr-total').textContent='â';
-  document.getElementById('sr-rev').textContent='â';
-  document.getElementById('sr-avg').textContent='â';
-  document.getElementById('sr-miles').textContent='â';
-  setSrSt('Fetching ordersâ¦', 5);
-
-  // Build status list
-  var statuses = [];
-  if(document.getElementById('sr-sa').checked) statuses.push('A');
-  if(document.getElementById('sr-sd').checked) statuses.push('D');
-  if(document.getElementById('sr-sp').checked) statuses.push('P');
-  if(!statuses.length) statuses = ['A','D','P'];
-
-  var fromMc = mcleodDate(fromVal) + '000000-0500';
-  var toMc   = mcleodDate(toVal)   + '235959-0500';
-
-  // Fetch orders for each status
-  var allFetches = statuses.map(function(st) {
-    return fetch(BASE + '/orders/search?status=' + st, {
-      headers: { 'Authorization': _token, 'CompanyID': 'TMS', 'Accept': 'application/xml' }
-    }).then(function(r){ return r.text(); }).then(function(xml){
-      return parseSrOrders(xml, fromMc, toMc);
-    }).catch(function(){ return []; });
-  });
-
-  Promise.all(allFetches).then(function(results) {
-    results.forEach(function(r){ _sr = _sr.concat(r); });
-
-    // Deduplicate by id
-    var seen = {};
-    _sr = _sr.filter(function(o){ if(seen[o.id]) return false; seen[o.id]=true; return true; });
-
-    // Sort by ordered_date desc
-    _sr.sort(function(a,b){ return b.ordered_date_raw > a.ordered_date_raw ? 1 : -1; });
-
-    var totalRev = _sr.reduce(function(s,o){return s+o.revenue;},0);
-    var totalMiles = _sr.reduce(function(s,o){return s+(parseFloat(o.miles)||0);},0);
-    var avgRev = _sr.length ? totalRev/_sr.length : 0;
-
-    document.getElementById('sr-total').textContent = _sr.length.toLocaleString();
-    document.getElementById('sr-rev').textContent   = '$'+totalRev.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
-    document.getElementById('sr-avg').textContent   = '$'+avgRev.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
-    document.getElementById('sr-miles').textContent = Math.round(totalMiles).toLocaleString();
-
-    setSrSt('Complete \u00b7 '+_sr.length+' loads \u00b7 $'+totalRev.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}), 100);
-    renderSalesReport();
-    if(btn){btn.textContent='\u25ba Pull Report';btn.disabled=false;}
-    document.getElementById('sr-ebtn').disabled=false;
-    document.getElementById('sr-rrpt').disabled=false;
-    _srRun=false;
-  });
-}
-
-function parseSrOrders(xml, fromMc, toMc) {
-  // Parse order XML and filter by ordered_date range
-  var results = [];
-  var parser = new DOMParser();
-  var doc = parser.parseFromString(xml, 'application/xml');
-  var orders = doc.querySelectorAll('orders');
-  orders.forEach(function(o) {
-    var ordDate = o.getAttribute('ordered_date') || '';
-    // Filter by date range (compare YYYYMMDD prefix)
-    var ordPrefix = ordDate.substring(0,8);
-    var fromPrefix = fromMc.substring(0,8);
-    var toPrefix   = toMc.substring(0,8);
-    if(ordPrefix < fromPrefix || ordPrefix > toPrefix) return;
-
-    var revenue = parseFloat(o.getAttribute('freight_charge') || o.getAttribute('total_charge') || '0');
-    results.push({
-      id:           o.getAttribute('id') || '',
-      order_type:   o.getAttribute('order_type_id') || '',
-      customer_id:  o.getAttribute('customer_id') || '',
-      revenue:      revenue,
-      total_charge: parseFloat(o.getAttribute('total_charge') || '0'),
-      status:       o.getAttribute('status') || '',
-      status_descr: o.getAttribute('__statusDescr') || '',
-      ordered_date_raw: ordDate,
-      ordered_date: parseSrDate(ordDate),
-      miles:        o.getAttribute('bill_distance') || '0',
-      weight:       o.getAttribute('weight') || '',
-      commodity:    o.getAttribute('commodity') || '',
-      equipment:    o.getAttribute('__equipmentTypeDescr') || o.getAttribute('equipment_type_id') || '',
-      blnum:        o.getAttribute('blnum') || '',
-      ops_user:     o.getAttribute('operations_user') || '',
-      entered_by:   o.getAttribute('entered_user_id') || '',
-      revenue_code: o.getAttribute('revenue_code_id') || '',
-      order_mode:   o.getAttribute('order_mode') || '',
-      shipper_stop: o.getAttribute('shipper_stop_id') || '',
-      consignee_stop: o.getAttribute('consignee_stop_id') || ''
-    });
-  });
-  return results;
-}
-
-function renderSalesReport() {
-  var el = document.getElementById('sr-list');
-  if(!el) return;
-  if(!_sr.length) {
-    el.innerHTML = '<div style="padding:20px;color:var(--dim)">No loads found for the selected date range and status filters.</div>';
-    return;
-  }
-
-  var html = '<div class="ar-meta"><span>'+_sr.length+' loads</span><span>Sorted by date desc</span><span>'+new Date().toLocaleString()+'</span></div>';
-  html += '<div style="overflow-x:auto"><table class="ar-tbl" style="width:100%;min-width:900px">';
-  html += '<thead><tr>';
-  html += '<th>Order #</th><th>Type</th><th>Customer</th><th>Revenue</th><th>Miles</th><th>Weight</th>';
-  html += '<th>Equipment</th><th>Status</th><th>Ordered Date</th><th>BOL</th><th>Ops User</th>';
-  html += '</tr></thead><tbody>';
-
-  _sr.forEach(function(o) {
-    var revColor = o.revenue > 5000 ? 'color:var(--green)' : o.revenue > 2000 ? 'color:var(--gold)' : '';
-    var statusBadge = o.status === 'D' ? 'vg' : o.status === 'A' ? 'vy' : '';
-    html += '<tr>';
-    html += '<td><strong>'+o.id+'</strong></td>';
-    html += '<td>'+o.order_type+'</td>';
-    html += '<td>'+o.customer_id+'</td>';
-    html += '<td style="'+revColor+'"><strong>$'+o.revenue.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'</strong></td>';
-    html += '<td>'+(o.miles?parseFloat(o.miles).toFixed(0):'')+'</td>';
-    html += '<td>'+(o.weight?parseFloat(o.weight).toLocaleString():'')+'</td>';
-    html += '<td>'+o.equipment+'</td>';
-    html += '<td><span class="'+statusBadge+'" style="font-size:11px;font-weight:700">'+o.status_descr+'</span></td>';
-    html += '<td>'+o.ordered_date+'</td>';
-    html += '<td>'+o.blnum+'</td>';
-    html += '<td>'+o.ops_user+'</td>';
-    html += '</tr>';
-  });
-
-  html += '</tbody></table></div>';
-  el.innerHTML = html;
-}
-
-function exportSales() {
-  if(!_sr.length) return;
-  var rows = [['Order#','Type','Customer','Revenue','Total Charge','Miles','Weight','Commodity','Equipment','Status','Ordered Date','BOL','Ops User','Entered By','Revenue Code']];
-  _sr.forEach(function(o){
-    rows.push([o.id,o.order_type,o.customer_id,o.revenue.toFixed(2),o.total_charge.toFixed(2),o.miles,o.weight,o.commodity,o.equipment,o.status_descr,o.ordered_date,o.blnum,o.ops_user,o.entered_by,o.revenue_code]);
-  });
-  var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download='Meiborg_Sales_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
-}
-
-function rawReportSales() {
-  if(!_sr.length) return;
-  exportSales(); // Same data - raw report = full CSV
-}
-
-
-// ===== FLEET WEEKLY REPORT =====
-var _fw = [], _fwRun = false;
-
-function fwDefaultDate() {
-  var today = new Date();
-  var day = today.getDay();
-  var lastSat = new Date(today);
-  lastSat.setDate(today.getDate() - (day === 6 ? 0 : day + 1));
-  var el = document.getElementById('fw-date');
-  if (el && !el.value) el.value = lastSat.toISOString().slice(0,10);
-}
-
-function setFwSt(msg, pct) {
-  var el = document.getElementById('fw-smsg');
-  if (el) el.innerHTML = msg + '<div class="pbar"><div class="pfill" style="width:'+(pct||0)+'%"></div></div>';
-}
-
-function fmtMoney(n) { return '$' + (n||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
-
-function runFleetWeekly() {
-  if (_fwRun) return;
-  fwDefaultDate();
-  var dateVal = document.getElementById('fw-date').value;
-  if (!dateVal) { alert('Please select a week ending date.'); return; }
-  _fwRun = true; _fw = [];
-  var btn = document.getElementById('fw-rbtn');
-  btn.textContent = 'Running...'; btn.disabled = true;
-  document.getElementById('fw-ebtn').disabled = true;
-  document.getElementById('fw-list').innerHTML = '';
-  ['fw-fleet-rev','fw-reefer-rev','fw-oil-rev','fw-tractors'].forEach(function(id){document.getElementById(id).textContent='â¦';});
-  setFwSt('Fetching orders for week ending ' + dateVal + 'â¦', 5);
-
-  var endDate = new Date(dateVal + 'T12:00:00');
-  var startDate = new Date(endDate);
-  startDate.setDate(endDate.getDate() - 6);
-  var fromMc = startDate.toISOString().slice(0,10).replace(/-/g,'') + '000000-0500';
-  var toMc = endDate.toISOString().slice(0,10).replace(/-/g,'') + '235959-0500';
-
-  var statuses = ['A','D','P'];
-  var allFetches = statuses.map(function(st) {
-    return fetch(BASE + '/orders/search?status=' + st, {
-      headers: { 'Authorization': _token, 'CompanyID': 'TMS', 'Accept': 'application/xml' }
-    }).then(function(r){ return r.text(); }).then(function(xml){
-      return parseFwOrders(xml, fromMc.substring(0,8), toMc.substring(0,8));
-    }).catch(function(){ return []; });
-  });
-
-  Promise.all(allFetches).then(function(results) {
-    results.forEach(function(r){ _fw = _fw.concat(r); });
-    var seen = {}; _fw = _fw.filter(function(o){ if(seen[o.id]) return false; seen[o.id]=true; return true; });
-
-    var fleetRev=0, reeferRev=0, oilRev=0;
-    var fleetTr=new Set(), reeferTr=new Set(), oilTr=new Set();
-    _fw.forEach(function(o) {
-      var eq = (o.equipment||'').toLowerCase();
-      var rev = o.revenue || 0;
-      if (eq.includes('reef') || o.order_type === 'R') {
-        reeferRev += rev; if(o.tractor_id) reeferTr.add(o.tractor_id);
-      } else if (eq.includes('oil') || eq.includes('tank') || o.revenue_code === 'OIL') {
-        oilRev += rev; if(o.tractor_id) oilTr.add(o.tractor_id);
-      } else {
-        fleetRev += rev; if(o.tractor_id) fleetTr.add(o.tractor_id);
-      }
-    });
-    var allTr = new Set([...Array.from(fleetTr),...Array.from(reeferTr),...Array.from(oilTr)]);
-    var totalTractors = allTr.size;
-
-    document.getElementById('fw-fleet-rev').textContent = fmtMoney(fleetRev);
-    document.getElementById('fw-reefer-rev').textContent = fmtMoney(reeferRev);
-    document.getElementById('fw-oil-rev').textContent = fmtMoney(oilRev);
-    document.getElementById('fw-tractors').textContent = _fw.length ? (totalTractors || _fw.length) : 'â';
-
-    setFwSt('Complete Â· ' + _fw.length + ' loads Â· ' + fmtMoney(fleetRev+reeferRev+oilRev), 100);
-    renderFleetWeekly(fleetRev, reeferRev, oilRev);
-    btn.textContent = 'â¶ Pull Weekly Report'; btn.disabled = false;
-    document.getElementById('fw-ebtn').disabled = false;
-    document.getElementById('fw-sbtn').disabled = false;
-    _fwRun = false;
-  }).catch(function(e){
-    setFwSt('Error: ' + e.message, 0);
-    btn.textContent = 'â¶ Pull Weekly Report'; btn.disabled = false;
-    _fwRun = false;
-  });
-}
-
-function parseFwOrders(xml, fromDate, toDate) {
-  var results = [];
-  var parser = new DOMParser();
-  var doc = parser.parseFromString(xml, 'application/xml');
-  var orders = doc.querySelectorAll('orders');
-  orders.forEach(function(o) {
-    var ordDate = (o.getAttribute('ordered_date') || '').substring(0,8);
-    if (ordDate < fromDate || ordDate > toDate) return;
-    results.push({
-      id: o.getAttribute('id') || '',
-      revenue: parseFloat(o.getAttribute('freight_charge') || o.getAttribute('total_charge') || '0'),
-      equipment: o.getAttribute('__equipmentTypeDescr') || o.getAttribute('equipment_type_id') || '',
-      order_type: o.getAttribute('order_type_id') || '',
-      revenue_code: o.getAttribute('revenue_code_id') || '',
-      tractor_id: o.getAttribute('tractor_id') || '',
-      status: o.getAttribute('status') || '',
-      status_descr: o.getAttribute('__statusDescr') || '',
-      ordered_date: ordDate,
-      miles: parseFloat(o.getAttribute('bill_distance') || '0'),
-      customer_id: o.getAttribute('customer_id') || '',
-      blnum: o.getAttribute('blnum') || ''
-    });
-  });
-  return results;
-}
-
-function renderFleetWeekly(fleetRev, reeferRev, oilRev) {
-  var el = document.getElementById('fw-list');
-  if (!_fw.length) { el.innerHTML = '<div style="padding:20px;color:var(--dim)">No loads found for the selected week.</div>'; return; }
-
-  var totalMiles = _fw.reduce(function(s,o){return s+o.miles;},0);
-  var totalRev = fleetRev + reeferRev + oilRev;
-
-  var html = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px">';
-  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Weekly Summary â By Equipment Type</div>';
-  html += '<div style="overflow-x:auto"><table class="itable" style="min-width:600px"><thead><tr>';
-  html += '<th>Category</th><th>Total Revenue</th><th>% of Total</th><th>Rev/Mile</th></tr></thead><tbody>';
-  var cats = [{name:'Fleet (Dry Van)',rev:fleetRev},{name:'Reefer',rev:reeferRev},{name:'Oil/Tank',rev:oilRev}];
-  cats.forEach(function(c) {
-    var pct = totalRev ? ((c.rev/totalRev)*100).toFixed(1) : '0.0';
-    html += '<tr><td><strong>' + c.name + '</strong></td><td style="color:var(--green);font-weight:700">' + fmtMoney(c.rev) + '</td><td>' + pct + '%</td><td>' + (totalMiles ? '$'+(c.rev/totalMiles).toFixed(2) : 'â') + '</td></tr>';
-  });
-  html += '<tr style="border-top:2px solid var(--border)"><td><strong>TOTAL</strong></td><td style="color:var(--gold);font-weight:800">' + fmtMoney(totalRev) + '</td><td>100%</td><td style="color:var(--gold);font-weight:700">$' + (totalMiles ? (totalRev/totalMiles).toFixed(2) : '0.00') + '</td></tr>';
-  html += '</tbody></table></div></div>';
-
-  html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px">';
-  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">All Loads (' + _fw.length + ')</div>';
-  html += '<div style="overflow-x:auto"><table class="itable" style="width:100%;min-width:800px"><thead><tr><th>Order #</th><th>Customer</th><th>Equipment</th><th>Revenue</th><th>Miles</th><th>Status</th><th>BOL</th></tr></thead><tbody>';
-  _fw.forEach(function(o) {
-    var rc = o.revenue > 5000 ? 'color:var(--green)' : o.revenue > 2000 ? 'color:var(--gold)' : '';
-    html += '<tr><td><strong>' + o.id + '</strong></td><td>' + o.customer_id + '</td><td>' + o.equipment + '</td><td style="' + rc + ';font-weight:700">$' + o.revenue.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</td><td>' + (o.miles ? o.miles.toFixed(0) : '') + '</td><td>' + o.status_descr + '</td><td>' + o.blnum + '</td></tr>';
-  });
-  html += '</tbody></table></div></div>';
-  el.innerHTML = html;
-}
-
-function exportFleetWeekly() {
-  if (!_fw.length) return;
-  var rows = [['Order#','Customer','Equipment','Revenue','Miles','Status','BOL']];
-  _fw.forEach(function(o){rows.push([o.id,o.customer_id,o.equipment,o.revenue.toFixed(2),o.miles,o.status_descr,o.blnum]);});
-  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download = 'Meiborg_Fleet_Weekly_' + (document.getElementById('fw-date').value||new Date().toISOString().slice(0,10)) + '.csv'; a.click();
-}
-
-// ===== FLEET MONTHLY REPORT =====
-var _fm = [], _fmRun = false;
-
-function fmDefaultMonth() {
-  var today = new Date();
-  var el = document.getElementById('fm-month');
-  if (el && !el.value) {
-    var lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-    el.value = lastMonth.toISOString().slice(0,7);
-  }
-}
-
-function setFmSt(msg, pct) {
-  var el = document.getElementById('fm-smsg');
-  if (el) el.innerHTML = msg + '<div class="pbar"><div class="pfill" style="width:'+(pct||0)+'%"></div></div>';
-}
-
-function runFleetMonthly() {
-  if (_fmRun) return;
-  fmDefaultMonth();
-  var monthVal = document.getElementById('fm-month').value;
-  if (!monthVal) { alert('Please select a month.'); return; }
-  _fmRun = true; _fm = [];
-  var btn = document.getElementById('fm-rbtn');
-  btn.textContent = 'Running...'; btn.disabled = true;
-  document.getElementById('fm-ebtn').disabled = true;
-  document.getElementById('fm-list').innerHTML = '';
-  ['fm-local-rev','fm-shuttle-rev','fm-otr-rev','fm-tractors'].forEach(function(id){document.getElementById(id).textContent='â¦';});
-
-  var parts = monthVal.split('-');
-  var year = parseInt(parts[0]), month = parseInt(parts[1]);
-  var fromDate = monthVal.replace('-','') + '01';
-  var lastDay = new Date(year, month, 0).getDate();
-  var toDate = monthVal.replace('-','') + String(lastDay).padStart(2,'0');
-  setFmSt('Fetching orders for ' + new Date(year, month-1).toLocaleString('en-US',{month:'long',year:'numeric'}) + 'â¦', 5);
-
-  var statuses = ['A','D','P'];
-  var allFetches = statuses.map(function(st) {
-    return fetch(BASE + '/orders/search?status=' + st, {
-      headers: { 'Authorization': _token, 'CompanyID': 'TMS', 'Accept': 'application/xml' }
-    }).then(function(r){ return r.text(); }).then(function(xml){
-      return parseFmOrders(xml, fromDate, toDate);
-    }).catch(function(){ return []; });
-  });
-
-  Promise.all(allFetches).then(function(results) {
-    results.forEach(function(r){ _fm = _fm.concat(r); });
-    var seen = {}; _fm = _fm.filter(function(o){ if(seen[o.id]) return false; seen[o.id]=true; return true; });
-
-    var localRev=0, shuttleRev=0, otrRev=0;
-    var localTr=new Set(), shuttleTr=new Set(), otrTr=new Set();
-    _fm.forEach(function(o) {
-      var mode = (o.order_mode||'').toUpperCase();
-      var rev = o.revenue || 0;
-      if (mode === 'L' || mode === 'LOCAL') {
-        localRev += rev; if(o.tractor_id) localTr.add(o.tractor_id);
-      } else if (mode === 'S' || mode === 'SHUTTLE') {
-        shuttleRev += rev; if(o.tractor_id) shuttleTr.add(o.tractor_id);
-      } else {
-        otrRev += rev; if(o.tractor_id) otrTr.add(o.tractor_id);
-      }
-    });
-    var allTr2 = new Set([...Array.from(localTr),...Array.from(shuttleTr),...Array.from(otrTr)]);
-    var totalTractors = allTr2.size;
-
-    document.getElementById('fm-local-rev').textContent = fmtMoney(localRev);
-    document.getElementById('fm-shuttle-rev').textContent = fmtMoney(shuttleRev);
-    document.getElementById('fm-otr-rev').textContent = fmtMoney(otrRev);
-    document.getElementById('fm-tractors').textContent = totalTractors || _fm.length || 'â';
-
-    setFmSt('Complete Â· ' + _fm.length + ' loads Â· ' + fmtMoney(localRev+shuttleRev+otrRev), 100);
-    renderFleetMonthly(localRev, shuttleRev, otrRev, monthVal);
-    btn.textContent = 'â¶ Pull Monthly Report'; btn.disabled = false;
-    document.getElementById('fm-ebtn').disabled = false;
-    document.getElementById('fm-sbtn').disabled = false;
-    _fmRun = false;
-  }).catch(function(e){
-    setFmSt('Error: ' + e.message, 0);
-    btn.textContent = 'â¶ Pull Monthly Report'; btn.disabled = false;
-    _fmRun = false;
-  });
-}
-
-function parseFmOrders(xml, fromDate, toDate) {
-  var results = [];
-  var parser = new DOMParser();
-  var doc = parser.parseFromString(xml, 'application/xml');
-  var orders = doc.querySelectorAll('orders');
-  orders.forEach(function(o) {
-    var ordDate = (o.getAttribute('ordered_date') || '').substring(0,8);
-    if (ordDate < fromDate || ordDate > toDate) return;
-    results.push({
-      id: o.getAttribute('id') || '',
-      revenue: parseFloat(o.getAttribute('freight_charge') || o.getAttribute('total_charge') || '0'),
-      equipment: o.getAttribute('__equipmentTypeDescr') || o.getAttribute('equipment_type_id') || '',
-      order_type: o.getAttribute('order_type_id') || '',
-      order_mode: o.getAttribute('order_mode') || '',
-      revenue_code: o.getAttribute('revenue_code_id') || '',
-      tractor_id: o.getAttribute('tractor_id') || '',
-      status: o.getAttribute('status') || '',
-      status_descr: o.getAttribute('__statusDescr') || '',
-      ordered_date: ordDate,
-      miles: parseFloat(o.getAttribute('bill_distance') || '0'),
-      customer_id: o.getAttribute('customer_id') || '',
-      blnum: o.getAttribute('blnum') || ''
-    });
-  });
-  return results;
-}
-
-function renderFleetMonthly(localRev, shuttleRev, otrRev, monthVal) {
-  var el = document.getElementById('fm-list');
-  if (!_fm.length) { el.innerHTML = '<div style="padding:20px;color:var(--dim)">No loads found for the selected month.</div>'; return; }
-
-  var totalMiles = _fm.reduce(function(s,o){return s+o.miles;},0);
-  var totalRev = localRev + shuttleRev + otrRev;
-  var monthName = new Date(monthVal + '-01T12:00:00').toLocaleString('en-US',{month:'long',year:'numeric'});
-  var allTr3 = new Set(_fm.filter(function(o){return o.tractor_id;}).map(function(o){return o.tractor_id;}));
-  var totalTractors = allTr3.size;
-
-  var html = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px">';
-  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Monthly Summary â ' + monthName + ' (Fleet / Dry Vans)</div>';
-  html += '<div style="overflow-x:auto"><table class="itable" style="min-width:650px"><thead><tr><th>Category</th><th>Total Revenue</th><th>Total Tractors</th><th>Rev/Tractor</th><th>Rev/Mile</th></tr></thead><tbody>';
-
-  var cats = [{name:'Local',rev:localRev},{name:'Shuttle',rev:shuttleRev},{name:'OTR',rev:otrRev}];
-  cats.forEach(function(c) {
-    var catLoads = _fm.filter(function(o){
-      var m=(o.order_mode||'').toUpperCase();
-      if(c.name==='Local') return m==='L'||m==='LOCAL';
-      if(c.name==='Shuttle') return m==='S'||m==='SHUTTLE';
-      return m!=='L'&&m!=='LOCAL'&&m!=='S'&&m!=='SHUTTLE';
-    });
-    var catTrSet = new Set(catLoads.filter(function(o){return o.tractor_id;}).map(function(o){return o.tractor_id;}));
-    var catTr = catTrSet.size;
-    var catMiles = catLoads.reduce(function(s,o){return s+o.miles;},0);
-    html += '<tr><td><strong>' + c.name + '</strong></td><td style="color:var(--green);font-weight:700">' + fmtMoney(c.rev) + '</td><td>' + (catTr||catLoads.length) + '</td><td>' + (catTr ? '$'+(c.rev/catTr).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}) : 'â') + '</td><td>' + (catMiles ? '$'+(c.rev/catMiles).toFixed(2) : 'â') + '</td></tr>';
-  });
-  html += '<tr style="border-top:2px solid var(--border)"><td><strong>TOTAL</strong></td><td style="color:var(--gold);font-weight:800">' + fmtMoney(totalRev) + '</td><td>' + totalTractors + '</td><td style="color:var(--gold);font-weight:700">' + (totalTractors ? '$'+(totalRev/totalTractors).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}) : 'â') + '</td><td style="color:var(--gold);font-weight:700">' + (totalMiles ? '$'+(totalRev/totalMiles).toFixed(2) : 'â') + '</td></tr>';
-  html += '</tbody></table></div></div>';
-
-  html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px">';
-  html += '<div style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">All Loads (' + _fm.length + ')</div>';
-  html += '<div style="overflow-x:auto"><table class="itable" style="width:100%;min-width:900px"><thead><tr><th>Order #</th><th>Customer</th><th>Mode</th><th>Equipment</th><th>Revenue</th><th>Miles</th><th>Status</th><th>Date</th></tr></thead><tbody>';
-  _fm.forEach(function(o) {
-    var rc = o.revenue > 5000 ? 'color:var(--green)' : o.revenue > 2000 ? 'color:var(--gold)' : '';
-    var ds = o.ordered_date ? o.ordered_date.substring(4,6)+'/'+o.ordered_date.substring(6,8)+'/'+o.ordered_date.substring(0,4) : '';
-    html += '<tr><td><strong>' + o.id + '</strong></td><td>' + o.customer_id + '</td><td>' + (o.order_mode||'OTR') + '</td><td>' + o.equipment + '</td><td style="' + rc + ';font-weight:700">$' + o.revenue.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</td><td>' + (o.miles ? o.miles.toFixed(0) : '') + '</td><td>' + o.status_descr + '</td><td>' + ds + '</td></tr>';
-  });
-  html += '</tbody></table></div></div>';
-  el.innerHTML = html;
-}
-
-function exportFleetMonthly() {
-  if (!_fm.length) return;
-  var rows = [['Order#','Customer','Mode','Equipment','Revenue','Miles','Status','Date']];
-  _fm.forEach(function(o){
-    var ds = o.ordered_date ? o.ordered_date.substring(4,6)+'/'+o.ordered_date.substring(6,8)+'/'+o.ordered_date.substring(0,4) : '';
-    rows.push([o.id,o.customer_id,o.order_mode||'OTR',o.equipment,o.revenue.toFixed(2),o.miles,o.status_descr,ds]);
-  });
-  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download = 'Meiborg_Fleet_Monthly_' + (document.getElementById('fm-month').value||new Date().toISOString().slice(0,7)) + '.csv'; a.click();
-}
-
-
-// 
-
-
-
-//     PUSH TO GOOGLE SHEETS                                                   
-var SHEETS_WEB_APP = 'https://script.google.com/macros/s/AKfycbzawZCoUBQF0hvw9JZ_cyA8_qPVWeyH2_24d4CoBy717nhOKmXoXO-x-ZhAALwnTFFG/exec';
-
-function pushWeeklyToSheets() {
-  if (!_fw || !_fw.length) { alert('Run the weekly report first.'); return; }
-  var btn = document.getElementById('fw-sbtn');
-  btn.textContent = 'ï¿½ Pushing...'; btn.disabled = true;
-
-  var dateVal = document.getElementById('fw-date').value;
-  var totalRev = _fw.reduce(function(s,o){return s+o.revenue;},0);
-  var totalMiles = _fw.reduce(function(s,o){return s+o.miles;},0);
-  var revMiles = _fw.filter(function(o){return o.revenue>0;}).reduce(function(s,o){return s+o.miles;},0);
-
-  var fleetRev=0,reeferRev=0,oilRev=0,fleetMi=0,reeferMi=0,oilMi=0;
-  var fleetTr=new Set(),reeferTr=new Set(),oilTr=new Set();
-  _fw.forEach(function(o){
-    var eq=(o.equipment||'').toLowerCase();
-    var rev=o.revenue||0,mi=o.miles||0;
-    if(eq.includes('reef')||o.order_type==='R'){reeferRev+=rev;reeferMi+=mi;if(o.tractor_id)reeferTr.add(o.tractor_id);}
-    else if(eq.includes('oil')||eq.includes('tank')||o.revenue_code==='OIL'){oilRev+=rev;oilMi+=mi;if(o.tractor_id)oilTr.add(o.tractor_id);}
-    else{fleetRev+=rev;fleetMi+=mi;if(o.tractor_id)fleetTr.add(o.tractor_id);}
-  });
-  var allTr=new Set([].concat(Array.from(fleetTr),Array.from(reeferTr),Array.from(oilTr)));
-  var deadheadPct=totalMiles>0?Math.max(0,(totalMiles-revMiles)/totalMiles):0;
-
-  var p1={type:'weekly_stats',week_ending:dateVal,revenue:totalRev,total_miles:totalMiles,revenue_miles:revMiles,tractors:allTr.size,deadhead_pct:deadheadPct,notes:''};
-  var p2={type:'fleet_report',week_ending:dateVal,fleet_rev:fleetRev,reefer_rev:reeferRev,oil_rev:oilRev,fleet_tractors:fleetTr.size,reefer_tractors:reeferTr.size,oil_tractors:oilTr.size,fleet_miles:fleetMi,reefer_miles:reeferMi,oil_miles:oilMi};
-
-  Promise.all([p1,p2].map(function(p){
-    return fetch(SHEETS_WEB_APP,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(p)}).then(function(r){return r.json();}).catch(function(e){return {success:false,error:e.message};});
-  })).then(function(results){
-    var ok=results.every(function(r){return r.success;});
-    btn.textContent=ok?' Pushed to Sheets!':' Partial error';
-    btn.style.color=ok?'var(--green)':'var(--yellow)';
-    btn.disabled=false;
-    if(!ok)console.error('Sheets push:',results);
-    setTimeout(function(){btn.textContent='ï¿½ Push to Sheets';btn.style.color='#22C55E';},4000);
-  });
-}
-
-function pushMonthlyToSheets() {
-  if (!_fm || !_fm.length) { alert('Run the monthly report first.'); return; }
-  var btn = document.getElementById('fm-sbtn');
-  btn.textContent = 'ï¿½ Pushing...'; btn.disabled = true;
-
-  // Group orders by week-ending Saturday
-  var weekMap = {};
-  _fm.forEach(function(o) {
-    var d=o.ordered_date;
-    if(!d||d.length<8) return;
-    var dt=new Date(d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8)+'T12:00:00');
-    var day=dt.getDay();
-    var sat=new Date(dt);
-    sat.setDate(dt.getDate()+(6-day));
-    var satStr=sat.toISOString().slice(0,10);
-    if(!weekMap[satStr])weekMap[satStr]=[];
-    weekMap[satStr].push(o);
-  });
-
-  var weekRequests = Object.keys(weekMap).map(function(weekEnd) {
-    var wo=weekMap[weekEnd];
-    var wRev=wo.reduce(function(s,o){return s+o.revenue;},0);
-    var wMi=wo.reduce(function(s,o){return s+o.miles;},0);
-    var wRevMi=wo.filter(function(o){return o.revenue>0;}).reduce(function(s,o){return s+o.miles;},0);
-    var wTr=new Set(wo.filter(function(o){return o.tractor_id;}).map(function(o){return o.tractor_id;}));
-    var wDh=wMi>0?Math.max(0,(wMi-wRevMi)/wMi):0;
-    return fetch(SHEETS_WEB_APP,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({type:'weekly_stats',week_ending:weekEnd,revenue:wRev,total_miles:wMi,revenue_miles:wRevMi,tractors:wTr.size,deadhead_pct:wDh,notes:''})}).then(function(r){return r.json();}).catch(function(e){return {success:false,error:e.message};});
-  });
-
-  Promise.all(weekRequests).then(function(results){
-    var ok=results.every(function(r){return r.success;});
-    btn.textContent=ok?' Pushed '+results.length+' weeks!':' Partial error';
-    btn.style.color=ok?'var(--green)':'var(--yellow)';
-    btn.disabled=false;
-    if(!ok)console.error('Monthly sheets push:',results);
-    setTimeout(function(){btn.textContent='ï¿½ Push to Sheets';btn.style.color='#22C55E';},4000);
-  });
-}
-
-
-
-</script></body></html>
+function rvCopy(key){var d=MR[key];if(!d)return;navigator.clipboard.writeText(JSON.stringify(d,null,2)).then(function(){showToast("Copied "+d.length+" records");});}
+</script>
+</body>
+</html>
