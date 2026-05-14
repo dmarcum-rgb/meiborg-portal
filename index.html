@@ -412,23 +412,24 @@ const MR = {
   data: {},
   lastPull: null,
   ENDPOINTS: [
-    { key:'orders',     label:'Orders',      icon:'📦', path:'orders/search', params:'?status=A',  dept:'Dispatch / Operations' },
-    { key:'orders_d',   label:'Dispatched',  icon:'🚛', path:'orders/search', params:'?status=D',  dept:'Dispatch / Operations' },
-    { key:'drivers',    label:'Drivers',     icon:'🧑', path:'drivers',       params:'?limit=200', dept:'Fleet'       },
-    { key:'tractors',   label:'Tractors',    icon:'🚚', path:'tractors',      params:'?limit=200', dept:'Fleet'       },
-    { key:'trailers',   label:'Trailers',    icon:'🚛', path:'trailers',      params:'?limit=200', dept:'Fleet'       },
-    { key:'carriers',   label:'Carriers',    icon:'🤝', path:'carriers',      params:'?limit=200', dept:'Carrier Management' },
-    { key:'customers',  label:'Customers',   icon:'👥', path:'customers',     params:'?limit=200', dept:'Sales / Customers'   },
-    { key:'settlements',label:'Settlements', icon:'💰', path:'settlements',   params:'?limit=200', dept:'Accounting'  },
-    { key:'payees',     label:'Payees',      icon:'💵', path:'payees',        params:'?limit=200', dept:'Accounting'  },
+    { key:'orders_a',   label:'Active Orders',   icon:'📦', path:'orders/search', params:'?status=A',  dept:'Dispatch / Operations' },
+    { key:'orders_d',   label:'Dispatched',      icon:'🚛', path:'orders/search', params:'?status=D',  dept:'Dispatch / Operations' },
+    { key:'drivers',    label:'Drivers',         icon:'🧑', path:'drivers',       params:'',           dept:'Fleet' },
+    { key:'tractors',   label:'Tractors',        icon:'🚚', path:'tractors',      params:'',           dept:'Fleet' },
+    { key:'trailers',   label:'Trailers',        icon:'🚜', path:'trailers',      params:'',           dept:'Fleet' },
+    { key:'carriers',   label:'Carriers',        icon:'🤝', path:'carriers',      params:'',           dept:'Carrier Management' },
+    { key:'customers',  label:'Customers',       icon:'👥', path:'customers',     params:'',           dept:'Sales' },
+    { key:'settlements',label:'Settlements',     icon:'💰', path:'settlements',   params:'',           dept:'Accounting' },
+    { key:'payees',     label:'Payees',          icon:'💵', path:'payees',        params:'',           dept:'Accounting' }
   ],
   DEPT_META: {
     'Dispatch / Operations': { icon:'📦', color:'gold'  },
-    'Fleet':      { icon:'🚛', color:'blue'  },
-    'Carrier Management': { icon:'🤝', color:'green' },
-    'Sales / Customers':  { icon:'📈', color:'green' },
-    'Accounting': { icon:'💼', color:'gold'  },
-  };
+    'Fleet':                 { icon:'🚛', color:'blue'  },
+    'Carrier Management':    { icon:'🤝', color:'green' },
+    'Sales':                 { icon:'📈', color:'green' },
+    'Accounting':            { icon:'💼', color:'gold'  }
+  }
+};
 
 function mrSwitchTab(tab){
   document.querySelectorAll('.mr-tab').forEach(t=>t.classList.remove('active'));
