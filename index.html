@@ -412,22 +412,21 @@ const MR = {
   data: {},
   lastPull: null,
   ENDPOINTS: [
-    { key:'orders_a',   label:'Active Orders',   icon:'📦', path:'orders/search', params:'?status=A',  dept:'Dispatch / Operations' },
-    { key:'orders_d',   label:'Dispatched',      icon:'🚛', path:'orders/search', params:'?status=D',  dept:'Dispatch / Operations' },
-    { key:'drivers',    label:'Drivers',         icon:'🧑', path:'drivers',       params:'',           dept:'Fleet' },
-    { key:'tractors',   label:'Tractors',        icon:'🚚', path:'tractors',      params:'',           dept:'Fleet' },
-    { key:'trailers',   label:'Trailers',        icon:'🚜', path:'trailers',      params:'',           dept:'Fleet' },
-    { key:'carriers',   label:'Carriers',        icon:'🤝', path:'carriers',      params:'',           dept:'Carrier Management' },
-    { key:'customers',  label:'Customers',       icon:'👥', path:'customers',     params:'',           dept:'Sales' },
-    { key:'settlements',label:'Settlements',     icon:'💰', path:'settlements',   params:'',           dept:'Accounting' },
-    { key:'payees',     label:'Payees',          icon:'💵', path:'payees',        params:'',           dept:'Accounting' }
+    { key:'orders_a',   label:'Active Orders',    icon:'📦', path:'orders/search', params:'?status=A',  dept:'Dispatch / Operations' },
+    { key:'orders_d',   label:'Dispatched Orders', icon:'🚛', path:'orders/search', params:'?status=D',  dept:'Dispatch / Operations' },
+    { key:'orders_p',   label:'Pending Orders',    icon:'⏳', path:'orders/search', params:'?status=P',  dept:'Dispatch / Operations' },
+    { key:'orders_hdr', label:'All Orders (HDR)',  icon:'📋', path:'orders',        params:'?limit=200', dept:'Dispatch / Operations' },
+    { key:'carriers',   label:'Carriers',          icon:'🤝', path:'carriers',      params:'?limit=200', dept:'Carrier Management' },
+    { key:'customers',  label:'Customers',         icon:'👥', path:'customers',     params:'?limit=200', dept:'Sales' },
+    { key:'drivers',    label:'Drivers',           icon:'🧑', path:'drivers',       params:'?limit=200', dept:'Fleet' },
+    { key:'tractors',   label:'Tractors',          icon:'🚚', path:'tractors',      params:'?limit=200', dept:'Fleet' },
+    { key:'trailers',   label:'Trailers',          icon:'🚜', path:'trailers',      params:'?limit=200', dept:'Fleet' }
   ],
   DEPT_META: {
     'Dispatch / Operations': { icon:'📦', color:'gold'  },
-    'Fleet':                 { icon:'🚛', color:'blue'  },
     'Carrier Management':    { icon:'🤝', color:'green' },
     'Sales':                 { icon:'📈', color:'green' },
-    'Accounting':            { icon:'💼', color:'gold'  }
+    'Fleet':                 { icon:'🚛', color:'blue'  }
   }
 };
 
@@ -439,26 +438,21 @@ function mrSwitchTab(tab){
 }
 
 async function mrFetch(ep){
-  const url=BASE+'/'+ep.path+(ep.params||'');
-  const resp=await fetch(url,{headers:{'Authorization':_token,'CompanyID':'TMS','Accept':'application/json'}});
-  if(!resp.ok) throw new Error('HTTP '+resp.status);
-  const txt=await resp.text();
-  if(!txt||!txt.trim()) return [];
-  try{
-    const j=JSON.parse(txt);
-    if(Array.isArray(j)) return j;
-    for(const k of Object.keys(j)){ if(Array.isArray(j[k])) return j[k]; }
+  var qs = ep.params || '';
+  var url = BASE + '/' + ep.path + qs;
+  var resp = await fetch(url, {
+    headers: { 'Authorization': _token, 'CompanyID': 'TMS', 'Accept': 'application/json' }
+  });
+  if (!resp.ok) throw new Error('HTTP ' + resp.status + ' on ' + ep.path);
+  var txt = await resp.text();
+  if (!txt || !txt.trim()) return [];
+  try {
+    var j = JSON.parse(txt);
+    if (Array.isArray(j)) return j;
+    var keys = Object.keys(j);
+    for (var i=0; i<keys.length; i++) { if (Array.isArray(j[keys[i]])) return j[keys[i]]; }
     return [j];
-  }catch(e){
-    // Try XML parse
-    try{
-      const parser=new DOMParser();
-      const xml=parser.parseFromString(txt,'application/xml');
-      const rows=xml.querySelectorAll('[id]');
-      if(rows.length){ return Array.from(rows).map(r=>{ const o={}; for(const a of r.attributes) o[a.name]=a.value; return o; }); }
-    }catch(xe){}
-    return [];
-  }
+  } catch(e) { return []; }
 }
 async function mrPullAll(){
   const btn=document.getElementById('mr-pull-btn');
